@@ -67,7 +67,7 @@ namespace Aqua.Data.Model
 
                 entity.Property(e => e.City)
                     .IsRequired()
-                    .HasColumnType("nvarchar");
+                    .HasColumnType("nvarchar(100)");
             });
 
             modelBuilder.Entity<OrderEntity>(entity =>
@@ -121,5 +121,5 @@ namespace Aqua.Data.Model
                 entity.HasCheckConstraint(name: "CK_OrderItem_Total_Nonnegative", sql: "[Total] >= 0");
             });
         }
-}
+    }
 }

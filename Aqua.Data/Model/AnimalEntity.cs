@@ -13,7 +13,7 @@ namespace Aqua.Data.Model
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public decimal Price { get; set; }
+        public double Price { get; set; }
 
         public virtual ICollection<InventoryItemEntity> Inventory { get; set; }
         public virtual ICollection<OrderItemEntity> OrderItems { get; set; }
