@@ -5,6 +5,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Aqua.Data;
+using Aqua.Data.Model;
 using Aqua.WebApp.Models;
 
 namespace Aqua.WebApp.Controllers
