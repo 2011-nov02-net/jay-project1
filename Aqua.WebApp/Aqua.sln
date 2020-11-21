@@ -1,0 +1,37 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.30621.155
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aqua.WebApp", "Aqua.WebApp.csproj", "{826447DB-C46E-4E5F-A38E-8094BC09E59D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aqua.App", "..\Aqua.App\Aqua.App.csproj", "{583D9F5A-D43E-4159-B030-BAA324E95E5A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Aqua.Data", "..\Aqua.Data\Aqua.Data.csproj", "{37C92D33-1144-4722-8725-4207317AE68D}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{826447DB-C46E-4E5F-A38E-8094BC09E59D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{826447DB-C46E-4E5F-A38E-8094BC09E59D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{826447DB-C46E-4E5F-A38E-8094BC09E59D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{826447DB-C46E-4E5F-A38E-8094BC09E59D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{583D9F5A-D43E-4159-B030-BAA324E95E5A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{583D9F5A-D43E-4159-B030-BAA324E95E5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{583D9F5A-D43E-4159-B030-BAA324E95E5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{583D9F5A-D43E-4159-B030-BAA324E95E5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{37C92D33-1144-4722-8725-4207317AE68D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{37C92D33-1144-4722-8725-4207317AE68D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{37C92D33-1144-4722-8725-4207317AE68D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{37C92D33-1144-4722-8725-4207317AE68D}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {49F552D3-0EC1-4D42-9A29-43E27C3ECCFF}
+	EndGlobalSection
+EndGlobal
