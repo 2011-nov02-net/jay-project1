@@ -101,7 +101,7 @@ namespace Aqua.Data.Migrations
 
                     b.Property<string>("City")
                         .IsRequired()
-                        .HasColumnType("string");
+                        .HasColumnType("nvarchar");
 
                     b.HasKey("Id");
 
@@ -121,7 +121,7 @@ namespace Aqua.Data.Migrations
                     b.Property<DateTime>("Date")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("datetime2")
-                        .HasDefaultValueSql("(getDateTime())");
+                        .HasDefaultValueSql("(getdate())");
 
                     b.Property<int>("LocationId")
                         .HasColumnType("int");

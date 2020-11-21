@@ -48,7 +48,7 @@ namespace Aqua.Data.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    City = table.Column<string>(type: "string", nullable: false)
+                    City = table.Column<string>(type: "nvarchar", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -95,7 +95,7 @@ namespace Aqua.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CustomerId = table.Column<int>(type: "int", nullable: false),
                     LocationId = table.Column<int>(type: "int", nullable: false),
-                    Date = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "(getDateTime())"),
+                    Date = table.Column<DateTime>(type: "datetime2", nullable: false, defaultValueSql: "(getdate())"),
                     Total = table.Column<decimal>(type: "smallmoney", nullable: false)
                 },
                 constraints: table =>

@@ -67,7 +67,7 @@ namespace Aqua.Data.Model
 
                 entity.Property(e => e.City)
                     .IsRequired()
-                    .HasColumnType("string");
+                    .HasColumnType("nvarchar");
             });
 
             modelBuilder.Entity<OrderEntity>(entity =>
@@ -86,7 +86,7 @@ namespace Aqua.Data.Model
 
                 entity.Property(e => e.Date)
                     .HasColumnType("datetime2")
-                    .HasDefaultValueSql("(getDateTime())");
+                    .HasDefaultValueSql("(getdate()");
 
                 entity.Property(e => e.Total)
                     .HasColumnType("smallmoney")
