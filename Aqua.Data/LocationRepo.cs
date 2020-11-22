@@ -17,11 +17,20 @@ namespace Aqua.Data
         {
             _contextOptions = contextOptions;
         }
-        public List<LocationEntity> GetAllLocations()
+        public List<Location> GetAllLocations()
         {
             using var context = new AquaContext(_contextOptions);
             var dbLocations = context.Locations.ToList();
-            return dbLocations;
+            var result = new List<Location>();
+            foreach(var location in dbLocations){
+                var newLocation = new Location()
+                {
+                    Id = location.Id,
+                    City = location.City
+                };
+                result.Add(newLocation);
+            };
+            return result;
         }
         public Location GetLocationByCity(string city) {
             using var context = new AquaContext(_contextOptions);
