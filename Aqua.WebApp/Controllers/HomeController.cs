@@ -8,20 +8,23 @@ using Microsoft.Extensions.Logging;
 using Aqua.Data;
 using Aqua.Data.Model;
 using Aqua.WebApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace Aqua.WebApp.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly DbContextOptions<AquaContext> _contextOptions;
+        public HomeController(ILogger<HomeController> logger, DbContextOptions<AquaContext> contextOptions)
         {
             _logger = logger;
+            _contextOptions = contextOptions;
         }
 
         public IActionResult Index()
         {
+            var storeLocations = new LocationRepo(_contextOptions);
             return View();
         }
 

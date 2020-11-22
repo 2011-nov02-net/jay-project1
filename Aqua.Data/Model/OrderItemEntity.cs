@@ -11,7 +11,6 @@ namespace Aqua.Data.Model
         public int AnimalId { get; set; }
         public int Quantity { get; set; }
         public decimal Total { get; set; }
-
         public virtual AnimalEntity Animal { get; set; }
         public virtual OrderEntity Order { get; set; }
     }
