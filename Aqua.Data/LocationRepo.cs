@@ -26,7 +26,8 @@ namespace Aqua.Data
             using var context = new AquaContext(_contextOptions);
             var dbLocation = context.Locations
                 .FirstOrDefault(l => l.City == city);
-            var result = new Location(dbLocation.Id, dbLocation.City);
+            var result = new Location(dbLocation.City);
+            result.Id = dbLocation.Id;
             var resultInv = GetInvByLocation(result);
             foreach (var thing in resultInv)
             {
@@ -44,7 +45,8 @@ namespace Aqua.Data
             var result = new List<InventoryItem>();
             foreach(var item in dbInventory)
             {
-                var newItem = new InventoryItem(item.Id, item.LocationId, item.Animal.Name, item.Quantity);
+                var newItem = new InventoryItem(item.LocationId, item.Animal.Name, item.Quantity);
+                newItem.Id = item.Id;
             }
             return result;
         }
