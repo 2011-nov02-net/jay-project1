@@ -6,34 +6,35 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using Aqua.Data.Model;
+using Aqua.Data;
+using Aqua.Library;
 
 namespace Aqua.WebApp.Controllers
 {
     public class LocationEntitiesController : Controller
     {
-        private readonly AquaContext _context;
-
-        public LocationEntitiesController(AquaContext context)
+        private LocationRepo _locationRepo;
+        public LocationEntitiesController(DbContextOptions<AquaContext> context)
         {
-            _context = context;
+            _locationRepo = new LocationRepo(context);
         }
 
         // GET: LocationEntities
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Locations.ToListAsync());
+            var result = _locationRepo.GetAllLocations();
+            return View(result);
         }
 
         // GET: LocationEntities/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var locationEntity = await _context.Locations
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var locationEntity = _locationRepo.GetLocationById(id);
             if (locationEntity == null)
             {
                 return NotFound();
@@ -53,26 +54,25 @@ namespace Aqua.WebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,City")] LocationEntity locationEntity)
+        public IActionResult Create([Bind("Id,City")] Location location)
         {
             if (ModelState.IsValid)
             {
-                _context.Add(locationEntity);
-                await _context.SaveChangesAsync();
+                _locationRepo.CreateLocationEntity(location);
                 return RedirectToAction(nameof(Index));
             }
-            return View(locationEntity);
+            return View(location);
         }
 
         // GET: LocationEntities/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var locationEntity = await _context.Locations.FindAsync(id);
+            var locationEntity = _locationRepo.GetLocationById(id);
             if (locationEntity == null)
             {
                 return NotFound();
@@ -85,9 +85,9 @@ namespace Aqua.WebApp.Controllers
         // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,City")] LocationEntity locationEntity)
+        public IActionResult Edit(int id, [Bind("Id,City")] Location location)
         {
-            if (id != locationEntity.Id)
+            if (id != location.Id)
             {
                 return NotFound();
             }
@@ -96,12 +96,11 @@ namespace Aqua.WebApp.Controllers
             {
                 try
                 {
-                    _context.Update(locationEntity);
-                    await _context.SaveChangesAsync();
+                    _locationRepo.UpdateLocationEntity(location);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!LocationEntityExists(locationEntity.Id))
+                    if (LocationEntityExists(id))
                     {
                         return NotFound();
                     }
@@ -112,41 +111,41 @@ namespace Aqua.WebApp.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(locationEntity);
+            return View(location);
         }
 
-        // GET: LocationEntities/Delete/5
-        public async Task<IActionResult> Delete(int? id)
+        // // GET: LocationEntities/Delete/5
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var locationEntity = await _context.Locations
-                .FirstOrDefaultAsync(m => m.Id == id);
-            if (locationEntity == null)
+            var location = _locationRepo.GetLocationById(id);
+            if (location == null)
             {
                 return NotFound();
             }
 
-            return View(locationEntity);
+            return View(location);
         }
 
-        // POST: LocationEntities/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            var locationEntity = await _context.Locations.FindAsync(id);
-            _context.Locations.Remove(locationEntity);
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
+        // // POST: LocationEntities/Delete/5
+        // [HttpPost, ActionName("Delete")]
+        // [ValidateAntiForgeryToken]
+        // public IActionResult DeleteConfirmed(int id)
+        // {
+        //     var location = _locationRepo.GetLocationById(id);
+        //     _context.Locations.Remove(locationEntity);
+        //     await _context.SaveChangesAsync();
+        //     return RedirectToAction(nameof(Index));
+        // }
 
         private bool LocationEntityExists(int id)
         {
-            return _context.Locations.Any(e => e.Id == id);
+            bool exist = _locationRepo.GetLocationById(id) != null;
+            return exist;
         }
     }
 }

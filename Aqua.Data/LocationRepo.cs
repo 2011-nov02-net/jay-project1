@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Aqua.Data.Model;
 using Aqua.Library;
+using System.Threading.Tasks;
 
 namespace Aqua.Data
 {
@@ -16,7 +17,7 @@ namespace Aqua.Data
         {
             _contextOptions = contextOptions;
         }
-        public ICollection<LocationEntity> GetAllLocations()
+        public List<LocationEntity> GetAllLocations()
         {
             using var context = new AquaContext(_contextOptions);
             var dbLocations = context.Locations.ToList();
@@ -26,8 +27,29 @@ namespace Aqua.Data
             using var context = new AquaContext(_contextOptions);
             var dbLocation = context.Locations
                 .FirstOrDefault(l => l.City == city);
-            var result = new Location(dbLocation.City);
+            var result = new Location() {
+                Id = dbLocation.Id,
+                City = dbLocation.City
+            };
             result.Id = dbLocation.Id;
+            var resultInv = GetInvByLocation(result);
+            foreach (var thing in resultInv)
+            {
+                result.Inventory.Add(thing);
+            }
+            return result;
+        }
+        public Location GetLocationById(int? id)
+        {
+            using var context = new AquaContext(_contextOptions);
+            var dbLocation = context.Locations
+                .Where(l => l.Id == id)
+                .FirstOrDefault();
+            var result = new Location()
+            {
+                City = dbLocation.City,
+                Id = dbLocation.Id
+            };
             var resultInv = GetInvByLocation(result);
             foreach (var thing in resultInv)
             {
@@ -64,6 +86,16 @@ namespace Aqua.Data
             context.Inventories.Add(newEntry);
             context.SaveChanges();
         }
+        public void CreateLocationEntity(Location location)
+        {
+            using var context = new AquaContext(_contextOptions);
+            var newEntry = new LocationEntity()
+            {
+                City = location.City
+            };
+            context.Locations.Add(newEntry);
+            context.SaveChanges();
+        }
         public void UpdateInventoryEntity(Location location, Animal animal, int stock)
         {
             using var context = new AquaContext(_contextOptions);
@@ -73,6 +105,15 @@ namespace Aqua.Data
                 .Where(i => i.LocationId == currentLocation.Id && i.Animal.Name == animal.Name)
                 .FirstOrDefault();
             dbInventory.Quantity += stock;
+            context.SaveChanges();
+        }
+        public void UpdateLocationEntity(Location location)
+        {
+            using var context = new AquaContext(_contextOptions);
+            var dbLocation = context.Locations
+                .Where(i => i.Id == location.Id)
+                .FirstOrDefault();
+            dbLocation.City = location.City;
             context.SaveChanges();
         }
     }

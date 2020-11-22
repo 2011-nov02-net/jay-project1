@@ -6,9 +6,8 @@ namespace Aqua.Library
 {
     public class Location
     {
-        public Location(string city)
+        public Location()
         {
-            City = city;
             Inventory = new List<InventoryItem>();
         }
         public int Id { get; set; }
