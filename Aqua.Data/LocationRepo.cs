@@ -125,5 +125,14 @@ namespace Aqua.Data
             dbLocation.City = location.City;
             context.SaveChanges();
         }
+        public void DeleteLocationEntity(Location location)
+        {
+            using var context = new AquaContext(_contextOptions);
+            var dbLocation = context.Locations
+                .Where(i => i.Id == location.Id)
+                .FirstOrDefault();
+            context.Remove(dbLocation);
+            context.SaveChanges();
+        }
     }
 }

@@ -11,22 +11,22 @@ using Aqua.Library;
 
 namespace Aqua.WebApp.Controllers
 {
-    public class LocationEntitiesController : Controller
+    public class LocationController : Controller
     {
         private LocationRepo _locationRepo;
-        public LocationEntitiesController(DbContextOptions<AquaContext> context)
+        public LocationController(DbContextOptions<AquaContext> context)
         {
             _locationRepo = new LocationRepo(context);
         }
 
-        // GET: LocationEntities
+        // GET: Location
         public IActionResult Index()
         {
             var result = _locationRepo.GetAllLocations();
             return View(result);
         }
 
-        // GET: LocationEntities/Details/5
+        // GET: Location/Details/5
         public IActionResult Details(int? id)
         {
             if (id == null)
@@ -43,13 +43,13 @@ namespace Aqua.WebApp.Controllers
             return View(locationEntity);
         }
 
-        // GET: LocationEntities/Create
+        // GET: Location/Create
         public IActionResult Create()
         {
             return View();
         }
 
-        // POST: LocationEntities/Create
+        // POST: Location/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Create([Bind("Id,City")] Location location)
@@ -62,7 +62,7 @@ namespace Aqua.WebApp.Controllers
             return View(location);
         }
 
-        // GET: LocationEntities/Edit/5
+        // GET: Location/Edit/5
         public IActionResult Edit(int? id)
         {
             if (id == null)
@@ -78,9 +78,7 @@ namespace Aqua.WebApp.Controllers
             return View(locationEntity);
         }
 
-        // POST: LocationEntities/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to, for 
-        // more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        // POST: Location/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, [Bind("Id,City")] Location location)
@@ -98,7 +96,7 @@ namespace Aqua.WebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (LocationEntityExists(id))
+                    if (LocationExists(id))
                     {
                         return NotFound();
                     }
@@ -112,7 +110,7 @@ namespace Aqua.WebApp.Controllers
             return View(location);
         }
 
-        // // GET: LocationEntities/Delete/5
+        // // // GET: Location/Delete/5
         public IActionResult Delete(int? id)
         {
             if (id == null)
@@ -129,18 +127,17 @@ namespace Aqua.WebApp.Controllers
             return View(location);
         }
 
-        // // POST: LocationEntities/Delete/5
-        // [HttpPost, ActionName("Delete")]
-        // [ValidateAntiForgeryToken]
-        // public IActionResult DeleteConfirmed(int id)
-        // {
-        //     var location = _locationRepo.GetLocationById(id);
-        //     _context.Locations.Remove(locationEntity);
-        //     await _context.SaveChangesAsync();
-        //     return RedirectToAction(nameof(Index));
-        // }
+        // POST: Location/Delete/5
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DeleteConfirmed(int id)
+        {
+            var location = _locationRepo.GetLocationById(id);
+            _locationRepo.DeleteLocationEntity(location);
+            return RedirectToAction(nameof(Index));
+        }
 
-        private bool LocationEntityExists(int id)
+        private bool LocationExists(int id)
         {
             bool exist = _locationRepo.GetLocationById(id) != null;
             return exist;
