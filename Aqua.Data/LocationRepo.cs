@@ -51,8 +51,8 @@ namespace Aqua.Data
         public void CreateInventoryEntity(Location location, Animal animal, int stock)
         {
             using var context = new AquaContext(_contextOptions);
-            var currentLocation = GetLocationByCity(location.City);
-            var currentAnimal = GetAnimalById(animal.Id);
+            var currentLocation = location;
+            var currentAnimal = animal;
             var newEntry = new InventoryItemEntity()
             {
                 LocationId = currentLocation.Id,
