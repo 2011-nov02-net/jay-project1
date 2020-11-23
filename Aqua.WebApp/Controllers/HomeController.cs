@@ -24,7 +24,6 @@ namespace Aqua.WebApp.Controllers
 
         public IActionResult Index()
         {
-            var storeLocations = new LocationRepo(_contextOptions);
             return View();
         }
 

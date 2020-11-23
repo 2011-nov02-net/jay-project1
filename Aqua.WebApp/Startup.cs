@@ -59,6 +59,12 @@ namespace Aqua.WebApp
                 endpoints.MapControllerRoute(
                     name: "location",
                     pattern: "{controller=Location}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "customer",
+                    pattern: "{controller=Customer}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
+                    name: "animal",
+                    pattern: "{controller=Animal}/{action=Index}/{id?}");
             });
         }
     }

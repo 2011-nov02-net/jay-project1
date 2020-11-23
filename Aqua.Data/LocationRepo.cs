@@ -20,7 +20,7 @@ namespace Aqua.Data
         public List<Location> GetAllLocations()
         {
             using var context = new AquaContext(_contextOptions);
-            var dbLocations = context.Locations.ToList();
+            var dbLocations = context.Locations.Distinct().ToList();
             var result = new List<Location>();
             foreach(var location in dbLocations){
                 var newLocation = new Location()

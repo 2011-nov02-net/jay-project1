@@ -16,11 +16,23 @@ namespace Aqua.Data
         {
             _contextOptions = contextOptions;
         }
-        public ICollection<CustomerEntity> GetAllCustomers()
+        public ICollection<Customer> GetAllCustomers()
         {
             using var context = new AquaContext(_contextOptions);
             var dbCust = context.Customers.Distinct().ToList();
-            return dbCust;
+            var result = new List<Customer>();
+            foreach (var customer in dbCust)
+            {
+                var newCustomer = new Customer()
+                {
+                    Id = customer.Id,
+                    FirstName = customer.FirstName,
+                    LastName = customer.LastName,
+                    Email = customer.Email
+                };
+                result.Add(newCustomer);
+            };
+            return result;
         }
         public Customer GetCustomerByEmail(string email)
         {
@@ -51,7 +63,7 @@ namespace Aqua.Data
             }
             return allCust;
         }
-        public Customer GetCustomerById(int id)
+        public Customer GetCustomerById(int? id)
         {
             using var context = new AquaContext(_contextOptions);
             var dbCust = context.Customers
@@ -87,6 +99,22 @@ namespace Aqua.Data
             dbCust.FirstName = customer.FirstName;
             dbCust.LastName = customer.LastName;
             dbCust.Email = customer.Email;
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Error");
+            }
+        }
+        public void DeleteCustomerEntity(Customer customer)
+        {
+            using var context = new AquaContext(_contextOptions);
+            var dbCustomer = context.Customers
+                .Where(i => i.Id == customer.Id)
+                .FirstOrDefault();
+            context.Remove(dbCustomer);
             context.SaveChanges();
         }
     }

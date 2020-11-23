@@ -8,25 +8,31 @@ using Microsoft.EntityFrameworkCore;
 using Aqua.Data.Model;
 using Aqua.Data;
 using Aqua.Library;
+using Aqua.WebApp.Models;
 
 namespace Aqua.WebApp.Controllers
 {
     public class LocationController : Controller
     {
         private LocationRepo _locationRepo;
+        private AnimalRepo _animalRepo;
         public LocationController(DbContextOptions<AquaContext> context)
         {
             _locationRepo = new LocationRepo(context);
+            _animalRepo = new AnimalRepo(context);
         }
 
         // GET: Location
         public IActionResult Index()
         {
-            var result = _locationRepo.GetAllLocations();
+            var result = _locationRepo.GetAllLocations().Select(x => new LocationViewModel { 
+                Id = x.Id,
+                City = x.City
+            });
             return View(result);
         }
 
-        // GET: Location/Details/5
+        // GET: Location/Details/1
         public IActionResult Details(int? id)
         {
             if (id == null)
@@ -34,13 +40,13 @@ namespace Aqua.WebApp.Controllers
                 return NotFound();
             }
 
-            var locationEntity = _locationRepo.GetLocationById(id);
-            if (locationEntity == null)
+            var location = _locationRepo.GetLocationById(id);
+            if (location == null)
             {
                 return NotFound();
             }
 
-            return View(locationEntity);
+            return View(location);
         }
 
         // GET: Location/Create
@@ -62,7 +68,27 @@ namespace Aqua.WebApp.Controllers
             return View(location);
         }
 
-        // GET: Location/Edit/5
+        // GET: Location/CreateInventoryItem
+        public IActionResult CreateInventoryItem()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult CreateInventoryItem([Bind("Id,City")] int? id, string animal, int quantity)
+        {
+            var location = _locationRepo.GetLocationById(id);
+            if (ModelState.IsValid)
+            {
+                var newAnimal = _animalRepo.GetAnimalByName(animal);
+                _locationRepo.CreateInventoryEntity(location, newAnimal, quantity);
+                return RedirectToAction(nameof(Index));
+            }
+            return View(location);
+        }
+
+        // GET: Location/Edit/1
         public IActionResult Edit(int? id)
         {
             if (id == null)
@@ -70,15 +96,15 @@ namespace Aqua.WebApp.Controllers
                 return NotFound();
             }
 
-            var locationEntity = _locationRepo.GetLocationById(id);
-            if (locationEntity == null)
+            var location = _locationRepo.GetLocationById(id);
+            if (location == null)
             {
                 return NotFound();
             }
-            return View(locationEntity);
+            return View(location);
         }
 
-        // POST: Location/Edit/5
+        // POST: Location/Edit/1
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult Edit(int id, [Bind("Id,City")] Location location)
@@ -110,7 +136,7 @@ namespace Aqua.WebApp.Controllers
             return View(location);
         }
 
-        // // // GET: Location/Delete/5
+        // // // GET: Location/Delete/1
         public IActionResult Delete(int? id)
         {
             if (id == null)
@@ -127,7 +153,7 @@ namespace Aqua.WebApp.Controllers
             return View(location);
         }
 
-        // POST: Location/Delete/5
+        // POST: Location/Delete/1
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
@@ -139,7 +165,7 @@ namespace Aqua.WebApp.Controllers
 
         private bool LocationExists(int id)
         {
-            bool exist = _locationRepo.GetLocationById(id) != null;
+            bool exist = (_locationRepo.GetLocationById(id) != null);
             return exist;
         }
     }
