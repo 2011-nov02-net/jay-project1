@@ -21,7 +21,7 @@
         @Html.DisplayNameFor(model => model.Inventory)
     </h4>
     <p>
-        <a asp-action="CreateInventoryItem" asp-route-id="@Model.Id" >Import new animal</a>
+        <a asp-action="ImportAnimal" asp-route-id="@Model.Id" >Import new animal</a>
     </p>
     <hr />
     <dl class="row">
@@ -42,10 +42,10 @@
                     {
                         <tr>
                             <td>
-                                @Html.DisplayFor(modelItem => item.AnimalName)
+                                @item.AnimalName
                             </td>
                             <td>
-                                @Html.DisplayFor(modelItem => item.Quantity)
+                                @item.Quantity
                             </td>
                             <td>
                                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

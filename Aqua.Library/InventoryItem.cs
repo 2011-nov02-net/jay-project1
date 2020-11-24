@@ -6,6 +6,9 @@ namespace Aqua.Library
 {
     public class InventoryItem
     {
+        public InventoryItem() 
+        { 
+        }
         public InventoryItem(int locationId, string animalName, int quantity)
         {
             LocationId = locationId;

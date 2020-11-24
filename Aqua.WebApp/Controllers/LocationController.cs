@@ -45,7 +45,7 @@ namespace Aqua.WebApp.Controllers
             {
                 return NotFound();
             }
-
+            TempData["LocationId"] = location.Id;
             return View(location);
         }
 
@@ -69,23 +69,24 @@ namespace Aqua.WebApp.Controllers
         }
 
         // GET: Location/CreateInventoryItem
-        public IActionResult CreateInventoryItem()
+        public IActionResult ImportAnimal()
         {
             return View();
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult CreateInventoryItem([Bind("Id,City")] int? id, string animal, int quantity)
+        public IActionResult ImportAnimal(InventoryItem inventoryItem)
         {
-            var location = _locationRepo.GetLocationById(id);
-            if (ModelState.IsValid)
-            {
-                var newAnimal = _animalRepo.GetAnimalByName(animal);
-                _locationRepo.CreateInventoryEntity(location, newAnimal, quantity);
-                return RedirectToAction(nameof(Index));
-            }
-            return View(location);
+            var location = _locationRepo.GetLocationById(inventoryItem.LocationId);
+                if (ModelState.IsValid)
+                {
+                    var newAnimal = _animalRepo.GetAnimalByName(inventoryItem.AnimalName);
+                    _locationRepo.CreateInventoryEntity(location, newAnimal, inventoryItem.Quantity);
+                    return RedirectToAction(nameof(Index));
+                };
+
+            return View();
         }
 
         // GET: Location/Edit/1

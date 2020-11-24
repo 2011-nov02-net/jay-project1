@@ -56,8 +56,8 @@ namespace Aqua.Data
                 .FirstOrDefault();
             var result = new Location()
             {
-                City = dbLocation.City,
-                Id = dbLocation.Id
+                Id = dbLocation.Id,
+                City = dbLocation.City
             };
             var resultInv = GetInvByLocation(result);
             foreach (var thing in resultInv)
@@ -84,11 +84,10 @@ namespace Aqua.Data
         public void CreateInventoryEntity(Location location, Animal animal, int stock)
         {
             using var context = new AquaContext(_contextOptions);
-            var currentLocation = location;
             var currentAnimal = animal;
             var newEntry = new InventoryItemEntity()
             {
-                LocationId = currentLocation.Id,
+                LocationId = location.Id,
                 AnimalId = currentAnimal.Id,
                 Quantity = stock
             };
