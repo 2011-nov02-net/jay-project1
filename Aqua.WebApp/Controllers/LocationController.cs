@@ -49,6 +49,22 @@ namespace Aqua.WebApp.Controllers
             return View(location);
         }
 
+        public IActionResult InventoryDetails(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var location = _locationRepo.GetLocationById(id);
+            if (location == null)
+            {
+                return NotFound();
+            }
+            TempData["LocationId"] = location.Id;
+            return View(location);
+        }
+
         // GET: Location/Create
         public IActionResult Create()
         {

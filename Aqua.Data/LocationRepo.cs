@@ -81,13 +81,29 @@ namespace Aqua.Data
             }
             return result;
         }
+        public InventoryItem GetInvById(int id)
+        {
+            using var context = new AquaContext(_contextOptions);
+            var dbInventory = context.Inventories
+                .Where(i => i.Id == id)
+                .Include(i => i.Animal)
+                .FirstOrDefault();
+            var result = new InventoryItem(){
+                Id = dbInventory.Id,
+                LocationId = dbInventory.LocationId,
+                AnimalName = dbInventory.Animal.Name,
+                Quantity = dbInventory.Quantity
+            }
+            return result;
+        }
         public void CreateInventoryEntity(Location location, Animal animal, int stock)
         {
             using var context = new AquaContext(_contextOptions);
+            var currentLocation = location;
             var currentAnimal = animal;
             var newEntry = new InventoryItemEntity()
             {
-                LocationId = location.Id,
+                LocationId = currentLocation.Id,
                 AnimalId = currentAnimal.Id,
                 Quantity = stock
             };
