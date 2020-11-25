@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.Extensions.Logging;
 using Microsoft.EntityFrameworkCore;
 using Aqua.Data.Model;
 using Aqua.Data;
@@ -33,9 +35,9 @@ namespace Aqua.WebApp.Controllers
         }
 
         // GET: Location/Details/1
-        public IActionResult Details(int? id)
+        public IActionResult Details(int id)
         {
-            if (id == null)
+            if (id < 0)
             {
                 return NotFound();
             }
@@ -69,30 +71,45 @@ namespace Aqua.WebApp.Controllers
         }
 
         // GET: Location/CreateInventoryItem
-        public IActionResult ImportAnimal()
+        public IActionResult ImportAnimal(int id)
         {
-            return View();
+            var newImport = new InventoryItem();
+            newImport.LocationId = id;
+            newImport.Quantity = 1;
+            return View(newImport);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult ImportAnimal(InventoryItem inventoryItem)
         {
-            var location = _locationRepo.GetLocationById(inventoryItem.LocationId);
-                if (ModelState.IsValid)
+            if (ModelState.IsValid)
+            {
+                var location = _locationRepo.GetLocationById(inventoryItem.LocationId);
+                var animalCheck = AnimalExists(inventoryItem.AnimalName);
+                if (animalCheck != false) // Check to see if animal exists in database already
                 {
-                    var newAnimal = _animalRepo.GetAnimalByName(inventoryItem.AnimalName);
-                    _locationRepo.CreateInventoryEntity(location, newAnimal, inventoryItem.Quantity);
-                    return RedirectToAction(nameof(Index));
-                };
-
+                    var animal = _animalRepo.GetAnimalByName(inventoryItem.AnimalName);
+                    var existInventory = location.Inventory.Any(i => i.AnimalName == inventoryItem.AnimalName);
+                    if (existInventory) // Check to see if animal exists in location inventory already
+                    {
+                        _locationRepo.UpdateInventoryEntity(location, animal, inventoryItem.Quantity);
+                        return RedirectToAction(nameof(Index));
+                    }
+                    else
+                    {
+                        _locationRepo.CreateInventoryEntity(location, animal, inventoryItem.Quantity);
+                        return RedirectToAction(nameof(Index));
+                    }
+                }
+            }
             return View();
         }
 
         // GET: Location/Edit/1
-        public IActionResult Edit(int? id)
+        public IActionResult Edit(int id)
         {
-            if (id == null)
+            if (id < 0)
             {
                 return NotFound();
             }
@@ -138,9 +155,9 @@ namespace Aqua.WebApp.Controllers
         }
 
         // // // GET: Location/Delete/1
-        public IActionResult Delete(int? id)
+        public IActionResult Delete(int id)
         {
-            if (id == null)
+            if (id < 0)
             {
                 return NotFound();
             }
@@ -166,8 +183,29 @@ namespace Aqua.WebApp.Controllers
 
         private bool LocationExists(int id)
         {
-            bool exist = (_locationRepo.GetLocationById(id) != null);
-            return exist;
+            try
+            {
+                _locationRepo.GetLocationById(id);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+            return true;
+
+        }
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+        public bool AnimalExists(string name)
+        {
+            var animal = _animalRepo.GetAnimalByName(name);
+            if(animal != null)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

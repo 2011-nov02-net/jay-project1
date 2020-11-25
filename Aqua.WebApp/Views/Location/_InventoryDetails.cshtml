@@ -1,15 +1,15 @@
 ﻿@model IEnumerable<Aqua.Library.InventoryItem>
 
 <div>
-    <h4>InventoryItem</h4>
+    <h4>Inventory</h4>
     <hr />
         <table class="table">
             <tr>
                 <th>
-                    @Html.DisplayNameFor(model => model.AnimalName)
+                    Animal
                 </th>
                 <th>
-                    @Html.DisplayNameFor(model => model.Quantity)
+                    Stock
                 </th>
                 <th></th>
             </tr>
@@ -25,7 +25,6 @@
                     </td>
                     <td>
                         @Html.ActionLink("Edit", "Edit", new { id = item.Id }) |
-                        @Html.ActionLink("Details", "Details", new { id = item.Id }) |
                         @Html.ActionLink("Delete", "Delete", new { id = item.Id })
                     </td>
                 </tr>

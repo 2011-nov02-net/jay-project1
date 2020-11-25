@@ -48,7 +48,7 @@ namespace Aqua.Data
             }
             return result;
         }
-        public Location GetLocationById(int? id)
+        public Location GetLocationById(int id)
         {
             using var context = new AquaContext(_contextOptions);
             var dbLocation = context.Locations
