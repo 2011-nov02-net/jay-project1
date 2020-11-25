@@ -122,13 +122,12 @@ namespace Aqua.Data
             context.Locations.Add(newEntry);
             context.SaveChanges();
         }
-        public void UpdateInventoryEntity(Location location, Animal animal, int stock)
+        public void UpdateInventoryEntity(int locationId, string animalName, int stock)
         {
             using var context = new AquaContext(_contextOptions);
-            var currentLocation = GetLocationByCity(location.City);
             var dbInventory = context.Inventories
                 .Include(i => i.Animal)
-                .Where(i => i.LocationId == currentLocation.Id && i.Animal.Name == animal.Name)
+                .Where(i => i.LocationId == locationId && i.Animal.Name == animalName)
                 .FirstOrDefault();
             dbInventory.Quantity += stock;
             context.SaveChanges();

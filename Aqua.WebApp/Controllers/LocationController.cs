@@ -93,13 +93,13 @@ namespace Aqua.WebApp.Controllers
                     var existInventory = location.Inventory.Any(i => i.AnimalName == inventoryItem.AnimalName);
                     if (existInventory) // Check to see if animal exists in location inventory already
                     {
-                        _locationRepo.UpdateInventoryEntity(location, animal, inventoryItem.Quantity);
-                        return RedirectToAction(nameof(Index));
+                        _locationRepo.UpdateInventoryEntity(location.Id, animal.Name, inventoryItem.Quantity);
+                        return RedirectToAction("Details", new { id = location.Id });
                     }
                     else
                     {
                         _locationRepo.CreateInventoryEntity(location, animal, inventoryItem.Quantity);
-                        return RedirectToAction(nameof(Index));
+                        return RedirectToAction("Details", new { id = location.Id });
                     }
                 }
             }
@@ -153,7 +153,31 @@ namespace Aqua.WebApp.Controllers
             }
             return View(location);
         }
+        public IActionResult AddToInventory(int id)
+        {
+            if (id < 0)
+            {
+                return NotFound();
+            }
 
+            var inventoryItem = _locationRepo.GetInventoryById(id);
+            if (inventoryItem == null)
+            {
+                return NotFound();
+            }
+            return View(inventoryItem);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult AddToInventory(InventoryItem inventoryItem)
+        {
+            if (ModelState.IsValid)
+            {
+                _locationRepo.UpdateInventoryEntity(inventoryItem.LocationId, inventoryItem.AnimalName, inventoryItem.Quantity);
+                return RedirectToAction("Details", new { id = inventoryItem.LocationId });
+            }
+            return View();
+        }
         // // // GET: Location/Delete/1
         public IActionResult Delete(int id)
         {
