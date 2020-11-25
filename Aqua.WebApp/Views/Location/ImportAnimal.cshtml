@@ -1,4 +1,4 @@
-﻿@model Aqua.Library.InventoryItem
+﻿@model Aqua.WebApp.Models.InventoryItemModel
 
 @{
     ViewData["Title"] = "ImportAnimal";
@@ -16,10 +16,16 @@
                 <input asp-for="LocationId" class="form-control" value=@Model.LocationId readonly="@(true)"/>
                 <span asp-validation-for="LocationId" class="text-danger"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="AnimalName" class="control-label"></label>
-                <input asp-for="AnimalName" class="form-control" />
-                <span asp-validation-for="AnimalName" class="text-danger"></span>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Select animal
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    @foreach (var animal in Model.Animals)
+                    {
+                        <a class="dropdown-item" value="@animal.Name">@animal.Name</a>
+                    }
+                </div>
             </div>
             <div class="form-group">
                 <label asp-for="Quantity" class="control-label"></label>

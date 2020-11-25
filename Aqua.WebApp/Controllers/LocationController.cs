@@ -73,10 +73,21 @@ namespace Aqua.WebApp.Controllers
         // GET: Location/CreateInventoryItem
         public IActionResult ImportAnimal(int id)
         {
-            var newImport = new InventoryItem();
-            newImport.LocationId = id;
-            newImport.Quantity = 1;
-            return View(newImport);
+            var result = new InventoryItemModel();
+            var animalList = _animalRepo.GetAllAnimals();
+            result.LocationId = id;
+            result.Quantity = 1;
+            foreach(var animal in animalList)
+            {
+                var newAnimal = new Animal()
+                {
+                    Id = animal.Id,
+                    Name = animal.Name,
+                    Price = animal.Price
+                };
+                result.Animals.Add(newAnimal);
+            }
+            return View(result);
         }
 
         [HttpPost]

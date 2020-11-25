@@ -8,6 +8,7 @@ namespace Aqua.WebApp.Models
 {
     public class LocationViewModel
     {
+
         public int Id { get; set; }
         public string City { get; set; }
         public List<InventoryItem> Inventory { get; set; }

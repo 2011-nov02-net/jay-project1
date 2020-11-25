@@ -26,47 +26,41 @@ namespace Aqua.WebApp.Controllers
             _orderRepo = new OrderRepo(context);
         }
 
-        // GET: OrderController
+        // GET: Order
         public ActionResult Index()
         {
             List<Order> result = _orderRepo.GetAllOrders();
             return View(result);
         }
 
-        // GET: OrderController/Details/5
+        // GET: Order/Details/5
         public ActionResult Details(int id)
         {
             return View();
         }
 
-        // GET: OrderController/Create
+        // GET: Order/Create
         public ActionResult Create()
         {
             return View();
         }
 
-        // POST: OrderController/Create
+        // POST: Order/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(int id, Order order)
+        public ActionResult Create(Order order)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            _orderRepo.CreateOrderEntity(order);
+            return RedirectToAction(nameof(Index));
         }
 
-        // GET: OrderController/Edit/5
+        // GET: Order/Edit/5
         public ActionResult Edit(int id)
         {
             return View();
         }
 
-        // POST: OrderController/Edit/5
+        // POST: Order/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Edit(int id, Order order)
@@ -81,13 +75,13 @@ namespace Aqua.WebApp.Controllers
             }
         }
 
-        // GET: OrderController/Delete/5
+        // GET: Order/Delete/5
         public ActionResult Delete(int id)
         {
             return View();
         }
 
-        // POST: OrderController/Delete/5
+        // POST: Order/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id, Order order)

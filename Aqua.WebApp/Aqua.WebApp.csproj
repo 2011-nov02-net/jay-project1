@@ -20,4 +20,8 @@
     <ProjectReference Include="..\Aqua.Data\Aqua.Data.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Views\Order\OrderItem\" />
+  </ItemGroup>
+
 </Project>

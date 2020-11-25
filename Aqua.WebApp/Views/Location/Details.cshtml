@@ -17,11 +17,9 @@
             @Html.DisplayFor(model => model.City)
         </dd>
     </dl>
-    <h4>
-        @Html.DisplayNameFor(model => model.Inventory)
-    </h4>
+    <h4>Inventory</h4>
     <p>
-        <a asp-action="ImportAnimal" asp-route-id="@Model.Id" >Import new animal</a>
+        <a asp-action="ImportAnimal" asp-route-id="@Model.Id">Import new animal</a>
     </p>
     <hr />
     <dl class="row">

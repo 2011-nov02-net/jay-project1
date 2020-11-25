@@ -22,12 +22,7 @@ namespace Aqua.WebApp.Controllers
         // GET: Animal
         public ActionResult Index()
         {
-            var result = _animalRepo.GetAllAnimals().Select(x => new AnimalViewModel
-            {
-                Id = x.Id,
-                Name = x.Name,
-                Price = x.Price
-            });
+            var result = _animalRepo.GetAllAnimals();
             return View(result);
         }
 

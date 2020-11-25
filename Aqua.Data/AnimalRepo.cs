@@ -16,11 +16,22 @@ namespace Aqua.Data
         {
             _contextOptions = contextOptions;
         }
-        public ICollection<AnimalEntity> GetAllAnimals()
+        public List<Animal> GetAllAnimals()
         {
             using var context = new AquaContext(_contextOptions);
             var dbAnimals = context.Animals.Distinct().ToList();
-            return dbAnimals;
+            var result = new List<Animal>();
+            foreach (var animal in dbAnimals)
+            {
+                var newAnimal = new Animal()
+                {
+                    Id = animal.Id,
+                    Name = animal.Name,
+                    Price = animal.Price
+                };
+                result.Add(newAnimal);
+            };
+            return result;
         }
         public Animal GetAnimalByName(string name)
         {

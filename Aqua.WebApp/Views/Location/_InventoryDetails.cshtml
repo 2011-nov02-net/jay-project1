@@ -1,32 +1,29 @@
 ﻿@model IEnumerable<Aqua.Library.InventoryItem>
 
 <div>
-    <h4>Inventory</h4>
-    <hr />
-        <table class="table">
+    <table class="table">
+        <tr>
+            <th>
+                Animal
+            </th>
+            <th>
+               Stock
+            </th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model)
+        {
             <tr>
-                <th>
-                    Animal
-                </th>
-                <th>
-                    Stock
-                </th>
-                <th></th>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AnimalName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+                <td>
+                    @Html.ActionLink("Add", "AddToInventory", new { id = item.Id })
+                </td>
             </tr>
-
-            @foreach (var item in Model)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.AnimalName)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Quantity)
-                    </td>
-                    <td>
-                        @Html.ActionLink("Add", "AddToInventory", new { id = item.Id })
-                    </td>
-                </tr>
-            }
-        </table>
+        }
+    </table>
 </div>
