@@ -9,6 +9,13 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
+<form asp-controller="Customer" asp-action="Index" method="get">
+    <p>
+        Name: <input type="text" name="SearchString">
+        <input type="submit" value="Filter" />
+    </p>
+</form>
+
 <table class="table">
     <thead>
         <tr>
@@ -28,26 +35,27 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LastName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FirstName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Email)
-            </td>
-            <td>
-                @Html.ActionLink("Edit", "Edit", new { item.Id }) |
-                @Html.ActionLink("Details", "Details", new { item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { item.Id })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LastName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.FirstName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Email)
+                </td>
+                <td>
+                    @Html.ActionLink("Edit", "Edit", new { item.Id }) |
+                    @Html.ActionLink("Details", "Details", new { item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { item.Id })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

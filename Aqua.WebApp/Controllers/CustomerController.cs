@@ -19,9 +19,13 @@ namespace Aqua.WebApp.Controllers
             _customerRepo = new CustomerRepo(context);
         }
         // GET: Customer
-        public ActionResult Index()
+        public ActionResult Index(string searchString)
         {
-            var result = _customerRepo.GetAllCustomers();
+            List<Customer> result = _customerRepo.GetAllCustomers();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                result = result.FindAll(s => (s.FirstName.Contains(searchString)) || (s.LastName.Contains(searchString)));
+            }
             return View(result);
         }
 

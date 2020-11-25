@@ -16,7 +16,7 @@ namespace Aqua.Data
         {
             _contextOptions = contextOptions;
         }
-        public ICollection<Customer> GetAllCustomers()
+        public List<Customer> GetAllCustomers()
         {
             using var context = new AquaContext(_contextOptions);
             var dbCust = context.Customers.Distinct().ToList();
@@ -49,7 +49,7 @@ namespace Aqua.Data
             };
             return newCust;
         }
-        public ICollection<Customer> GetCustomerByName(string first, string last)
+        public List<Customer> GetCustomerByName(string first, string last)
         {
             using var context = new AquaContext(_contextOptions);
             var dbCust = context.Customers
