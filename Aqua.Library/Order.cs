@@ -8,15 +8,15 @@ namespace Aqua.Library
         public Order()
         {
         }
-        public Order(int locationId, string email, decimal total){
-            LocationId = locationId;
-            Email = email;
+        public Order(Location location, Customer customer, decimal total){
+            Location = location;
+            Customer = customer;
             Total = total;
             OrderItems = new List<OrderItem>();
         }
         public int Id { get; set; }
-        public int LocationId { get; set; }
-        public string Email { get; set; }
+        public Location Location { get; set; }
+        public Customer Customer { get; set; }
         public decimal Total { get; set; }
         public DateTime Date { get; set; }
         public List<OrderItem> OrderItems { get; set; }

@@ -11,21 +11,31 @@ namespace Aqua.Data
     public class OrderRepo
     {
         private readonly DbContextOptions<AquaContext> _contextOptions;
+        private CustomerRepo _customerRepo;
+        private LocationRepo _locationRepo;
         public OrderRepo(DbContextOptions<AquaContext> contextOptions)
         {
             _contextOptions = contextOptions;
+            _locationRepo = new LocationRepo(contextOptions);
+            _customerRepo = new CustomerRepo(contextOptions);
         }
         public List<Order> GetAllOrders()
         {
             using var context = new AquaContext(_contextOptions);
-            var dbOrders = context.Orders.ToList();
+            var dbOrders = context.Orders
+                .Include(o => o.Location)
+                .Include(o => o.Customer)
+                .ToList();
             var result = new List<Order>();
             foreach (var order in dbOrders)
             {
+                var newLocation = _locationRepo.GetLocationById(order.LocationId);
+                var newCust = _customerRepo.GetCustomerById(order.CustomerId);
                 var newOrder = new Order()
                 {
                     Id = order.Id,
-                    Email = order.Customer.Email,
+                    Location = newLocation,
+                    Customer = newCust,
                     Total = order.Total
                 };
                 result.Add(newOrder);
@@ -38,13 +48,20 @@ namespace Aqua.Data
             var custRepo = new CustomerRepo(_contextOptions);
             var dbOrders = context.Orders
                 .Where(o => o.LocationId == location.Id)
+                .Include(o => o.Location)
                 .Include(o => o.Customer)
                 .ToList();
             var result = new List<Order>();
             foreach (var order in dbOrders)
             {
-                var test = new CustomerRepo(_contextOptions);
-                var newOrder = new Order(order.LocationId, order.Customer.Email, order.Total);
+                var newLocation = _locationRepo.GetLocationById(order.LocationId);
+                var newCust = _customerRepo.GetCustomerById(order.CustomerId);
+                var newOrder = new Order()
+                {
+                    Id = order.Id,
+                    Location = newLocation,
+                    Customer = newCust
+                };
                 newOrder.Id = order.Id;
                 newOrder.Date = order.Date;
                 var newOrderItems = GetOrderItemsByOrder(newOrder);
@@ -65,7 +82,14 @@ namespace Aqua.Data
             var result = new List<Order>();
             foreach (var order in dbOrders)
             {
-                var newOrder = new Order(order.LocationId, customer.Email, order.Total);
+                var newLocation = _locationRepo.GetLocationById(order.LocationId);
+                var newCust = _customerRepo.GetCustomerById(order.CustomerId);
+                var newOrder = new Order()
+                {
+                    Id = order.Id,
+                    Location = newLocation,
+                    Customer = newCust
+                };
                 newOrder.Id = order.Id;
                 newOrder.Date = order.Date;
                 var newOrderItems = GetOrderItemsByOrder(newOrder);
@@ -94,12 +118,10 @@ namespace Aqua.Data
         public void CreateOrderEntity(Order order)
         {
             using var context = new AquaContext(_contextOptions);
-            var custRepo = new CustomerRepo(_contextOptions);
-            var orderCustomer = custRepo.GetCustomerByEmail(order.Email);
             var orderEntry = new OrderEntity()
             {
-                CustomerId = orderCustomer.Id,
-                LocationId = order.LocationId,
+                CustomerId = order.Customer.Id,
+                LocationId = order.Location.Id,
                 Date = DateTime.Now,
                 Total = order.Total
             };
