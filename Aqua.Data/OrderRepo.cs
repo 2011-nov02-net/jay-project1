@@ -15,13 +15,24 @@ namespace Aqua.Data
         {
             _contextOptions = contextOptions;
         }
-        public ICollection<OrderEntity> GetAllOrders()
+        public List<Order> GetAllOrders()
         {
             using var context = new AquaContext(_contextOptions);
             var dbOrders = context.Orders.ToList();
-            return dbOrders;
+            var result = new List<Order>();
+            foreach (var order in dbOrders)
+            {
+                var newOrder = new Order()
+                {
+                    Id = order.Id,
+                    Email = order.Customer.Email,
+                    Total = order.Total
+                };
+                result.Add(newOrder);
+            };
+            return result;
         }
-        public ICollection<Order> GetOrdersByLocation(Location location)
+        public List<Order> GetOrdersByLocation(Location location)
         {
             using var context = new AquaContext(_contextOptions);
             var custRepo = new CustomerRepo(_contextOptions);
@@ -33,7 +44,7 @@ namespace Aqua.Data
             foreach (var order in dbOrders)
             {
                 var test = new CustomerRepo(_contextOptions);
-                var newOrder = new Order(order.LocationId, custRepo.GetCustomerById(order.Customer.Id), order.Total);
+                var newOrder = new Order(order.LocationId, order.Customer.Email, order.Total);
                 newOrder.Id = order.Id;
                 newOrder.Date = order.Date;
                 var newOrderItems = GetOrderItemsByOrder(newOrder);
@@ -45,7 +56,7 @@ namespace Aqua.Data
             }
             return result;
         }
-        public ICollection<Order> GetOrdersByCustomer(Customer customer)
+        public List<Order> GetOrdersByCustomer(Customer customer)
         {
             using var context = new AquaContext(_contextOptions);
             var dbOrders = context.Orders
@@ -54,7 +65,7 @@ namespace Aqua.Data
             var result = new List<Order>();
             foreach (var order in dbOrders)
             {
-                var newOrder = new Order(order.LocationId, customer, order.Total);
+                var newOrder = new Order(order.LocationId, customer.Email, order.Total);
                 newOrder.Id = order.Id;
                 newOrder.Date = order.Date;
                 var newOrderItems = GetOrderItemsByOrder(newOrder);
@@ -66,7 +77,7 @@ namespace Aqua.Data
             }
             return result;
         }
-        public ICollection<OrderItem> GetOrderItemsByOrder(Order order)
+        public List<OrderItem> GetOrderItemsByOrder(Order order)
         {
             using var context = new AquaContext(_contextOptions);
             var dbOrderItems = context.OrderItems
@@ -83,9 +94,11 @@ namespace Aqua.Data
         public void CreateOrderEntity(Order order)
         {
             using var context = new AquaContext(_contextOptions);
+            var custRepo = new CustomerRepo(_contextOptions);
+            var orderCustomer = custRepo.GetCustomerByEmail(order.Email);
             var orderEntry = new OrderEntity()
             {
-                CustomerId = order.Customer.Id,
+                CustomerId = orderCustomer.Id,
                 LocationId = order.LocationId,
                 Date = DateTime.Now,
                 Total = order.Total

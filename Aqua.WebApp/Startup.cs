@@ -63,6 +63,9 @@ namespace Aqua.WebApp
                     name: "customer",
                     pattern: "{controller=Customer}/{action=Index}/{id?}");
                 endpoints.MapControllerRoute(
+                    name: "customer",
+                    pattern: "{controller=Order}/{action=Index}/{id?}");
+                endpoints.MapControllerRoute(
                     name: "animal",
                     pattern: "{controller=Animal}/{action=Index}/{id?}");
             });
