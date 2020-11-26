@@ -10,12 +10,6 @@ namespace Aqua.WebApp.Models
     {
         public InventoryItemModel()
         {
-        }
-        public InventoryItemModel(int locationId, string animalName, int quantity)
-        {
-            LocationId = locationId;
-            AnimalName = animalName;
-            Quantity = quantity;
             Animals = new List<Animal>();
         }
         public int Id { get; set; }
