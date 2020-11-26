@@ -42,6 +42,25 @@ namespace Aqua.Data
             };
             return result;
         }
+        public Order GetOrderById(int id){
+            using var context = new AquaContext(_contextOptions);
+            var dbOrder = context.Orders
+                .Where(l => l.Id == id)
+                .FirstOrDefault();
+            var result = new Order()
+            {
+                Id = dbOrder.Id,
+                Location = _locationRepo.GetLocationById(dbOrder.LocationId),
+                Customer = _customerRepo.GetCustomerById(dbOrder.CustomerId),
+                Total = dbOrder.Total
+            };
+            var orderItems = GetOrderItemsByOrder(result);
+            foreach (var thing in orderItems)
+            {
+                result.OrderItems.Add(thing);
+            }
+            return result;
+        }
         public List<Order> GetOrdersByLocation(Location location)
         {
             using var context = new AquaContext(_contextOptions);
@@ -126,8 +145,10 @@ namespace Aqua.Data
                 Total = order.Total
             };
             context.Orders.Add(orderEntry);
+            context.SaveChanges();
             foreach(var orderItem in order.OrderItems)
             {
+                orderItem.OrderId = orderEntry.Id;
                 CreateOrderItemEntity(orderItem);
             }
             context.SaveChanges();

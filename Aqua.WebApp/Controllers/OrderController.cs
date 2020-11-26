@@ -42,7 +42,30 @@ namespace Aqua.WebApp.Controllers
         // GET: Order/Create
         public ActionResult Create()
         {
-            return View();
+            var result = new OrderViewModel();
+            var locationList = _locationRepo.GetAllLocations();
+            var customerList = _customerRepo.GetAllCustomers();
+            foreach(var location in locationList)
+            {
+                var newLocation = new Location()
+                {
+                    Id = location.Id,
+                    City = location.City
+                };
+                result.LocationList.Add(newLocation);
+            }
+            foreach (var customer in customerList)
+            {
+                var newCustomer = new Customer()
+                {
+                    Id = customer.Id,
+                    FirstName = customer.FirstName,
+                    LastName = customer.LastName,
+                    Email = customer.Email
+                };
+                result.CustomerList.Add(newCustomer);
+            }
+            return View(result);
         }
 
         // POST: Order/Create

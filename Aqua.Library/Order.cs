@@ -7,6 +7,7 @@ namespace Aqua.Library
     {
         public Order()
         {
+            OrderItems = new List<OrderItem>();
         }
         public Order(Location location, Customer customer, decimal total){
             Location = location;
