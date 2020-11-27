@@ -36,7 +36,8 @@ namespace Aqua.Data
                     Id = order.Id,
                     Location = newLocation,
                     Customer = newCust,
-                    Total = order.Total
+                    Total = order.Total,
+                    Date = order.Date
                 };
                 result.Add(newOrder);
             };
@@ -125,11 +126,17 @@ namespace Aqua.Data
             using var context = new AquaContext(_contextOptions);
             var dbOrderItems = context.OrderItems
                 .Where(o => o.OrderId == order.Id)
+                .Include(o => o.Animal)
                 .ToList();
             var result = new List<OrderItem>();
             foreach(var orderItem in dbOrderItems)
             {
-                var newOrderItem = new OrderItem(orderItem.OrderId, orderItem.AnimalId, orderItem.Quantity, orderItem.Total);
+                var newAnimal = new Animal() {
+                    Id = orderItem.Animal.Id,
+                    Name = orderItem.Animal.Name,
+                    Price = orderItem.Animal.Price
+                };
+                var newOrderItem = new OrderItem(orderItem.OrderId, newAnimal, orderItem.Quantity, orderItem.Total);
                 result.Add(newOrderItem);
             }
             return result;
@@ -141,7 +148,7 @@ namespace Aqua.Data
             {
                 CustomerId = order.Customer.Id,
                 LocationId = order.Location.Id,
-                Date = DateTime.Now,
+                Date = order.Date,
                 Total = order.Total
             };
             context.Orders.Add(orderEntry);
@@ -160,7 +167,7 @@ namespace Aqua.Data
             var orderItemEntry = new OrderItemEntity()
             {
                 OrderId = orderItem.OrderId,
-                AnimalId = orderItem.AnimalId,
+                AnimalId = orderItem.Animal.Id,
                 Quantity = orderItem.Quantity,
                 Total = orderItem.Total
             };
@@ -174,7 +181,7 @@ namespace Aqua.Data
                 .Where(o => o.Id == orderItem.Id)
                 .FirstOrDefault();
             dbOrderItem.OrderId = orderItem.OrderId;
-            dbOrderItem.AnimalId = orderItem.AnimalId;
+            dbOrderItem.AnimalId = orderItem.Animal.Id;
             dbOrderItem.Quantity = orderItem.Quantity;
             dbOrderItem.Total = orderItem.Total;
             context.SaveChanges();

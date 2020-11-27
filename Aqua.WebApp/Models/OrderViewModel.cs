@@ -10,26 +10,19 @@ namespace Aqua.WebApp.Models
     {
         public OrderViewModel()
         {
-            OrderItems = new List<OrderItem>();
+            OrderItems = new List<OrderItemViewModel>();
             LocationList = new List<Location>();
             CustomerList = new List<Customer>();
-        }
-        public OrderViewModel(Location location, Customer customer, decimal total)
-        {
-            Location = location;
-            Customer = customer;
-            Total = total;
-            OrderItems = new List<OrderItem>();
-            LocationList = new List<Location>();
-            CustomerList = new List<Customer>();
+            Animals = new List<Animal>();
         }
         public int Id { get; set; }
-        public Location Location { get; set; }
-        public Customer Customer { get; set; }
+        public int Location { get; set; }
+        public int Customer { get; set; }
         public decimal Total { get; set; }
         public DateTime Date { get; set; }
-        public List<OrderItem> OrderItems { get; set; }
+        public List<OrderItemViewModel> OrderItems { get; set; }
         public List<Location> LocationList { get; set; }
         public List <Customer> CustomerList { get; set; }
+        public List<Animal> Animals { get; set; }
     }
 }

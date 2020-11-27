@@ -19,11 +19,13 @@ namespace Aqua.WebApp.Controllers
         private CustomerRepo _customerRepo;
         private LocationRepo _locationRepo;
         private OrderRepo _orderRepo;
+        private AnimalRepo _animalRepo;
         public OrderController(DbContextOptions<AquaContext> context)
         {
             _customerRepo = new CustomerRepo(context);
             _locationRepo = new LocationRepo(context);
             _orderRepo = new OrderRepo(context);
+            _animalRepo = new AnimalRepo(context);
         }
 
         // GET: Order
@@ -45,38 +47,51 @@ namespace Aqua.WebApp.Controllers
             var result = new OrderViewModel();
             var locationList = _locationRepo.GetAllLocations();
             var customerList = _customerRepo.GetAllCustomers();
-            foreach(var location in locationList)
+            foreach (var location in locationList)
             {
-                var newLocation = new Location()
-                {
-                    Id = location.Id,
-                    City = location.City
-                };
-                result.LocationList.Add(newLocation);
+                result.LocationList.Add(location);
             }
             foreach (var customer in customerList)
             {
-                var newCustomer = new Customer()
-                {
-                    Id = customer.Id,
-                    FirstName = customer.FirstName,
-                    LastName = customer.LastName,
-                    Email = customer.Email
-                };
-                result.CustomerList.Add(newCustomer);
+                result.CustomerList.Add(customer);
             }
+            result.Total = 0;
             return View(result);
         }
 
         // POST: Order/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Order order)
+        public ActionResult CreateOrder(OrderViewModel orderViewModel)
         {
-            _orderRepo.CreateOrderEntity(order);
-            return RedirectToAction(nameof(Index));
+            var currentLocation = _locationRepo.GetLocationById(orderViewModel.Location);
+            var currentCustomer = _customerRepo.GetCustomerById(orderViewModel.Customer);
+            var result = new Order();
+            result.Location = currentLocation;
+            result.Customer = currentCustomer;
+            result.Date = DateTime.Now;
+            result.Total = orderViewModel.Total;
+            _orderRepo.CreateOrderEntity(result);
+            return RedirectToAction("Index");
         }
 
+        public ActionResult AddOrderItem()
+        {
+            var result = new OrderItemViewModel();
+            result.Quantity = 1;
+            var animals = _animalRepo.GetAllAnimals();
+            foreach(var animal in animals)
+            {
+                result.Animals.Add(animal);
+            }
+            return PartialView(result);
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AddOrderItem(OrderItemViewModel order)
+        {
+            return RedirectToAction(nameof(Index));
+        }
         // GET: Order/Edit/5
         public ActionResult Edit(int id)
         {

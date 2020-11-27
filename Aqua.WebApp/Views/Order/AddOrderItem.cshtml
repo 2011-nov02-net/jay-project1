@@ -1,0 +1,27 @@
+﻿@model Aqua.WebApp.Models.OrderItemViewModel
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddOrderItem">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label for="animalSelect">Select animal</label>
+                <select id="animalSelect" asp-for="Animal" class="form-control">
+                    @foreach (var animal in Model.Animals)
+                    {
+                        <option value=@animal>@animal.Name</option>
+                    }
+                </select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Quantity" class="control-label"></label>
+                <input asp-for="Quantity" class="form-control" id="quantity" />
+                <span asp-validation-for="Quantity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

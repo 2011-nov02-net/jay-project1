@@ -86,7 +86,7 @@ namespace Aqua.Data.Model
 
                 entity.Property(e => e.Date)
                     .HasColumnType("datetime2")
-                    .HasDefaultValueSql("(getdate()");
+                    .HasDefaultValueSql("(getdatetime())");
 
                 entity.Property(e => e.Total)
                     .HasColumnType("smallmoney")

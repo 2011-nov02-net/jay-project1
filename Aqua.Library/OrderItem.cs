@@ -6,16 +6,16 @@ namespace Aqua.Library
 {
     public class OrderItem
     {
-        public OrderItem(int orderId, int animalId, int quantity, decimal total)
+        public OrderItem(int orderId, Animal animal, int quantity, decimal total)
         {
             OrderId = orderId;
-            AnimalId = animalId;
+            Animal = animal;
             Quantity = quantity;
             Total = total;
         }
         public int Id { get; set; }
         public int OrderId { get; set; }
-        public int AnimalId { get; set; }
+        public Animal Animal { get; set; }
         public int Quantity { get; set; }
         public decimal Total { get; set; }
     }
