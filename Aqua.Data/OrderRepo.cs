@@ -53,7 +53,8 @@ namespace Aqua.Data
                 Id = dbOrder.Id,
                 Location = _locationRepo.GetLocationById(dbOrder.LocationId),
                 Customer = _customerRepo.GetCustomerById(dbOrder.CustomerId),
-                Total = dbOrder.Total
+                Total = dbOrder.Total,
+                Date = dbOrder.Date
             };
             var orderItems = GetOrderItemsByOrder(result);
             foreach (var thing in orderItems)
@@ -184,6 +185,15 @@ namespace Aqua.Data
             dbOrderItem.AnimalId = orderItem.Animal.Id;
             dbOrderItem.Quantity = orderItem.Quantity;
             dbOrderItem.Total = orderItem.Total;
+            context.SaveChanges();
+        }
+        public void DeleteOrderEntity(Order order)
+        {
+            using var context = new AquaContext(_contextOptions);
+            var dbOrder = context.Orders
+                .Where(i => i.Id == order.Id)
+                .FirstOrDefault();
+            context.Remove(dbOrder);
             context.SaveChanges();
         }
     }

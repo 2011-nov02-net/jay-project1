@@ -116,22 +116,22 @@ namespace Aqua.WebApp.Controllers
         // GET: Order/Delete/5
         public ActionResult Delete(int id)
         {
-            return View();
+            var order = _orderRepo.GetOrderById(id);
+            if (order == null)
+            {
+                return NotFound();
+            }
+            return View(order);
         }
 
         // POST: Order/Delete/5
-        [HttpPost]
+        [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, Order order)
+        public ActionResult DeleteConfirmed(int id)
         {
-            try
-            {
-                return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
-            }
+            var order = _orderRepo.GetOrderById(id);
+            _orderRepo.DeleteOrderEntity(order);
+            return RedirectToAction(nameof(Index));
         }
     }
 }
