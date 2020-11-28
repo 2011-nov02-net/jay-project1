@@ -81,10 +81,15 @@ namespace Aqua.WebApp.Controllers
             var result = new OrderItemViewModel();
             result.OrderId = id;
             result.Quantity = 1;
+            var currentOrder = _orderRepo.GetOrderById(id);
+            var currentInventory = _locationRepo.GetInvByLocation(currentOrder.Location);
             var animals = _animalRepo.GetAllAnimals();
             foreach(var animal in animals)
             {
-                result.Animals.Add(animal);
+                if(currentInventory.Any(a => a.AnimalName == animal.Name)) // If this animal exists in the location's inventory it is added as an option to buy
+                {
+                    result.Animals.Add(animal);
+                }
             }
             return View(result);
         }
@@ -94,35 +99,45 @@ namespace Aqua.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
+                // repository calls to set up validation
                 var order = _orderRepo.GetOrderById(orderItem.OrderId);
                 var animal = _animalRepo.GetAnimalById(orderItem.AnimalId);
-                var existInOrder = order.OrderItems.Any(o => o.Animal.Id == animal.Id);
-                var total = animal.Price * orderItem.Quantity;
-                if (existInOrder) // Animal already exists in order
+                var locationInventory = _locationRepo.GetInvByLocation(order.Location);
+                var quantityCheck = locationInventory.Find(i => i.AnimalName == animal.Name);
+                if (quantityCheck.Quantity - orderItem.Quantity <= 0) // Check to see if animal is already in stock
                 {
-                    int findOrderId;
-                    foreach (var thing in order.OrderItems)
-                    {
-                        if (thing.Animal.Id == orderItem.AnimalId) // Loop through all order items in the current order until an animal id matches the one that is in the current order
-                        {
-                            findOrderId = orderItem.Id;
-                            var existingOrder = _orderRepo.GetOrderItemById(findOrderId);
-                            existingOrder.Quantity += orderItem.Quantity;
-                            existingOrder.Total += (decimal)total;
-                            order.Total += (decimal)total;
-                            _orderRepo.UpdateOrderItemEntity(existingOrder);
-                            _orderRepo.UpdateOrderEntity(order);
-                            return RedirectToAction("Details", new { id = order.Id });
-                        }
-                    };
+                    return NotFound();
                 }
                 else
                 {
-                    var newItem = new OrderItem(orderItem.OrderId, animal, orderItem.Quantity, (decimal)total);
-                    order.Total += (decimal)total;
-                    _orderRepo.CreateOrderItemEntity(newItem);
-                    _orderRepo.UpdateOrderEntity(order);
-                    return RedirectToAction("Details", new { id = order.Id });
+                    var existInOrder = order.OrderItems.Any(o => o.Animal.Id == animal.Id);
+                    var total = animal.Price * orderItem.Quantity;
+                    if (existInOrder) // Animal already exists in order
+                    {
+                        int findOrderId;
+                        foreach (var thing in order.OrderItems)
+                        {
+                            if (thing.Animal.Id == orderItem.AnimalId) // Loop through all order items in the current order until an animal id matches the one that is in the current order
+                            {
+                                findOrderId = orderItem.Id;
+                                var existingOrder = _orderRepo.GetOrderItemById(findOrderId);
+                                existingOrder.Quantity += orderItem.Quantity;
+                                existingOrder.Total += (decimal)total;
+                                order.Total += (decimal)total;
+                                _orderRepo.UpdateOrderItemEntity(existingOrder);
+                                _orderRepo.UpdateOrderEntity(order);
+                                return RedirectToAction("Details", new { id = order.Id });
+                            }
+                        };
+                    }
+                    else
+                    {
+                        var newItem = new OrderItem(orderItem.OrderId, animal, orderItem.Quantity, (decimal)total);
+                        order.Total += (decimal)total;
+                        _orderRepo.CreateOrderItemEntity(newItem);
+                        _orderRepo.UpdateOrderEntity(order);
+                        return RedirectToAction("Details", new { id = order.Id });
+                    }
                 }
             }
             return View();
