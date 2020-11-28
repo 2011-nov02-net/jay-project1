@@ -29,9 +29,13 @@ namespace Aqua.WebApp.Controllers
         }
 
         // GET: Order
-        public ActionResult Index()
+        public ActionResult Index(string searchString)
         {
             List<Order> result = _orderRepo.GetAllOrders();
+            if (!String.IsNullOrEmpty(searchString))
+            {
+                result = result.FindAll(s => s.Customer.Email.Contains(searchString));
+            }
             return View(result);
         }
 
