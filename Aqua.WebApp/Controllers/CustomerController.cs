@@ -14,9 +14,11 @@ namespace Aqua.WebApp.Controllers
     public class CustomerController : Controller
     {
         private CustomerRepo _customerRepo;
+        private OrderRepo _orderRepo;
         public CustomerController(DbContextOptions<AquaContext> context)
         {
             _customerRepo = new CustomerRepo(context);
+            _orderRepo = new OrderRepo(context);
         }
         // GET: Customer
         public ActionResult Index(string searchString)
@@ -42,6 +44,13 @@ namespace Aqua.WebApp.Controllers
                 return NotFound();
             }
             return View(customer);
+        }
+
+        public IActionResult CustomerOrders(int id)
+        {
+            var customer = _customerRepo.GetCustomerById(id);
+            List<Order> result = _orderRepo.GetOrdersByCustomer(customer);
+            return View(result);
         }
 
         // GET: Customer/Create
