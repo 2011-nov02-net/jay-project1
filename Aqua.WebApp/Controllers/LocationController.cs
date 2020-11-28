@@ -18,10 +18,12 @@ namespace Aqua.WebApp.Controllers
     {
         private LocationRepo _locationRepo;
         private AnimalRepo _animalRepo;
+        private OrderRepo _orderRepo;
         public LocationController(DbContextOptions<AquaContext> context)
         {
             _locationRepo = new LocationRepo(context);
             _animalRepo = new AnimalRepo(context);
+            _orderRepo = new OrderRepo(context);
         }
 
         // GET: Location
@@ -188,6 +190,13 @@ namespace Aqua.WebApp.Controllers
                 return RedirectToAction("Details", new { id = inventoryItem.LocationId });
             }
             return View();
+        }
+
+        public IActionResult LocationOrders(int id)
+        {
+            var location = _locationRepo.GetLocationById(id);
+            List<Order> result = _orderRepo.GetOrdersByLocation(location);
+            return View(result);
         }
         // // // GET: Location/Delete/1
         public IActionResult Delete(int id)

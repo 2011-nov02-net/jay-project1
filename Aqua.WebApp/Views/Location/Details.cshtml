@@ -27,6 +27,9 @@
             @await Html.PartialAsync("_InventoryDetails", Model.Inventory)
         </dd>
     </dl>
+    <p>
+        <a asp-action="LocationOrders" asp-route-id="@Model.Id">Orders made at this location</a>
+    </p>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |

@@ -134,7 +134,7 @@ namespace Aqua.WebApp.Controllers
                         _orderRepo.CreateOrderItemEntity(newItem);
                         _orderRepo.UpdateOrderEntity(order);
                     }
-                    invItem.Quantity -= orderItem.Quantity;
+                    invItem.Quantity -= orderItem.Quantity; // Subtract quantity of order from inventory
                     _locationRepo.UpdateInventoryEntity(invItem.LocationId, invItem.AnimalName, invItem.Quantity);
                     return RedirectToAction("Details", new { id = order.Id });
                 }
