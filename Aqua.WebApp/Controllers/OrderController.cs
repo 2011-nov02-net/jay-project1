@@ -100,13 +100,21 @@ namespace Aqua.WebApp.Controllers
                 var total = animal.Price * orderItem.Quantity;
                 if (existInOrder) // Animal already exists in order
                 {
-                    var existingOrder = order.OrderItems.First(o => o.Animal.Id == animal.Id);
-                    existingOrder.Quantity += orderItem.Quantity;
-                    existingOrder.Total += (decimal)total;
-                    order.Total += (decimal)total;
-                    _orderRepo.UpdateOrderItemEntity(existingOrder);
-                    _orderRepo.UpdateOrderEntity(order);
-                    return RedirectToAction("Details", new { id = order.Id });
+                    int findOrderId;
+                    foreach (var thing in order.OrderItems)
+                    {
+                        if (thing.Animal.Id == orderItem.AnimalId) // Loop through all order items in the current order until an animal id matches the one that is in the current order
+                        {
+                            findOrderId = orderItem.Id;
+                            var existingOrder = _orderRepo.GetOrderItemById(findOrderId);
+                            existingOrder.Quantity += orderItem.Quantity;
+                            existingOrder.Total += (decimal)total;
+                            order.Total += (decimal)total;
+                            _orderRepo.UpdateOrderItemEntity(existingOrder);
+                            _orderRepo.UpdateOrderEntity(order);
+                            return RedirectToAction("Details", new { id = order.Id });
+                        }
+                    };
                 }
                 else
                 {

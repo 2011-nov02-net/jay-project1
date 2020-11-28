@@ -142,6 +142,22 @@ namespace Aqua.Data
             }
             return result;
         }
+        public OrderItem GetOrderItemById(int id)
+        {
+            using var context = new AquaContext(_contextOptions);
+            var dbOrderItem = context.OrderItems
+                .Where(o => o.Id == id)
+                .Include(o => o.Animal)
+                .First();
+            var newAnimal = new Animal() {
+                    Id = dbOrderItem.Animal.Id,
+                    Name = dbOrderItem.Animal.Name,
+                    Price = dbOrderItem.Animal.Price
+                };
+            var result = new OrderItem(dbOrderItem.OrderId, newAnimal, dbOrderItem.Quantity, dbOrderItem.Total);
+            result.Id = dbOrderItem.Id;
+            return result;
+        }
         public void CreateOrderEntity(Order order)
         {
             using var context = new AquaContext(_contextOptions);
