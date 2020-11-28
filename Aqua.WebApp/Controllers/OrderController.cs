@@ -86,7 +86,7 @@ namespace Aqua.WebApp.Controllers
             var animals = _animalRepo.GetAllAnimals();
             foreach(var animal in animals)
             {
-                if(currentInventory.Any(a => a.AnimalName == animal.Name)) // If this animal exists in the location's inventory it is added as an option to buy
+                if(currentInventory.Any(a => (a.AnimalName == animal.Name && a.Quantity > 0))) // If this animal exists in the location's inventory it is added as an option to buy
                 {
                     result.Animals.Add(animal);
                 }
@@ -103,30 +103,27 @@ namespace Aqua.WebApp.Controllers
                 var order = _orderRepo.GetOrderById(orderItem.OrderId);
                 var animal = _animalRepo.GetAnimalById(orderItem.AnimalId);
                 var locationInventory = _locationRepo.GetInvByLocation(order.Location);
-                var quantityCheck = locationInventory.Find(i => i.AnimalName == animal.Name);
-                if (quantityCheck.Quantity - orderItem.Quantity <= 0) // Check to see if animal is already in stock
+                var invItem = locationInventory.Find(i => i.AnimalName == animal.Name);
+                if (invItem.Quantity - orderItem.Quantity <= 0) // Check to see if order quantity is less than the quantity of animals in stock
                 {
                     return NotFound();
                 }
                 else
                 {
-                    var existInOrder = order.OrderItems.Any(o => o.Animal.Id == animal.Id);
+                    bool existInOrder = order.OrderItems.Any(o => o.Animal.Id == animal.Id);
                     var total = animal.Price * orderItem.Quantity;
                     if (existInOrder) // Animal already exists in order
                     {
-                        int findOrderId;
                         foreach (var thing in order.OrderItems)
                         {
                             if (thing.Animal.Id == orderItem.AnimalId) // Loop through all order items in the current order until an animal id matches the one that is in the current order
                             {
-                                findOrderId = orderItem.Id;
-                                var existingOrder = _orderRepo.GetOrderItemById(findOrderId);
+                                var existingOrder = _orderRepo.GetOrderItemById(thing.Id);
                                 existingOrder.Quantity += orderItem.Quantity;
                                 existingOrder.Total += (decimal)total;
                                 order.Total += (decimal)total;
                                 _orderRepo.UpdateOrderItemEntity(existingOrder);
                                 _orderRepo.UpdateOrderEntity(order);
-                                return RedirectToAction("Details", new { id = order.Id });
                             }
                         };
                     }
@@ -136,8 +133,10 @@ namespace Aqua.WebApp.Controllers
                         order.Total += (decimal)total;
                         _orderRepo.CreateOrderItemEntity(newItem);
                         _orderRepo.UpdateOrderEntity(order);
-                        return RedirectToAction("Details", new { id = order.Id });
                     }
+                    invItem.Quantity -= orderItem.Quantity;
+                    _locationRepo.UpdateInventoryEntity(invItem.LocationId, invItem.AnimalName, invItem.Quantity);
+                    return RedirectToAction("Details", new { id = order.Id });
                 }
             }
             return View();

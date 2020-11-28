@@ -14,7 +14,7 @@
                 <select asp-for="Location" class="form-control" id="locationSelect">
                     @foreach (var location in Model.LocationList)
                     {
-                        <option value=@location.Id>@location.City @location.Id</option>
+                        <option value=@location.Id>@location.City</option>
                     }
                 </select>
             </div>
@@ -23,7 +23,7 @@
                 <select asp-for="Customer" class="form-control" id="customerSelect">
                     @foreach (var customer in Model.CustomerList)
                     {
-                    <option value=@customer.Id>@customer.FirstName, @customer.LastName - @customer.Email, @customer</option>
+                    <option value=@customer.Id>@customer.FirstName, @customer.LastName - @customer.Email</option>
                     }
                 </select>
             </div>

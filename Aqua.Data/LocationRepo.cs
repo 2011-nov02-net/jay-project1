@@ -129,7 +129,7 @@ namespace Aqua.Data
                 .Include(i => i.Animal)
                 .Where(i => i.LocationId == locationId && i.Animal.Name == animalName)
                 .FirstOrDefault();
-            dbInventory.Quantity += stock;
+            dbInventory.Quantity = stock;
             context.SaveChanges();
         }
         public void UpdateLocationEntity(Location location)

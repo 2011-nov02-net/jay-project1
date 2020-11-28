@@ -138,6 +138,7 @@ namespace Aqua.Data
                     Price = orderItem.Animal.Price
                 };
                 var newOrderItem = new OrderItem(orderItem.OrderId, newAnimal, orderItem.Quantity, orderItem.Total);
+                newOrderItem.Id = orderItem.Id;
                 result.Add(newOrderItem);
             }
             return result;
@@ -148,7 +149,7 @@ namespace Aqua.Data
             var dbOrderItem = context.OrderItems
                 .Where(o => o.Id == id)
                 .Include(o => o.Animal)
-                .First();
+                .FirstOrDefault();
             var newAnimal = new Animal() {
                     Id = dbOrderItem.Animal.Id,
                     Name = dbOrderItem.Animal.Name,
