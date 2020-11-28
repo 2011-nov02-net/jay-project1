@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Aqua.Data.Model;
 using Aqua.Data;
 using Aqua.Library;
+using Aqua.WebApp.Models;
 
 namespace Aqua.WebApp.Controllers
 {
@@ -88,7 +89,8 @@ namespace Aqua.WebApp.Controllers
             {
                 return NotFound();
             }
-            return View(customer);
+            var result = new CustomerViewModel(customer);
+            return View(result);
 
         }
 
