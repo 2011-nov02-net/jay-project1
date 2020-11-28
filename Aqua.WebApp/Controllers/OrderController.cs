@@ -38,7 +38,8 @@ namespace Aqua.WebApp.Controllers
         // GET: Order/Details/5
         public ActionResult Details(int id)
         {
-            return View();
+            var result = _orderRepo.GetOrderById(id);
+            return View(result);
         }
 
         // GET: Order/Create
@@ -75,22 +76,48 @@ namespace Aqua.WebApp.Controllers
             return RedirectToAction("Index");
         }
 
-        public ActionResult AddOrderItem()
+        public ActionResult AddOrderItem(int id)
         {
             var result = new OrderItemViewModel();
+            result.OrderId = id;
             result.Quantity = 1;
             var animals = _animalRepo.GetAllAnimals();
             foreach(var animal in animals)
             {
                 result.Animals.Add(animal);
             }
-            return PartialView(result);
+            return View(result);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AddOrderItem(OrderItemViewModel order)
+        public ActionResult AddOrderItem(OrderItemViewModel orderItem)
         {
-            return RedirectToAction(nameof(Index));
+            if (ModelState.IsValid)
+            {
+                var order = _orderRepo.GetOrderById(orderItem.OrderId);
+                var animal = _animalRepo.GetAnimalById(orderItem.AnimalId);
+                var existInOrder = order.OrderItems.Any(o => o.Animal.Id == animal.Id);
+                var total = animal.Price * orderItem.Quantity;
+                if (existInOrder) // Animal already exists in order
+                {
+                    var existingOrder = order.OrderItems.First(o => o.Animal.Id == animal.Id);
+                    existingOrder.Quantity += orderItem.Quantity;
+                    existingOrder.Total += (decimal)total;
+                    order.Total += (decimal)total;
+                    _orderRepo.UpdateOrderItemEntity(existingOrder);
+                    _orderRepo.UpdateOrderEntity(order);
+                    return RedirectToAction("Details", new { id = order.Id });
+                }
+                else
+                {
+                    var newItem = new OrderItem(orderItem.OrderId, animal, orderItem.Quantity, (decimal)total);
+                    order.Total += (decimal)total;
+                    _orderRepo.CreateOrderItemEntity(newItem);
+                    _orderRepo.UpdateOrderEntity(order);
+                    return RedirectToAction("Details", new { id = order.Id });
+                }
+            }
+            return View();
         }
         // GET: Order/Edit/5
         public ActionResult Edit(int id)

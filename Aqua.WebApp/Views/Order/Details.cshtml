@@ -41,8 +41,30 @@
             @Html.DisplayFor(model => model.Date)
         </dd>
     </dl>
+    <table class="table">
+        <tr>
+            <th>
+                Animal
+            </th>
+            <th>
+                Quantity
+            </th>
+            <th></th>
+        </tr>
+        @foreach (var item in Model.OrderItems)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Animal.Name)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Quantity)
+                </td>
+            </tr>
+        }
+    </table>
 </div>
 <div>
-    @Html.ActionLink("Edit", "Edit", new { id=Model.Id }) |
+    <a asp-action="AddOrderItem" asp-route-id="@Model.Id">Add animal to order</a> |
     <a asp-action="Index">Back to List</a>
 </div>

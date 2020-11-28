@@ -175,14 +175,21 @@ namespace Aqua.Data
             context.OrderItems.Add(orderItemEntry);
             context.SaveChanges();
         }
+        public void UpdateOrderEntity(Order order)
+        {
+            using var context = new AquaContext(_contextOptions);
+            var dbOrder = context.Orders
+                .Where(o => o.Id == order.Id)
+                .FirstOrDefault();
+            dbOrder.Total = order.Total;
+            context.SaveChanges();
+        }
         public void UpdateOrderItemEntity(OrderItem orderItem)
         {
             using var context = new AquaContext(_contextOptions);
             var dbOrderItem = context.OrderItems
                 .Where(o => o.Id == orderItem.Id)
                 .FirstOrDefault();
-            dbOrderItem.OrderId = orderItem.OrderId;
-            dbOrderItem.AnimalId = orderItem.Animal.Id;
             dbOrderItem.Quantity = orderItem.Quantity;
             dbOrderItem.Total = orderItem.Total;
             context.SaveChanges();
