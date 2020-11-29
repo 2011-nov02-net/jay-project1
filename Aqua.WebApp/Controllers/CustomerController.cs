@@ -24,7 +24,13 @@ namespace Aqua.WebApp.Controllers
         // GET: Customer
         public ActionResult Index(string searchString)
         {
-            List<Customer> result = _customerRepo.GetAllCustomers();
+            List<Customer> customerList = _customerRepo.GetAllCustomers();
+            var result = new List<CustomerViewModel>();
+            foreach (var cust in customerList)
+            {
+                var newCust = new CustomerViewModel(cust);
+                result.Add(newCust);
+            }
             if (!String.IsNullOrEmpty(searchString))
             {
                 result = result.FindAll(s => (s.FirstName.Contains(searchString)) || (s.LastName.Contains(searchString)));
@@ -44,7 +50,8 @@ namespace Aqua.WebApp.Controllers
             {
                 return NotFound();
             }
-            return View(customer);
+            var result = new CustomerViewModel(customer);
+            return View(result);
         }
 
         public IActionResult CustomerOrders(int id)
@@ -139,8 +146,8 @@ namespace Aqua.WebApp.Controllers
             {
                 return NotFound();
             }
-
-            return View(customer);
+            var result = new CustomerViewModel(customer);
+            return View(result);
         }
 
         // POST: Customer/Delete/5
