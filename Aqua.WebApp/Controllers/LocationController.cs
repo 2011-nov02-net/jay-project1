@@ -106,7 +106,9 @@ namespace Aqua.WebApp.Controllers
                     var existInventory = location.Inventory.Any(i => i.AnimalName == inventoryItem.AnimalName);
                     if (existInventory) // Check to see if animal exists in location inventory already
                     {
-                        _locationRepo.UpdateInventoryEntity(location.Id, animal.Name, inventoryItem.Quantity);
+                        var invItem = location.Inventory.Find(i => i.AnimalName == inventoryItem.AnimalName);
+                        invItem.Quantity += inventoryItem.Quantity;
+                        _locationRepo.UpdateInventoryEntity(location.Id, animal.Name, invItem.Quantity);
                         return RedirectToAction("Details", new { id = location.Id });
                     }
                     else
@@ -132,7 +134,8 @@ namespace Aqua.WebApp.Controllers
             {
                 return NotFound();
             }
-            return View(location);
+            var result = new LocationViewModel(location);
+            return View(result);
         }
 
         // POST: Location/Edit/1
@@ -178,7 +181,8 @@ namespace Aqua.WebApp.Controllers
             {
                 return NotFound();
             }
-            return View(inventoryItem);
+            var result = new InventoryItemModel(inventoryItem);
+            return View(result);
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
@@ -186,7 +190,10 @@ namespace Aqua.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                _locationRepo.UpdateInventoryEntity(inventoryItem.LocationId, inventoryItem.AnimalName, inventoryItem.Quantity);
+                var location = _locationRepo.GetLocationById(inventoryItem.LocationId);
+                var invItem = location.Inventory.Find(i => i.AnimalName == inventoryItem.AnimalName);
+                invItem.Quantity += inventoryItem.Quantity;
+                _locationRepo.UpdateInventoryEntity(inventoryItem.LocationId, inventoryItem.AnimalName, invItem.Quantity);
                 return RedirectToAction("Details", new { id = inventoryItem.LocationId });
             }
             return View();

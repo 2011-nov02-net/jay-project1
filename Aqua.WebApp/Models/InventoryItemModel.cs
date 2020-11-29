@@ -12,6 +12,14 @@ namespace Aqua.WebApp.Models
         {
             Animals = new List<Animal>();
         }
+        public InventoryItemModel(InventoryItem inventoryItem)
+        {
+            Id = inventoryItem.Id;
+            LocationId = inventoryItem.LocationId;
+            AnimalName = inventoryItem.AnimalName;
+            Quantity = inventoryItem.Quantity;
+            Animals = new List<Animal>();
+        }
         public int Id { get; set; }
         public int LocationId { get; set; }
         public string AnimalName { get; set; }
