@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace Aqua.Data
 {
-    public class LocationRepo
+    public class LocationRepo : ILocationRepo
     {
         private readonly DbContextOptions<AquaContext> _contextOptions;
 

@@ -8,7 +8,7 @@ using Aqua.Library;
 
 namespace Aqua.Data
 {
-    public class AnimalRepo
+    public class AnimalRepo :IAnimalRepo
     {
         private readonly DbContextOptions<AquaContext> _contextOptions;
 
@@ -47,7 +47,7 @@ namespace Aqua.Data
             };
             return newAnimal;
         }
-                public Animal GetAnimalById(int id)
+        public Animal GetAnimalById(int id)
         {
             using var context = new AquaContext(_contextOptions);
             var dbAnimal = context.Animals

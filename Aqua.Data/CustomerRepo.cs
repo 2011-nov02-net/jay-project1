@@ -9,7 +9,7 @@ using Aqua.Library;
 
 namespace Aqua.Data
 {
-    public class CustomerRepo
+    public class CustomerRepo :ICustomerRepo
     {
         private readonly DbContextOptions<AquaContext> _contextOptions;
         public CustomerRepo(DbContextOptions<AquaContext> contextOptions)

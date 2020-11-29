@@ -8,7 +8,7 @@ using Aqua.Library;
 
 namespace Aqua.Data
 {
-    public class OrderRepo
+    public class OrderRepo : IOrderRepo
     {
         private readonly DbContextOptions<AquaContext> _contextOptions;
         private CustomerRepo _customerRepo;
