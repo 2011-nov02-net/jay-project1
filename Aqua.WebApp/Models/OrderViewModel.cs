@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Aqua.Library;
+using System.ComponentModel.DataAnnotations;
 
 namespace Aqua.WebApp.Models
 {
@@ -16,9 +17,12 @@ namespace Aqua.WebApp.Models
             Animals = new List<Animal>();
         }
         public int Id { get; set; }
+        [Required]
         public int Location { get; set; }
+        [Required]
         public int Customer { get; set; }
         public decimal Total { get; set; }
+        [Required]
         public DateTime Date { get; set; }
         public List<OrderItemViewModel> OrderItems { get; set; }
         public List<Location> LocationList { get; set; }
