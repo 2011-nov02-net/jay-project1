@@ -29,6 +29,11 @@ namespace Aqua.WebApp
             services.AddDbContext<AquaContext>(options =>
                 options.UseSqlServer(Configuration.GetConnectionString("default")));
 
+            services.AddScoped<ILocationRepo, LocationRepo>();
+            services.AddScoped<ICustomerRepo, CustomerRepo>();
+            services.AddScoped<IAnimalRepo, AnimalRepo>();
+            services.AddScoped<IOrderRepo, OrderRepo>();
+
             services.AddControllersWithViews();
         }
 

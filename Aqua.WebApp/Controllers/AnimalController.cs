@@ -14,10 +14,10 @@ namespace Aqua.WebApp.Controllers
 {
     public class AnimalController : Controller
     {
-        private AnimalRepo _animalRepo;
-        public AnimalController(DbContextOptions<AquaContext> context)
+        private IAnimalRepo _animalRepo;
+        public AnimalController(IAnimalRepo animalRepo)
         {
-            _animalRepo = new AnimalRepo(context);
+            _animalRepo = animalRepo;
         }
         // GET: Animal
         public ActionResult Index()

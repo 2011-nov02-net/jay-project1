@@ -16,16 +16,16 @@ namespace Aqua.WebApp.Controllers
 {
     public class OrderController : Controller
     {
-        private CustomerRepo _customerRepo;
-        private LocationRepo _locationRepo;
-        private OrderRepo _orderRepo;
-        private AnimalRepo _animalRepo;
-        public OrderController(DbContextOptions<AquaContext> context)
+        private ICustomerRepo _customerRepo;
+        private ILocationRepo _locationRepo;
+        private IOrderRepo _orderRepo;
+        private IAnimalRepo _animalRepo;
+        public OrderController(ICustomerRepo customerRepo, ILocationRepo locationRepo, IOrderRepo orderRepo, IAnimalRepo animalRepo)
         {
-            _customerRepo = new CustomerRepo(context);
-            _locationRepo = new LocationRepo(context);
-            _orderRepo = new OrderRepo(context);
-            _animalRepo = new AnimalRepo(context);
+            _customerRepo = customerRepo;
+            _locationRepo = locationRepo;
+            _orderRepo = orderRepo;
+            _animalRepo = animalRepo;
         }
 
         // GET: Order

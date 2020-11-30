@@ -16,14 +16,14 @@ namespace Aqua.WebApp.Controllers
 {
     public class LocationController : Controller
     {
-        private LocationRepo _locationRepo;
-        private AnimalRepo _animalRepo;
-        private OrderRepo _orderRepo;
-        public LocationController(DbContextOptions<AquaContext> context)
+        private ILocationRepo _locationRepo;
+        private IAnimalRepo _animalRepo;
+        private IOrderRepo _orderRepo;
+        public LocationController(ILocationRepo locationRepo, IAnimalRepo animalRepo, IOrderRepo orderRepo)
         {
-            _locationRepo = new LocationRepo(context);
-            _animalRepo = new AnimalRepo(context);
-            _orderRepo = new OrderRepo(context);
+            _locationRepo = locationRepo;
+            _animalRepo = animalRepo;
+            _orderRepo = orderRepo;
         }
 
         // GET: Location

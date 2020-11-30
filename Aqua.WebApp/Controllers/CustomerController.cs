@@ -14,12 +14,12 @@ namespace Aqua.WebApp.Controllers
 {
     public class CustomerController : Controller
     {
-        private CustomerRepo _customerRepo;
-        private OrderRepo _orderRepo;
-        public CustomerController(DbContextOptions<AquaContext> context)
+        private ICustomerRepo _customerRepo;
+        private IOrderRepo _orderRepo;
+        public CustomerController(ICustomerRepo customerRepo, IOrderRepo orderRepo)
         {
-            _customerRepo = new CustomerRepo(context);
-            _orderRepo = new OrderRepo(context);
+            _customerRepo = customerRepo;
+            _orderRepo = orderRepo;
         }
         // GET: Customer
         public ActionResult Index(string searchString)
