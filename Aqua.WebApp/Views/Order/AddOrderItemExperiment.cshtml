@@ -1,0 +1,58 @@
+﻿@model Aqua.WebApp.Models.OrderViewModel
+
+@{
+    ViewData["Title"] = "AddOrderItem";
+}
+<h1>Add animal to order</h1>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="AddOrderItem" id="form">
+            <input type="hidden" asp-for="Id" />
+            <input type="hidden" asp-for="Location" />
+            <div id="orderItemsContainer">
+                @if (Model.OrderItems != null)
+                {
+                    for (int i = 0; i < Model.OrderItems.Count(); i++)
+                    {
+                        @Html.HiddenFor(m => m.Id)
+                        @Html.HiddenFor(m => m.Animals)
+                        @Html.EditorFor(m => Model.OrderItems[i])
+                    }
+                }
+            </div>
+            <div class="row">
+                <div class="col-md-4">
+                    <input class="btn btn-default" type="button" id="addOrderItem" value="Add animal to order" />
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Add to order" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Details" asp-route-id="@Model.Id">Back to order details</a>
+</div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        $("#addOrderItem").on('click', function () {
+            $.ajax({
+                async: true,
+                data: $('#form').serialize(),
+                type: 'POST',
+                url: '../AddOrderItemToList',
+                success: function (partialView) {
+                    console.log($('#form').serialize())
+                    console.log("partialView: " + partialView);
+                    $('#orderItemsContainer').html(partialView);
+                }
+            });
+        });
+    </script>
+}

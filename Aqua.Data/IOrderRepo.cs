@@ -14,6 +14,7 @@ namespace Aqua.Data
         List<OrderItem> GetOrderItemsByOrder(Order order);
         OrderItem GetOrderItemById(int id);
         void CreateOrderEntity(Order order);
+        Order CreateOrderEntityReturnIt(Order order);
         void CreateOrderItemEntity(OrderItem orderItem);
         void UpdateOrderEntity(Order order);
         void UpdateOrderItemEntity(OrderItem orderItem);

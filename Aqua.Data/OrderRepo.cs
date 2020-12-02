@@ -177,8 +177,28 @@ namespace Aqua.Data
                 CreateOrderItemEntity(orderItem);
             }
             context.SaveChanges();
-
         }
+        public Order CreateOrderEntityReturnIt(Order order)
+        {
+            using var context = new AquaContext(_contextOptions);
+            var orderEntry = new OrderEntity()
+            {
+                CustomerId = order.Customer.Id,
+                LocationId = order.Location.Id,
+                Date = order.Date,
+                Total = order.Total
+            };
+            context.Orders.Add(orderEntry);
+            context.SaveChanges();
+            foreach(var orderItem in order.OrderItems)
+            {
+                orderItem.OrderId = orderEntry.Id;
+                CreateOrderItemEntity(orderItem);
+            }
+            context.SaveChanges();
+            return GetOrderById(orderEntry.Id);
+        }
+
         public void CreateOrderItemEntity(OrderItem orderItem)
         {
             using var context = new AquaContext(_contextOptions);
