@@ -4,6 +4,8 @@ using System.Linq;
 using System.Threading.Tasks;
 using Aqua.Library;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
+using Aqua.WebApp.Utilities;
 
 namespace Aqua.WebApp.Models
 {
@@ -28,6 +30,7 @@ namespace Aqua.WebApp.Models
         public int AnimalId { get; set; }
         [Required]
         [Range(0, 100)]
+        //[Remote(action: "VerifyOrderQuantity", controller: "Order", HttpMethod = "POST", ErrorMessage = "Don't got enough animals man")]
         public int Quantity { get; set; }
         [Required]
         [Range(0, 1000000)]

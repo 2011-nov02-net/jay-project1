@@ -11,6 +11,7 @@ using Aqua.Data.Model;
 using Aqua.Data;
 using Aqua.Library;
 using Aqua.WebApp.Models;
+using System.Web;
 
 namespace Aqua.WebApp.Controllers
 {
@@ -119,6 +120,7 @@ namespace Aqua.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddOrderItem(OrderItemViewModel orderItem)
         {
+            TempData["OrderItem"] = orderItem;
             if (ModelState.IsValid)
             {
                 var order = _orderRepo.GetOrderById(orderItem.OrderId); // Get order ID of the first item and route to it afterwards since all items are in the same order
@@ -127,7 +129,8 @@ namespace Aqua.WebApp.Controllers
                 var invItem = locationInventory.Find(i => i.AnimalName == animal.Name);
                 if (invItem.Quantity - orderItem.Quantity <= 0) // Check to see if order quantity is less than the quantity of animals in stock
                 {
-                    return NotFound();
+                    ModelState.AddModelError(string.Empty, "TOO MANY ANIMALS MAN");
+                    return RedirectToAction("AddOrderItem", new { Model = TempData["OrderItem"] });
                 }
                 else
                 {
@@ -157,10 +160,13 @@ namespace Aqua.WebApp.Controllers
                     }
                     invItem.Quantity -= orderItem.Quantity; // Subtract quantity of order from inventory
                     _locationRepo.UpdateInventoryEntity(invItem.LocationId, invItem.AnimalName, invItem.Quantity);
+                    return RedirectToAction("AddOrderItem", new { OrderId = order.Id });
                 }
-                return RedirectToAction("AddOrderItem", new { id = order.Id });
             }
-            return View();
+            else
+            {
+                return RedirectToAction("AddOrderItem", new { OrderId = orderItem.OrderId });
+            }
         }
         //[HttpPost]
         //[ValidateAntiForgeryToken]
@@ -310,6 +316,39 @@ namespace Aqua.WebApp.Controllers
             var order = _orderRepo.GetOrderById(id);
             _orderRepo.DeleteOrderEntity(order);
             return RedirectToAction(nameof(Index));
+        }
+
+        //[HttpPost]
+        //public JsonResult VerifyOrderQuantity(int OrderId, int AnimalId, int quantity)
+        //{
+        //    var currentOrder = _orderRepo.GetOrderById(OrderId);
+        //    var currentLocationInventory = _locationRepo.GetInvByLocation(currentOrder.Location);
+        //    bool status;
+        //    foreach (var inventoryAnimal in currentLocationInventory)
+        //    {
+        //        if (inventoryAnimal.Id == AnimalId)
+        //        {
+        //            if(inventoryAnimal.Quantity < quantity)
+        //            {
+        //                status = false;
+        //                return Json(status);
+        //            }
+        //        }
+        //    }
+        //    status = true;
+        //    return Json(status);
+        //}
+        [HttpPost]
+        public JsonResult VerifyOrderQuantity(int quantity)
+        {
+            if(quantity > 10)
+            {
+                return Json(false);
+            }
+            else
+            {
+                return Json(true);
+            }
         }
     }
 }
