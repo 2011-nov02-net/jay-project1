@@ -3,11 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30621.155
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aqua.WebApp", "Aqua.WebApp.csproj", "{826447DB-C46E-4E5F-A38E-8094BC09E59D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aqua.WebApp", "Aqua.WebApp\Aqua.WebApp.csproj", "{826447DB-C46E-4E5F-A38E-8094BC09E59D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aqua.Data", "..\Aqua.Data\Aqua.Data.csproj", "{37C92D33-1144-4722-8725-4207317AE68D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aqua.Data", "Aqua.Data\Aqua.Data.csproj", "{37C92D33-1144-4722-8725-4207317AE68D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aqua.Library", "..\Aqua.Library\Aqua.Library.csproj", "{64A17E2F-9D9F-46E4-9FCE-4C890EDFF2A0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Aqua.Library", "Aqua.Library\Aqua.Library.csproj", "{64A17E2F-9D9F-46E4-9FCE-4C890EDFF2A0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
