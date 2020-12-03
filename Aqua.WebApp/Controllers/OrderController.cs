@@ -30,7 +30,7 @@ namespace Aqua.WebApp.Controllers
         }
 
         // GET: Order
-        public ActionResult Index(string searchString)
+        public IActionResult Index(string searchString)
         {
             List<Order> result = _orderRepo.GetAllOrders();
             if (!String.IsNullOrEmpty(searchString))
@@ -41,22 +41,26 @@ namespace Aqua.WebApp.Controllers
         }
 
         // GET: Order/Details/5
-        public ActionResult Details(int id)
+        public IActionResult Details(int id)
         {
-            try
+            if (!ModelState.IsValid)
+            {
+                return Error();
+            }
+            else
             {
                 var result = _orderRepo.GetOrderById(id);
                 return View(result);
             }
-            catch (Exception)
-            {
-                return Error();
-            }
         }
 
         // GET: Order/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
+            if (!ModelState.IsValid)
+            {
+                return Error();
+            }
             var result = new OrderViewModel();
             var locationList = _locationRepo.GetAllLocations();
             var customerList = _customerRepo.GetAllCustomers();
@@ -75,8 +79,12 @@ namespace Aqua.WebApp.Controllers
         // POST: Order/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(OrderViewModel orderViewModel)
+        public IActionResult Create(OrderViewModel orderViewModel)
         {
+            if (!ModelState.IsValid)
+            {
+                return Error();
+            }
             var currentLocation = _locationRepo.GetLocationById(orderViewModel.Location);
             var currentCustomer = _customerRepo.GetCustomerById(orderViewModel.Customer);
             var result = new Order();
@@ -105,8 +113,12 @@ namespace Aqua.WebApp.Controllers
         //    }
         //    return View(result);
         //}
-        public ActionResult AddOrderItem(int id)
+        public IActionResult AddOrderItem(int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return Error();
+            }
             var result = new OrderItemViewModel();
             result.OrderId = id;
             result.Quantity = 1;
@@ -287,15 +299,19 @@ namespace Aqua.WebApp.Controllers
         //}
 
         // GET: Order/Edit/5
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return Error();
+            }
             return View();
         }
 
         // POST: Order/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, Order order)
+        public IActionResult Edit(int id, Order order)
         {
             try
             {
@@ -310,10 +326,14 @@ namespace Aqua.WebApp.Controllers
         // GET: Order/Delete/5
         public ActionResult Delete(int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return Error();
+            }
             var order = _orderRepo.GetOrderById(id);
             if (order == null)
             {
-                return NotFound();
+                return Error();
             }
             return View(order);
         }
