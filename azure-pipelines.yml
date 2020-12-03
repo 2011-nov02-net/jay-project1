@@ -22,7 +22,7 @@ steps:
     version: '$(sdkVersion)'
 
 - script: dotnet build --configuration $(buildConfiguration)
-  displayName: dotnet build Aqua.sln -c Release -o out
+  displayName: dotnet build
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'
