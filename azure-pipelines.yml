@@ -34,29 +34,32 @@ steps:
     packageType: 'sdk'
     version: '$(sdkVersion)'
 
+
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: dotnet build
-- task: DotNetCoreCLI@2
-  inputs:
-    command: 'test'
-    arguments: '''--configuration $(buildConfiguration)'''
-    publishTestResults: true
-    testRunTitle: 'dotnet test'
 
-- script: dotnet publish --configuration $(buildConfiguration) --output publish
-  displayName: dotnet publish
-  workingDirectory: Aqua.WebApp
-- task: AzureRmWebAppDeployment@4
-  inputs:
-    ConnectionType: 'AzureRM'
-    azureSubscription: 'Azure subscription 1(2c48e7d4-496d-4e6f-84af-fa49ea8ea9fe)'
-    appType: 'webApp'
-    WebAppName: 'WebApp'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
-    
 - task: SonarCloudAnalyze@1
   displayName: sonar run analysis
+
 - task: SonarCloudPublish@1
   displayName: sonar analysis publish
   inputs:
     pollingTimeoutSec: '300'
+
+- task: DotNetCoreCLI@2
+  displayName: dotnet test
+  inputs:
+    command: 'test'
+    arguments: '--configuration $(buildConfiguration)'
+    publishTestResults: true
+
+- script: dotnet publish --configuration $(buildConfiguration) --output publish
+  displayName: dotnet publish
+
+- task: AzureRmWebAppDeployment@4
+  displayName: azure app service deploy
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Azure subscription 1(2c48e7d4-496d-4e6f-84af-fa49ea8ea9fe)'
+    appType: 'webApp'
+    WebAppName: 'Project1'
