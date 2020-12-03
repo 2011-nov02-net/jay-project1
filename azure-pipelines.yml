@@ -57,6 +57,7 @@ steps:
 - script: dotnet publish --configuration $(buildConfiguration) --output publish
   displayName: dotnet publish
 - task: AzureRmWebAppDeployment@4
+  condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
   inputs:
     ConnectionType: 'AzureRM'
     azureSubscription: 'Azure subscription 1(2c48e7d4-496d-4e6f-84af-fa49ea8ea9fe)'
