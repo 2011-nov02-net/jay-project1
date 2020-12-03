@@ -9,6 +9,7 @@ using Aqua.Data.Model;
 using Aqua.Data;
 using Aqua.Library;
 using Aqua.WebApp.Models;
+using System.Diagnostics;
 
 namespace Aqua.WebApp.Controllers
 {
@@ -20,7 +21,7 @@ namespace Aqua.WebApp.Controllers
             _animalRepo = animalRepo;
         }
         // GET: Animal
-        public ActionResult Index()
+        public IActionResult Index()
         {
             var animals = _animalRepo.GetAllAnimals();
             var result = new List<AnimalViewModel>();
@@ -38,13 +39,17 @@ namespace Aqua.WebApp.Controllers
         }
 
         // GET: Animal/Details/5
-        public ActionResult Details()
+        public IActionResult Details()
         {
+            if (!ModelState.IsValid)
+            {
+                return Error();
+            }
             return View();
         }
 
         // GET: Animal/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
             return View();
         }
@@ -52,7 +57,7 @@ namespace Aqua.WebApp.Controllers
         // POST: Animal/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Animal animal)
+        public IActionResult Create(Animal animal)
         {
             try
             {
@@ -66,15 +71,19 @@ namespace Aqua.WebApp.Controllers
         }
 
         // GET: Animal/Edit/5
-        public ActionResult Edit(int id)
+        public IActionResult Edit(int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return Error();
+            }
             return View();
         }
 
         // POST: Animal/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, Animal animal)
+        public IActionResult Edit(int id, Animal animal)
         {
             try
             {
@@ -82,12 +91,12 @@ namespace Aqua.WebApp.Controllers
             }
             catch
             {
-                return View();
+                return Error();
             }
         }
 
         // GET: Animal/Delete/5
-        public ActionResult Delete(int id)
+        public IActionResult Delete(int id)
         {
             return View();
         }
@@ -95,7 +104,7 @@ namespace Aqua.WebApp.Controllers
         // POST: Animal/Delete/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Delete(int id, Animal animal)
+        public IActionResult Delete(int id, Animal animal)
         {
             try
             {
@@ -105,6 +114,10 @@ namespace Aqua.WebApp.Controllers
             {
                 return View();
             }
+        }
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
