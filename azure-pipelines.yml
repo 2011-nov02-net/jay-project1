@@ -16,10 +16,10 @@ variables:
 
 steps:
 - task: UseDotNet@2
-  displayName: dotnet sdk $(sdkVersion)
+  displayName: dotnet sdk 2.x
   inputs:
     packageType: 'sdk'
-    version: '$(sdkVersion)'
+    version: '2.x'
 
 - task: SonarCloudPrepare@1
   inputs:
@@ -27,6 +27,12 @@ steps:
     organization: '2011-nov02-net'
     scannerMode: 'MSBuild'
     projectKey: 'Project1'
+
+- task: UseDotNet@2
+  displayName: dotnet sdk $(sdkVersion)
+  inputs:
+    packageType: 'sdk'
+    version: '$(sdkVersion)'
 
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: dotnet build
