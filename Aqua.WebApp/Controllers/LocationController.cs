@@ -133,6 +133,7 @@ namespace Aqua.WebApp.Controllers
             {
                 return Error();
             }
+            return View();
         }
 
         // GET: Location/Edit/1

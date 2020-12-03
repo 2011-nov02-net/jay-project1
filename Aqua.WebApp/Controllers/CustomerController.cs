@@ -9,6 +9,7 @@ using Aqua.Data.Model;
 using Aqua.Data;
 using Aqua.Library;
 using Aqua.WebApp.Models;
+using System.Diagnostics;
 
 namespace Aqua.WebApp.Controllers
 {
@@ -22,7 +23,7 @@ namespace Aqua.WebApp.Controllers
             _orderRepo = orderRepo;
         }
         // GET: Customer
-        public ActionResult Index(string searchString)
+        public IActionResult Index(string searchString)
         {
             List<Customer> customerList = _customerRepo.GetAllCustomers();
             var result = new List<CustomerViewModel>();
@@ -39,16 +40,16 @@ namespace Aqua.WebApp.Controllers
         }
 
         // GET: Customer/Details/5
-        public ActionResult Details(int? id)
+        public IActionResult Details(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return Error();
             }
             var customer = _customerRepo.GetCustomerById(id);
             if(customer == null)
             {
-                return NotFound();
+                return Error();
             }
             var result = new CustomerViewModel(customer);
             return View(result);
@@ -62,8 +63,12 @@ namespace Aqua.WebApp.Controllers
         }
 
         // GET: Customer/Create
-        public ActionResult Create()
+        public IActionResult Create()
         {
+            if (!ModelState.IsValid)
+            {
+                return Error();
+            }
             if (TempData["EmailExistsError"] != null)
             {
                 ModelState.AddModelError(string.Empty, TempData["EmailExistsError"].ToString());
@@ -74,7 +79,7 @@ namespace Aqua.WebApp.Controllers
         // POST: Customer/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create(Customer customer)
+        public IActionResult Create(Customer customer)
         {
             if (CustomerEmailExists(customer.Email))
             {
@@ -89,11 +94,11 @@ namespace Aqua.WebApp.Controllers
         }
 
         // GET: Customer/Edit/5
-        public ActionResult Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return Error();
             }
             if (TempData["EmailExistsError"] != null)
             {
@@ -102,7 +107,7 @@ namespace Aqua.WebApp.Controllers
             var customer = _customerRepo.GetCustomerById(id);
             if (customer == null)
             {
-                return NotFound();
+                return Error();
             }
             var result = new CustomerViewModel(customer);
             return View(result);
@@ -112,11 +117,11 @@ namespace Aqua.WebApp.Controllers
         // POST: Customer/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit(int id, Customer customer)
+        public IActionResult Edit(int id, Customer customer)
         {
             if (id != customer.Id)
             {
-                return NotFound();
+                return Error();
             }
             if(CustomerEmailExists(customer.Email) && !EmailSameDuringEditing(id, customer.Email))
             {
@@ -133,7 +138,7 @@ namespace Aqua.WebApp.Controllers
                 {
                     if (CustomerIdExists(id))
                     {
-                        return NotFound();
+                        return Error();
                     }
                     else
                     {
@@ -146,17 +151,16 @@ namespace Aqua.WebApp.Controllers
         }
 
         // GET: Customer/Delete/5
-        public ActionResult Delete(int? id)
+        public IActionResult Delete(int? id)
         {
             if (id == null)
             {
-                return NotFound();
+                return Error();
             }
-
             var customer = _customerRepo.GetCustomerById(id);
             if (customer == null)
             {
-                return NotFound();
+                return Error();
             }
             var result = new CustomerViewModel(customer);
             return View(result);
@@ -187,6 +191,10 @@ namespace Aqua.WebApp.Controllers
             var changingEmail = _customerRepo.GetCustomerByEmail(email);
             bool samePersonCheck = (currentCustomer.Id == changingEmail.Id);
             return samePersonCheck;
+        }
+        public IActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }
