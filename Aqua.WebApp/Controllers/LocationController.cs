@@ -136,7 +136,10 @@ namespace Aqua.WebApp.Controllers
             {
                 return NotFound();
             }
-
+            if (TempData["CityExistError"] != null)
+            {
+                ModelState.AddModelError(string.Empty, TempData["CityExistError"].ToString());
+            }
             var location = _locationRepo.GetLocationById(id);
             if (location == null)
             {
@@ -155,8 +158,12 @@ namespace Aqua.WebApp.Controllers
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            if (LocationCityExists(location.City))
+            {
+                TempData["CityExistError"] = $"Location '{location.City}' already exists.";
+                return RedirectToAction("Edit", new { id = location.Id });
+            }
+            else if (ModelState.IsValid)
             {
                 try
                 {
