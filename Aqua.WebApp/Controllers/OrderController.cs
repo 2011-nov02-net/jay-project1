@@ -113,6 +113,10 @@ namespace Aqua.WebApp.Controllers
                     result.Animals.Add(animal);
                 }
             }
+            if(TempData["QuantityError"] != null)
+            {
+                ModelState.AddModelError(string.Empty, TempData["QuantityError"].ToString());
+            }
             return View(result);
         }
 
@@ -120,7 +124,6 @@ namespace Aqua.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AddOrderItem(OrderItemViewModel orderItem)
         {
-            TempData["OrderItem"] = orderItem;
             if (ModelState.IsValid)
             {
                 var order = _orderRepo.GetOrderById(orderItem.OrderId); // Get order ID of the first item and route to it afterwards since all items are in the same order
@@ -129,8 +132,8 @@ namespace Aqua.WebApp.Controllers
                 var invItem = locationInventory.Find(i => i.AnimalName == animal.Name);
                 if (invItem.Quantity - orderItem.Quantity <= 0) // Check to see if order quantity is less than the quantity of animals in stock
                 {
-                    ModelState.AddModelError(string.Empty, "TOO MANY ANIMALS MAN");
-                    return RedirectToAction("AddOrderItem", new { Model = TempData["OrderItem"] });
+                    TempData["QuantityError"] = "Quantity is too high, not enough stock in inventory.";
+                    return RedirectToAction("AddOrderItem", new { OrderId = orderItem.OrderId });
                 }
                 else
                 {
