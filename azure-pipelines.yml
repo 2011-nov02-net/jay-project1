@@ -55,3 +55,8 @@ steps:
     packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
     
 - task: SonarCloudAnalyze@1
+  displayName: sonar run analysis
+- task: SonarCloudPublish@1
+  displayName: sonar analysis publish
+  inputs:
+    pollingTimeoutSec: '300'
