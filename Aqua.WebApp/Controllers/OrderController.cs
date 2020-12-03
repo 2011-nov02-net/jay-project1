@@ -320,38 +320,5 @@ namespace Aqua.WebApp.Controllers
             _orderRepo.DeleteOrderEntity(order);
             return RedirectToAction(nameof(Index));
         }
-
-        //[HttpPost]
-        //public JsonResult VerifyOrderQuantity(int OrderId, int AnimalId, int quantity)
-        //{
-        //    var currentOrder = _orderRepo.GetOrderById(OrderId);
-        //    var currentLocationInventory = _locationRepo.GetInvByLocation(currentOrder.Location);
-        //    bool status;
-        //    foreach (var inventoryAnimal in currentLocationInventory)
-        //    {
-        //        if (inventoryAnimal.Id == AnimalId)
-        //        {
-        //            if(inventoryAnimal.Quantity < quantity)
-        //            {
-        //                status = false;
-        //                return Json(status);
-        //            }
-        //        }
-        //    }
-        //    status = true;
-        //    return Json(status);
-        //}
-        [HttpPost]
-        public JsonResult VerifyOrderQuantity(int quantity)
-        {
-            if(quantity > 10)
-            {
-                return Json(false);
-            }
-            else
-            {
-                return Json(true);
-            }
-        }
     }
 }

@@ -81,7 +81,8 @@ namespace Aqua.Data
                 {
                     Id = order.Id,
                     Location = newLocation,
-                    Customer = newCust
+                    Customer = newCust,
+                    Total = order.Total
                 };
                 newOrder.Id = order.Id;
                 newOrder.Date = order.Date;
@@ -109,7 +110,8 @@ namespace Aqua.Data
                 {
                     Id = order.Id,
                     Location = newLocation,
-                    Customer = newCust
+                    Customer = newCust,
+                    Total = order.Total
                 };
                 newOrder.Id = order.Id;
                 newOrder.Date = order.Date;

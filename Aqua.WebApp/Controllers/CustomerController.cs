@@ -64,6 +64,10 @@ namespace Aqua.WebApp.Controllers
         // GET: Customer/Create
         public ActionResult Create()
         {
+            if (TempData["EmailExistsError"] != null)
+            {
+                ModelState.AddModelError(string.Empty, TempData["EmailExistsError"].ToString());
+            }
             return View();
         }
 
@@ -72,14 +76,15 @@ namespace Aqua.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Create(Customer customer)
         {
-            try
+            if (CustomerEmailExists(customer.Email))
+            {
+                TempData["EmailExistsError"] = "Email already exists in our database.";
+                return RedirectToAction("Create");
+            }
+            else
             {
                 _customerRepo.CreateCustomerEntity(customer);
                 return RedirectToAction(nameof(Index));
-            }
-            catch
-            {
-                return View();
             }
         }
 
@@ -119,7 +124,7 @@ namespace Aqua.WebApp.Controllers
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (CustomerExists(id))
+                    if (CustomerIdExists(id))
                     {
                         return NotFound();
                     }
@@ -159,9 +164,14 @@ namespace Aqua.WebApp.Controllers
             _customerRepo.DeleteCustomerEntity(customer);
             return RedirectToAction(nameof(Index));
         }
-        private bool CustomerExists(int id)
+        private bool CustomerIdExists(int id)
         {
             bool exist = (_customerRepo.GetCustomerById(id) != null);
+            return exist;
+        }
+        private bool CustomerEmailExists(string email)
+        {
+            bool exist = (_customerRepo.GetCustomerByEmail(email) != null); // If it returns not null it exists, so true
             return exist;
         }
     }
