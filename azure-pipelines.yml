@@ -11,7 +11,7 @@ pool:
   vmImage: ubuntu-latest
 
 variables:
-  solution: Aqua.sln
+  solution: '**/*.csproj'
   buildPlatform: 'Any CPU'
   sdkVersion: 3.1.x
   buildConfiguration: 'Release'
@@ -25,7 +25,7 @@ steps:
 
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: dotnet build
-  workingDirectory: Aqua.WebApp/Aqua.sln -c Release -o out
+  workingDirectory: Aqua.WebApp
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'
