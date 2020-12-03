@@ -6,7 +6,6 @@ trigger:
   paths:
     include:
     - azure-pipelines.yml
-    - Aqua.WebApp
 
 pool:
   vmImage: ubuntu-latest
@@ -24,7 +23,6 @@ steps:
 
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: dotnet build Aqua.sln -c Release -o out
-  workingDirectory: Aqua.WebApp
 - task: DotNetCoreCLI@2
   inputs:
     command: 'test'
