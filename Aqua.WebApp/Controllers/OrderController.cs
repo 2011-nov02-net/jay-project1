@@ -43,8 +43,15 @@ namespace Aqua.WebApp.Controllers
         // GET: Order/Details/5
         public ActionResult Details(int id)
         {
-            var result = _orderRepo.GetOrderById(id);
-            return View(result);
+            try
+            {
+                var result = _orderRepo.GetOrderById(id);
+                return View(result);
+            }
+            catch (Exception)
+            {
+                return Error();
+            }
         }
 
         // GET: Order/Create
@@ -319,6 +326,10 @@ namespace Aqua.WebApp.Controllers
             var order = _orderRepo.GetOrderById(id);
             _orderRepo.DeleteOrderEntity(order);
             return RedirectToAction(nameof(Index));
+        }
+        public ActionResult Error()
+        {
+            return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
 }

@@ -48,6 +48,10 @@ namespace Aqua.Data
             var dbOrder = context.Orders
                 .Where(l => l.Id == id)
                 .FirstOrDefault();
+            if(dbOrder == null)
+            {
+                return null;
+            }
             var result = new Order()
             {
                 Id = dbOrder.Id,
@@ -152,6 +156,10 @@ namespace Aqua.Data
                 .Where(o => o.Id == id)
                 .Include(o => o.Animal)
                 .FirstOrDefault();
+            if(dbOrderItem == null)
+            {
+                return null;
+            }
             var newAnimal = new Animal() {
                     Id = dbOrderItem.Animal.Id,
                     Name = dbOrderItem.Animal.Name,

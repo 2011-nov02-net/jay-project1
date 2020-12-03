@@ -76,6 +76,10 @@ namespace Aqua.Data
             var dbCust = context.Customers
                 .Where(c => c.Id == id)
                 .FirstOrDefault();
+            if(dbCust == null)
+            {
+                return null;
+            }
             var newCust = new Customer()
             {
                 Id = dbCust.Id,

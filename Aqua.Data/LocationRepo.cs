@@ -59,17 +59,24 @@ namespace Aqua.Data
             var dbLocation = context.Locations
                 .Where(l => l.Id == id)
                 .FirstOrDefault();
-            var result = new Location()
+            if (dbLocation == null)
             {
-                Id = dbLocation.Id,
-                City = dbLocation.City
-            };
-            var resultInv = GetInvByLocation(result);
-            foreach (var thing in resultInv)
-            {
-                result.Inventory.Add(thing);
+                return null;
             }
-            return result;
+            else
+            {
+                var result = new Location()
+                {
+                    Id = dbLocation.Id,
+                    City = dbLocation.City
+                };
+                var resultInv = GetInvByLocation(result);
+                foreach (var thing in resultInv)
+                {
+                    result.Inventory.Add(thing);
+                }
+                return result;
+            }
         }
         public List<InventoryItem> GetInvByLocation(Location location)
         {
@@ -94,14 +101,21 @@ namespace Aqua.Data
                 .Where(i => i.Id == id)
                 .Include(i => i.Animal)
                 .FirstOrDefault();
-            var result = new InventoryItem()
+            if (dbInventory == null)
             {
-                Id = dbInventory.Id,
-                LocationId = dbInventory.LocationId,
-                AnimalName = dbInventory.Animal.Name,
-                Quantity = dbInventory.Quantity
-            };
-            return result;
+                return null;
+            }
+            else
+            {
+                var result = new InventoryItem()
+                {
+                    Id = dbInventory.Id,
+                    LocationId = dbInventory.LocationId,
+                    AnimalName = dbInventory.Animal.Name,
+                    Quantity = dbInventory.Quantity
+                };
+                return result;
+            }
         }
         public void CreateInventoryEntity(Location location, Animal animal, int stock)
         {

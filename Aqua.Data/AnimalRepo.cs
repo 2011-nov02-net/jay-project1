@@ -39,13 +39,20 @@ namespace Aqua.Data
             var dbAnimal = context.Animals
                 .Where(a => a.Name == name)
                 .FirstOrDefault();
-            var newAnimal = new Animal()
+            if(dbAnimal == null)
             {
-                Id = dbAnimal.Id,
-                Name = dbAnimal.Name,
-                Price = dbAnimal.Price
-            };
-            return newAnimal;
+                return null;
+            }
+            else
+            {
+                var newAnimal = new Animal()
+                {
+                    Id = dbAnimal.Id,
+                    Name = dbAnimal.Name,
+                    Price = dbAnimal.Price
+                };
+                return newAnimal;
+            }
         }
         public Animal GetAnimalById(int id)
         {
@@ -53,13 +60,20 @@ namespace Aqua.Data
             var dbAnimal = context.Animals
                 .Where(a => a.Id == id)
                 .FirstOrDefault();
-            var newAnimal = new Animal()
+            if (dbAnimal == null)
             {
-                Id = dbAnimal.Id,
-                Name = dbAnimal.Name,
-                Price = dbAnimal.Price
-            };
-            return newAnimal;
+                return null;
+            }
+            else
+            {
+                var newAnimal = new Animal()
+                {
+                    Id = dbAnimal.Id,
+                    Name = dbAnimal.Name,
+                    Price = dbAnimal.Price
+                };
+                return newAnimal;
+            }
         }
         public void CreateAnimalEntity(Animal animal)
         {
