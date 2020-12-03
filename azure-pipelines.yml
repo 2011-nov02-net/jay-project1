@@ -61,5 +61,5 @@ steps:
     azureSubscription: 'Azure subscription 1(2c48e7d4-496d-4e6f-84af-fa49ea8ea9fe)'
     appType: 'webApp'
     WebAppName: '2011-nodeJayS-aqua'
-    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    packageForLinux: '$(Build.ArtifactStagingDirectory)/*.zip'
 - task: PublishBuildArtifacts@1
