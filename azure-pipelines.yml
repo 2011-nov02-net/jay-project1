@@ -21,6 +21,13 @@ steps:
     packageType: 'sdk'
     version: '$(sdkVersion)'
 
+- task: SonarCloudPrepare@1
+  inputs:
+    SonarCloud: 'Project1'
+    organization: '2011-nov02-net'
+    scannerMode: 'MSBuild'
+    projectKey: 'Project1'
+
 - script: dotnet build --configuration $(buildConfiguration)
   displayName: dotnet build
 - task: DotNetCoreCLI@2
@@ -40,3 +47,5 @@ steps:
     appType: 'webApp'
     WebAppName: 'WebApp'
     packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
+    
+- task: SonarCloudAnalyze@1
