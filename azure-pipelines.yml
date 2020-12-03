@@ -1,17 +1,44 @@
-# ASP.NET Core
-# Build and test ASP.NET Core projects targeting .NET Core.
-# Add steps that run tests, create a NuGet package, deploy, and more:
-# https://docs.microsoft.com/azure/devops/pipelines/languages/dotnet-core
 
 trigger:
-- main
+  branches:
+    include:
+    - master
+  paths:
+    include:
+    - azure-pipelines.yml
+    - Aqua.WebApp
 
 pool:
-  vmImage: 'ubuntu-latest'
+  vmImage: ubuntu-latest
 
 variables:
+  sdkVersion: 3.1.x
   buildConfiguration: 'Release'
 
 steps:
+- task: UseDotNet@2
+  displayName: dotnet sdk $(sdkVersion)
+  inputs:
+    packageType: 'sdk'
+    version: '$(sdkVersion)'
+
 - script: dotnet build --configuration $(buildConfiguration)
-  displayName: 'dotnet build $(buildConfiguration)'
+  displayName: dotnet build Aqua.sln -c Release -o out
+  workingDirectory: Aqua.WebApp
+- task: DotNetCoreCLI@2
+  inputs:
+    command: 'test'
+    arguments: '''--configuration $(buildConfiguration)'''
+    publishTestResults: true
+    testRunTitle: 'dotnet test'
+
+- script: dotnet publish --configuration $(buildConfiguration) --output publish
+  displayName: dotnet publish
+  workingDirectory: Aqua.WebApp
+- task: AzureRmWebAppDeployment@4
+  inputs:
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Azure subscription 1(2c48e7d4-496d-4e6f-84af-fa49ea8ea9fe)'
+    appType: 'webApp'
+    WebAppName: 'WebApp'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
