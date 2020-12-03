@@ -39,15 +39,14 @@ namespace Aqua.WebApp.Controllers
         // GET: Location/Details/1
         public IActionResult Details(int id)
         {
-            if (id < 0)
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                return Error();
             }
-
             var location = _locationRepo.GetLocationById(id);
             if (location == null)
             {
-                return NotFound();
+                return Error();
             }
             TempData["LocationId"] = location.Id;
             return View(location);
@@ -83,6 +82,10 @@ namespace Aqua.WebApp.Controllers
         // GET: Location/CreateInventoryItem
         public IActionResult ImportAnimal(int id)
         {
+            if (!ModelState.IsValid)
+            {
+                return Error();
+            }
             var result = new InventoryItemModel();
             var animalList = _animalRepo.GetAllAnimals();
             result.LocationId = id;
@@ -126,13 +129,16 @@ namespace Aqua.WebApp.Controllers
                     }
                 }
             }
-            return View();
+            else
+            {
+                return Error();
+            }
         }
 
         // GET: Location/Edit/1
         public IActionResult Edit(int id)
         {
-            if (id < 0)
+            if (!ModelState.IsValid)
             {
                 return Error();
             }
@@ -223,15 +229,14 @@ namespace Aqua.WebApp.Controllers
         // // // GET: Location/Delete/1
         public IActionResult Delete(int id)
         {
-            if (id < 0)
+            if (!ModelState.IsValid)
             {
-                return NotFound();
+                return Error();
             }
-
             var location = _locationRepo.GetLocationById(id);
             if (location == null)
             {
-                return NotFound();
+                return Error();
             }
 
             return View(location);
