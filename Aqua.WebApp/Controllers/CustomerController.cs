@@ -95,7 +95,10 @@ namespace Aqua.WebApp.Controllers
             {
                 return NotFound();
             }
-
+            if (TempData["EmailExistsError"] != null)
+            {
+                ModelState.AddModelError(string.Empty, TempData["EmailExistsError"].ToString());
+            }
             var customer = _customerRepo.GetCustomerById(id);
             if (customer == null)
             {
@@ -115,8 +118,12 @@ namespace Aqua.WebApp.Controllers
             {
                 return NotFound();
             }
-
-            if (ModelState.IsValid)
+            if(CustomerEmailExists(customer.Email) && !EmailSameDuringEditing(id, customer.Email))
+            {
+                TempData["EmailExistsError"] = $"Email address '{customer.Email}' already exists in our database.";
+                return RedirectToAction("Edit", new { Id = customer.Id });
+            }
+            else if (ModelState.IsValid)
             {
                 try
                 {
@@ -173,6 +180,13 @@ namespace Aqua.WebApp.Controllers
         {
             bool exist = (_customerRepo.GetCustomerByEmail(email) != null); // If it returns not null it exists, so true
             return exist;
+        }
+        private bool EmailSameDuringEditing(int id, string email)
+        {
+            var currentCustomer = _customerRepo.GetCustomerById(id);
+            var changingEmail = _customerRepo.GetCustomerByEmail(email);
+            bool samePersonCheck = (currentCustomer.Id == changingEmail.Id);
+            return samePersonCheck;
         }
     }
 }
