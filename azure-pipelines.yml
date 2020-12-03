@@ -2,28 +2,38 @@ trigger:
 - main
 
 pool:
-  vmImage: 'windows-latest'
+  vmImage: ubuntu-latest
 
 variables:
   solution: '**/*.sln'
   buildPlatform: 'Any CPU'
+  sdkVersion: 3.1.x
   buildConfiguration: 'Release'
 
 steps:
-- task: NuGetToolInstaller@1
-
-- task: NuGetCommand@2
+- task: UseDotNet@2
+  displayName: dotnet sdk $(sdkVersion)
   inputs:
-    restoreSolution: '$(solution)'
+    packageType: 'sdk'
+    version: '$(sdkVersion)'
 
-- task: VSBuild@1
+- script: dotnet build --configuration $(buildConfiguration)
+  displayName: dotnet build
+  workingDirectory: Aqua.WebApp
+- task: DotNetCoreCLI@2
   inputs:
-    solution: '$(solution)'
-    msbuildArgs: '/p:DeployOnBuild=true /p:WebPublishMethod=Package /p:PackageAsSingleFile=true /p:SkipInvalidConfigurations=true /p:PackageLocation="$(build.artifactStagingDirectory)"'
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    command: 'test'
+    arguments: '''--configuration $(buildConfiguration)'''
+    publishTestResults: true
+    testRunTitle: 'dotnet test'
 
-- task: VSTest@2
+- script: dotnet publish --configuration $(buildConfiguration) --output publish
+  displayName: dotnet publish
+  workingDirectory: Aqua.WebApp
+- task: AzureRmWebAppDeployment@4
   inputs:
-    platform: '$(buildPlatform)'
-    configuration: '$(buildConfiguration)'
+    ConnectionType: 'AzureRM'
+    azureSubscription: 'Azure subscription 1(2c48e7d4-496d-4e6f-84af-fa49ea8ea9fe)'
+    appType: 'webApp'
+    WebAppName: 'WebApp'
+    packageForLinux: '$(System.DefaultWorkingDirectory)/**/*.zip'
