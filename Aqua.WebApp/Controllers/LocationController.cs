@@ -56,20 +56,28 @@ namespace Aqua.WebApp.Controllers
         // GET: Location/Create
         public IActionResult Create()
         {
+            if (TempData["CityExistError"] != null)
+            {
+                ModelState.AddModelError(string.Empty, TempData["CityExistError"].ToString());
+            }
             return View();
         }
 
         // POST: Location/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult Create([Bind("Id,City")] Location location)
+        public IActionResult Create(Location location)
         {
-            if (ModelState.IsValid)
+            if(LocationCityExists(location.City))
+            {
+                TempData["CityExistError"] = $"Location '{location.City}' already exists.";
+                return RedirectToAction(nameof(Create));
+            }
+            else
             {
                 _locationRepo.CreateLocationEntity(location);
                 return RedirectToAction(nameof(Index));
             }
-            return View(location);
         }
 
         // GET: Location/CreateInventoryItem
@@ -243,7 +251,11 @@ namespace Aqua.WebApp.Controllers
                 return false;
             }
             return true;
-
+        }
+        private bool LocationCityExists(string city)
+        {
+            bool exist = (_locationRepo.GetLocationByCity(city) != null); // If it returns not null it exists, so true
+            return exist;
         }
         public IActionResult Error()
         {

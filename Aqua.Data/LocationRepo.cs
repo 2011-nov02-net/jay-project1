@@ -36,17 +36,22 @@ namespace Aqua.Data
             using var context = new AquaContext(_contextOptions);
             var dbLocation = context.Locations
                 .FirstOrDefault(l => l.City == city);
-            var result = new Location() {
-                Id = dbLocation.Id,
-                City = dbLocation.City
-            };
-            result.Id = dbLocation.Id;
-            var resultInv = GetInvByLocation(result);
-            foreach (var thing in resultInv)
-            {
-                result.Inventory.Add(thing);
+            if(dbLocation != null) {
+                var result = new Location()
+                {
+                    Id = dbLocation.Id,
+                    City = dbLocation.City
+                };
+                var resultInv = GetInvByLocation(result);
+                foreach (var thing in resultInv)
+                {
+                    result.Inventory.Add(thing);
+                }
+                return result;
             }
-            return result;
+            else {
+                return null;
+            }
         }
         public Location GetLocationById(int id)
         {

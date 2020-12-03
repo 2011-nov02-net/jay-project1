@@ -40,14 +40,21 @@ namespace Aqua.Data
             var dbCust = context.Customers
                 .Where(a => a.Email == email)
                 .FirstOrDefault();
-            var newCust = new Customer()
+            if(dbCust != null)
             {
-                Id = dbCust.Id,
-                FirstName = dbCust.FirstName,
-                LastName = dbCust.LastName,
-                Email = dbCust.Email
-            };
-            return newCust;
+                var newCust = new Customer()
+                {
+                    Id = dbCust.Id,
+                    FirstName = dbCust.FirstName,
+                    LastName = dbCust.LastName,
+                    Email = dbCust.Email
+                };
+                return newCust;
+            }
+            else
+            {
+                return null;
+            }
         }
         public List<Customer> GetCustomerByName(string first, string last)
         {

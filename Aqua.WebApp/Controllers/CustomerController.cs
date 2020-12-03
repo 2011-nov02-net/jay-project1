@@ -78,7 +78,7 @@ namespace Aqua.WebApp.Controllers
         {
             if (CustomerEmailExists(customer.Email))
             {
-                TempData["EmailExistsError"] = "Email already exists in our database.";
+                TempData["EmailExistsError"] = $"Email address '{customer.Email}' already exists in our database.";
                 return RedirectToAction("Create");
             }
             else
