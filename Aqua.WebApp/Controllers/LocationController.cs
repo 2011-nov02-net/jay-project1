@@ -134,7 +134,7 @@ namespace Aqua.WebApp.Controllers
         {
             if (id < 0)
             {
-                return NotFound();
+                return Error();
             }
             if (TempData["CityExistError"] != null)
             {
@@ -143,7 +143,7 @@ namespace Aqua.WebApp.Controllers
             var location = _locationRepo.GetLocationById(id);
             if (location == null)
             {
-                return NotFound();
+                return Error();
             }
             var result = new LocationViewModel(location);
             return View(result);
