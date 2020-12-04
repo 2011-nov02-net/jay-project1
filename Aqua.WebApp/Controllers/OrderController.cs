@@ -96,17 +96,6 @@ namespace Aqua.WebApp.Controllers
             return RedirectToAction("AddOrderItem", new { Id = resultOrder.Id });
         }
 
-        //public ActionResult AddOrderItem(int id)
-        //{
-        //    var result = new OrderViewModel(_orderRepo.GetOrderById(id));
-        //    var location = _locationRepo.GetLocationById(result.Location);
-        //    foreach(var animal in location.Inventory)
-        //    {
-        //        var currentAnimal = _animalRepo.GetAnimalByName(animal.AnimalName);
-        //        result.Animals.Add(currentAnimal);
-        //    }
-        //    return View(result);
-        //}
         public IActionResult AddOrderItem(int id)
         {
             if (!ModelState.IsValid)
@@ -184,115 +173,7 @@ namespace Aqua.WebApp.Controllers
                 return RedirectToAction("AddOrderItem", new { OrderId = orderItem.OrderId });
             }
         }
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public IActionResult AddOrderItemToList([Bind("Id, Location, OrderItems")] OrderViewModel order)
-        //{
-        //    var result = new OrderItemViewModel();
-        //    result.OrderId = order.Id;
-        //    result.Quantity = 1;
-        //    var currentOrder = _orderRepo.GetOrderById(order.Id);
-        //    var location = _locationRepo.GetLocationById(currentOrder.Location.Id);
-        //    foreach (var animal in location.Inventory)
-        //    {
-        //        var currentAnimal = _animalRepo.GetAnimalByName(animal.AnimalName);
-        //        result.Animals.Add(currentAnimal);
-        //    }
-        //    order.OrderItems.Add(result);
-        //    return PartialView("OrderItemList", order);
-        //}
 
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult AddOrderItem([Bind("Id, Location, Animals, OrderItems")] OrderViewModel order)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        foreach (var orderItem in order.OrderItems)
-        //        {
-        //            var animal = _animalRepo.GetAnimalById(orderItem.AnimalId);
-        //            var location = _locationRepo.GetLocationById(order.Location);
-        //            var locationInventory = _locationRepo.GetInvByLocation(location);
-        //            var invItem = locationInventory.Find(i => i.AnimalName == animal.Name);
-        //            if (invItem.Quantity - orderItem.Quantity <= 0) // Check to see if order quantity is less than the quantity of animals in stock
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                bool existInOrder = order.OrderItems.Any(o => o.AnimalId == animal.Id);
-        //                var total = animal.Price * orderItem.Quantity;
-
-        //                    var newItem = new OrderItem(orderItem.OrderId, animal, orderItem.Quantity, (decimal)total);
-        //                    order.Total += (decimal)total;
-        //                    var orderEntity = _orderRepo.GetOrderById(order.Id);
-        //                    orderEntity.Total += (decimal)total;
-        //                    _orderRepo.CreateOrderItemEntity(newItem);
-        //                    _orderRepo.UpdateOrderEntity(orderEntity);
-        //                invItem.Quantity -= orderItem.Quantity; // Subtract quantity of order from inventory
-        //                _locationRepo.UpdateInventoryEntity(invItem.LocationId, invItem.AnimalName, invItem.Quantity);
-        //            }
-        //        }
-        //        return RedirectToAction("Details", new { id = order.Id });
-        //    }
-        //    return View();
-        //}
-
-        //[HttpPost]
-        //[ValidateAntiForgeryToken]
-        //public ActionResult AddOrderItemFromDetails(OrderViewModel order)
-        //{
-        //    if (ModelState.IsValid)
-        //    {
-        //        foreach (var orderItem in order.OrderItems)
-        //        {
-        //            var animal = _animalRepo.GetAnimalById(orderItem.AnimalId);
-        //            var location = _locationRepo.GetLocationById(order.Location);
-        //            var locationInventory = _locationRepo.GetInvByLocation(location);
-        //            var invItem = locationInventory.Find(i => i.AnimalName == animal.Name);
-        //            if (invItem.Quantity - orderItem.Quantity <= 0) // Check to see if order quantity is less than the quantity of animals in stock
-        //            {
-        //                return NotFound();
-        //            }
-        //            else
-        //            {
-        //                bool existInOrder = order.OrderItems.Any(o => o.AnimalId == animal.Id);
-        //                var total = animal.Price * orderItem.Quantity;
-        //                if (existInOrder) // Animal already exists in order
-        //                {
-        //                    foreach (var thing in order.OrderItems)
-        //                    {
-        //                        if (thing.AnimalId == orderItem.AnimalId) // Loop through all order items in the current order until an animal id matches the one that is in the current order
-        //                        {
-        //                            var existingOrderItem = _orderRepo.GetOrderItemById(thing.Id);
-        //                            existingOrderItem.Quantity += orderItem.Quantity;
-        //                            existingOrderItem.Total += (decimal)total;
-        //                            var orderEntity = _orderRepo.GetOrderById(order.Id);
-        //                            orderEntity.Total += (decimal)total;
-        //                            _orderRepo.UpdateOrderItemEntity(existingOrderItem);
-        //                            _orderRepo.UpdateOrderEntity(orderEntity);
-        //                        }
-        //                    };
-        //                }
-        //                else
-        //                {
-        //                    var newItem = new OrderItem(orderItem.OrderId, animal, orderItem.Quantity, (decimal)total);
-        //                    order.Total += (decimal)total;
-        //                    var orderEntity = _orderRepo.GetOrderById(order.Id);
-        //                    orderEntity.Total += (decimal)total;
-        //                    _orderRepo.CreateOrderItemEntity(newItem);
-        //                    _orderRepo.UpdateOrderEntity(orderEntity);
-        //                }
-        //                invItem.Quantity -= orderItem.Quantity; // Subtract quantity of order from inventory
-        //                _locationRepo.UpdateInventoryEntity(invItem.LocationId, invItem.AnimalName, invItem.Quantity);
-        //            }
-        //        }
-        //        return RedirectToAction("Details", new { id = order.Id });
-        //    }
-        //    return View();
-        //}
-
-        // GET: Order/Edit/5
         public IActionResult Edit(int id)
         {
             if (!ModelState.IsValid)
