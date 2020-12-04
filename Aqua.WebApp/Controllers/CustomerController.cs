@@ -1,22 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Aqua.Data.Model;
-using Aqua.Data;
+﻿using Aqua.Data;
 using Aqua.Library;
 using Aqua.WebApp.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Aqua.WebApp.Controllers
 {
     public class CustomerController : Controller
     {
-        private ICustomerRepo _customerRepo;
-        private IOrderRepo _orderRepo;
+        private readonly ICustomerRepo _customerRepo;
+        private readonly IOrderRepo _orderRepo;
         public CustomerController(ICustomerRepo customerRepo, IOrderRepo orderRepo)
         {
             _customerRepo = customerRepo;
@@ -47,7 +43,7 @@ namespace Aqua.WebApp.Controllers
                 return Error();
             }
             var customer = _customerRepo.GetCustomerById(id);
-            if(customer == null)
+            if (customer == null)
             {
                 return Error();
             }
@@ -123,7 +119,7 @@ namespace Aqua.WebApp.Controllers
             {
                 return Error();
             }
-            if(CustomerEmailExists(customer.Email) && !EmailSameDuringEditing(id, customer.Email))
+            if (CustomerEmailExists(customer.Email) && !EmailSameDuringEditing(id, customer.Email))
             {
                 TempData["EmailExistsError"] = $"Email address '{customer.Email}' already exists in our database.";
                 return RedirectToAction("Edit", new { Id = customer.Id });

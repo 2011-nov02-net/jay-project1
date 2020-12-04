@@ -1,24 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
-using Aqua.Data.Model;
-using Aqua.Data;
+﻿using Aqua.Data;
 using Aqua.Library;
 using Aqua.WebApp.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Aqua.WebApp.Controllers
 {
     public class LocationController : Controller
     {
-        private ILocationRepo _locationRepo;
-        private IAnimalRepo _animalRepo;
-        private IOrderRepo _orderRepo;
+        private readonly ILocationRepo _locationRepo;
+        private readonly IAnimalRepo _animalRepo;
+        private readonly IOrderRepo _orderRepo;
         public LocationController(ILocationRepo locationRepo, IAnimalRepo animalRepo, IOrderRepo orderRepo)
         {
             _locationRepo = locationRepo;
@@ -29,7 +25,8 @@ namespace Aqua.WebApp.Controllers
         // GET: Location
         public IActionResult Index()
         {
-            var result = _locationRepo.GetAllLocations().Select(x => new LocationViewModel { 
+            var result = _locationRepo.GetAllLocations().Select(x => new LocationViewModel
+            {
                 Id = x.Id,
                 City = x.City
             });
@@ -67,7 +64,7 @@ namespace Aqua.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult Create(Location location)
         {
-            if(LocationCityExists(location.City))
+            if (LocationCityExists(location.City))
             {
                 TempData["CityExistError"] = $"Location '{location.City}' already exists.";
                 return RedirectToAction(nameof(Create));
@@ -90,7 +87,7 @@ namespace Aqua.WebApp.Controllers
             var animalList = _animalRepo.GetAllAnimals();
             result.LocationId = id;
             result.Quantity = 1;
-            foreach(var animal in animalList)
+            foreach (var animal in animalList)
             {
                 var newAnimal = new Animal()
                 {
@@ -277,7 +274,7 @@ namespace Aqua.WebApp.Controllers
         public bool AnimalExists(string name)
         {
             var animal = _animalRepo.GetAnimalByName(name);
-            if(animal != null)
+            if (animal != null)
             {
                 return true;
             }

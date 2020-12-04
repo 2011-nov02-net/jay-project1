@@ -1,8 +1,6 @@
-﻿using System;
+﻿using Aqua.Library;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Aqua.Library;
 using System.ComponentModel.DataAnnotations;
 
 namespace Aqua.WebApp.Models
@@ -25,7 +23,8 @@ namespace Aqua.WebApp.Models
             LocationList = new List<Location>();
             CustomerList = new List<Customer>();
             Animals = new List<Animal>();
-            foreach(var orderItem in order.OrderItems){
+            foreach (var orderItem in order.OrderItems)
+            {
                 var newOrderItem = new OrderItemViewModel(orderItem);
                 OrderItems.Add(newOrderItem);
             };
@@ -40,7 +39,7 @@ namespace Aqua.WebApp.Models
         public DateTime Date { get; set; }
         public List<OrderItemViewModel> OrderItems { get; set; }
         public List<Location> LocationList { get; set; }
-        public List <Customer> CustomerList { get; set; }
+        public List<Customer> CustomerList { get; set; }
         public List<Animal> Animals { get; set; }
     }
 }

@@ -1,26 +1,20 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Diagnostics;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.Extensions.Logging;
-using Microsoft.EntityFrameworkCore;
-using Aqua.Data.Model;
-using Aqua.Data;
+﻿using Aqua.Data;
 using Aqua.Library;
 using Aqua.WebApp.Models;
-using System.Web;
+using Microsoft.AspNetCore.Mvc;
+using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace Aqua.WebApp.Controllers
 {
     public class OrderController : Controller
     {
-        private ICustomerRepo _customerRepo;
-        private ILocationRepo _locationRepo;
-        private IOrderRepo _orderRepo;
-        private IAnimalRepo _animalRepo;
+        private readonly ICustomerRepo _customerRepo;
+        private readonly ILocationRepo _locationRepo;
+        private readonly IOrderRepo _orderRepo;
+        private readonly IAnimalRepo _animalRepo;
         public OrderController(ICustomerRepo customerRepo, ILocationRepo locationRepo, IOrderRepo orderRepo, IAnimalRepo animalRepo)
         {
             _customerRepo = customerRepo;
@@ -132,7 +126,7 @@ namespace Aqua.WebApp.Controllers
                     result.Animals.Add(animal);
                 }
             }
-            if(TempData["QuantityError"] != null)
+            if (TempData["QuantityError"] != null)
             {
                 ModelState.AddModelError(string.Empty, TempData["QuantityError"].ToString());
             }

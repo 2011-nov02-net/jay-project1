@@ -1,21 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using Aqua.Data.Model;
-using Aqua.Data;
+﻿using Aqua.Data;
 using Aqua.Library;
 using Aqua.WebApp.Models;
+using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Aqua.WebApp.Controllers
 {
     public class AnimalController : Controller
     {
-        private IAnimalRepo _animalRepo;
+        private readonly IAnimalRepo _animalRepo;
         public AnimalController(IAnimalRepo animalRepo)
         {
             _animalRepo = animalRepo;
@@ -25,7 +19,7 @@ namespace Aqua.WebApp.Controllers
         {
             var animals = _animalRepo.GetAllAnimals();
             var result = new List<AnimalViewModel>();
-            foreach(var animal in animals)
+            foreach (var animal in animals)
             {
                 var newAnimal = new AnimalViewModel()
                 {

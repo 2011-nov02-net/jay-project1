@@ -1,5 +1,3 @@
-using System;
-
 namespace Aqua.WebApp.Models
 {
     public class ErrorViewModel
