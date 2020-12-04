@@ -1,15 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using Aqua.Data.Model;
+﻿using Aqua.Data.Model;
 using Aqua.Library;
+using Microsoft.EntityFrameworkCore;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 
 
 namespace Aqua.Data
 {
-    public class CustomerRepo :ICustomerRepo
+    public class CustomerRepo : ICustomerRepo
     {
         private readonly DbContextOptions<AquaContext> _contextOptions;
         public CustomerRepo(DbContextOptions<AquaContext> contextOptions)
@@ -40,7 +39,7 @@ namespace Aqua.Data
             var dbCust = context.Customers
                 .Where(a => a.Email == email)
                 .FirstOrDefault();
-            if(dbCust != null)
+            if (dbCust != null)
             {
                 var newCust = new Customer()
                 {
@@ -76,7 +75,7 @@ namespace Aqua.Data
             var dbCust = context.Customers
                 .Where(c => c.Id == id)
                 .FirstOrDefault();
-            if(dbCust == null)
+            if (dbCust == null)
             {
                 return null;
             }

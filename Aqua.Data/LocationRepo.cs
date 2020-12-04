@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using Aqua.Data.Model;
+﻿using Aqua.Data.Model;
 using Aqua.Library;
-using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Aqua.Data
 {
@@ -22,7 +19,8 @@ namespace Aqua.Data
             using var context = new AquaContext(_contextOptions);
             var dbLocations = context.Locations.Distinct().ToList();
             var result = new List<Location>();
-            foreach(var location in dbLocations){
+            foreach (var location in dbLocations)
+            {
                 var newLocation = new Location()
                 {
                     Id = location.Id,
@@ -32,11 +30,13 @@ namespace Aqua.Data
             };
             return result;
         }
-        public Location GetLocationByCity(string city) {
+        public Location GetLocationByCity(string city)
+        {
             using var context = new AquaContext(_contextOptions);
             var dbLocation = context.Locations
                 .FirstOrDefault(l => l.City == city);
-            if(dbLocation != null) {
+            if (dbLocation != null)
+            {
                 var result = new Location()
                 {
                     Id = dbLocation.Id,
@@ -49,7 +49,8 @@ namespace Aqua.Data
                 }
                 return result;
             }
-            else {
+            else
+            {
                 return null;
             }
         }
@@ -86,7 +87,7 @@ namespace Aqua.Data
                 .Include(i => i.Animal)
                 .ToList();
             var result = new List<InventoryItem>();
-            foreach(var item in dbInventory)
+            foreach (var item in dbInventory)
             {
                 var newItem = new InventoryItem(item.LocationId, item.Animal.Name, item.Quantity);
                 newItem.Id = item.Id;

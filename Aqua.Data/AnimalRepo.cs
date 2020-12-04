@@ -1,14 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using Aqua.Data.Model;
+﻿using Aqua.Data.Model;
 using Aqua.Library;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Aqua.Data
 {
-    public class AnimalRepo :IAnimalRepo
+    public class AnimalRepo : IAnimalRepo
     {
         private readonly DbContextOptions<AquaContext> _contextOptions;
 
@@ -39,7 +37,7 @@ namespace Aqua.Data
             var dbAnimal = context.Animals
                 .Where(a => a.Name == name)
                 .FirstOrDefault();
-            if(dbAnimal == null)
+            if (dbAnimal == null)
             {
                 return null;
             }

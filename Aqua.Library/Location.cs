@@ -1,6 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Aqua.Library
 {
@@ -12,6 +10,6 @@ namespace Aqua.Library
         }
         public int Id { get; set; }
         public string City { get; set; }
-        public  List<InventoryItem> Inventory { get; set; }
+        public List<InventoryItem> Inventory { get; set; }
     }
 }

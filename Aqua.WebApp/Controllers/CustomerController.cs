@@ -3,10 +3,10 @@ using Aqua.Library;
 using Aqua.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Microsoft.Extensions.Logging;
 
 namespace Aqua.WebApp.Controllers
 {

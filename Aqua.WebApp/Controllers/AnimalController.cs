@@ -4,7 +4,6 @@ using Aqua.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Diagnostics;
-using Microsoft.Extensions.Logging;
 
 namespace Aqua.WebApp.Controllers
 {

@@ -1,13 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Aqua.Library
+﻿namespace Aqua.Library
 {
     public class InventoryItem
     {
-        public InventoryItem() 
-        { 
+        public InventoryItem()
+        {
         }
         public InventoryItem(int locationId, string animalName, int quantity)
         {

@@ -1,7 +1,5 @@
-﻿using Aqua.Data.Model;
-using Aqua.WebApp.Models;
+﻿using Aqua.WebApp.Models;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 

@@ -1,9 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-
-namespace Aqua.Data.Model
+﻿namespace Aqua.Data.Model
 {
-   public class InventoryItemEntity
+    public class InventoryItemEntity
     {
         public int Id { get; set; }
         public int LocationId { get; set; }

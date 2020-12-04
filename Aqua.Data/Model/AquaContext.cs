@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace Aqua.Data.Model
 {
     public class AquaContext : DbContext
     {
-        public AquaContext(DbContextOptions<AquaContext> options) 
-            : base(options) 
+        public AquaContext(DbContextOptions<AquaContext> options)
+            : base(options)
         { }
         public virtual DbSet<AnimalEntity> Animals { get; set; }
         public virtual DbSet<CustomerEntity> Customers { get; set; }
         public virtual DbSet<InventoryItemEntity> Inventories { get; set; }
-        public virtual DbSet< LocationEntity> Locations { get; set; }
+        public virtual DbSet<LocationEntity> Locations { get; set; }
         public virtual DbSet<OrderEntity> Orders { get; set; }
         public virtual DbSet<OrderItemEntity> OrderItems { get; set; }
         protected override void OnModelCreating(ModelBuilder modelBuilder)

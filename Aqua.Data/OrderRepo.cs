@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Linq;
-using Microsoft.EntityFrameworkCore;
-using Aqua.Data.Model;
+﻿using Aqua.Data.Model;
 using Aqua.Library;
+using Microsoft.EntityFrameworkCore;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Aqua.Data
 {
     public class OrderRepo : IOrderRepo
     {
         private readonly DbContextOptions<AquaContext> _contextOptions;
-        private CustomerRepo _customerRepo;
-        private LocationRepo _locationRepo;
+        private readonly CustomerRepo _customerRepo;
+        private readonly LocationRepo _locationRepo;
         public OrderRepo(DbContextOptions<AquaContext> contextOptions)
         {
             _contextOptions = contextOptions;
@@ -43,12 +41,13 @@ namespace Aqua.Data
             };
             return result;
         }
-        public Order GetOrderById(int id){
+        public Order GetOrderById(int id)
+        {
             using var context = new AquaContext(_contextOptions);
             var dbOrder = context.Orders
                 .Where(l => l.Id == id)
                 .FirstOrDefault();
-            if(dbOrder == null)
+            if (dbOrder == null)
             {
                 return null;
             }
@@ -91,7 +90,7 @@ namespace Aqua.Data
                 newOrder.Id = order.Id;
                 newOrder.Date = order.Date;
                 var newOrderItems = GetOrderItemsByOrder(newOrder);
-                foreach(var orderItem in newOrderItems)
+                foreach (var orderItem in newOrderItems)
                 {
                     newOrder.OrderItems.Add(orderItem);
                 }
@@ -136,9 +135,10 @@ namespace Aqua.Data
                 .Include(o => o.Animal)
                 .ToList();
             var result = new List<OrderItem>();
-            foreach(var orderItem in dbOrderItems)
+            foreach (var orderItem in dbOrderItems)
             {
-                var newAnimal = new Animal() {
+                var newAnimal = new Animal()
+                {
                     Id = orderItem.Animal.Id,
                     Name = orderItem.Animal.Name,
                     Price = orderItem.Animal.Price
@@ -156,15 +156,16 @@ namespace Aqua.Data
                 .Where(o => o.Id == id)
                 .Include(o => o.Animal)
                 .FirstOrDefault();
-            if(dbOrderItem == null)
+            if (dbOrderItem == null)
             {
                 return null;
             }
-            var newAnimal = new Animal() {
-                    Id = dbOrderItem.Animal.Id,
-                    Name = dbOrderItem.Animal.Name,
-                    Price = dbOrderItem.Animal.Price
-                };
+            var newAnimal = new Animal()
+            {
+                Id = dbOrderItem.Animal.Id,
+                Name = dbOrderItem.Animal.Name,
+                Price = dbOrderItem.Animal.Price
+            };
             var result = new OrderItem(dbOrderItem.OrderId, newAnimal, dbOrderItem.Quantity, dbOrderItem.Total);
             result.Id = dbOrderItem.Id;
             return result;
@@ -181,7 +182,7 @@ namespace Aqua.Data
             };
             context.Orders.Add(orderEntry);
             context.SaveChanges();
-            foreach(var orderItem in order.OrderItems)
+            foreach (var orderItem in order.OrderItems)
             {
                 orderItem.OrderId = orderEntry.Id;
                 CreateOrderItemEntity(orderItem);
@@ -200,7 +201,7 @@ namespace Aqua.Data
             };
             context.Orders.Add(orderEntry);
             context.SaveChanges();
-            foreach(var orderItem in order.OrderItems)
+            foreach (var orderItem in order.OrderItems)
             {
                 orderItem.OrderId = orderEntry.Id;
                 CreateOrderItemEntity(orderItem);

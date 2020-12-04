@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Aqua.Library
+﻿namespace Aqua.Library
 {
     public class OrderItem
     {
