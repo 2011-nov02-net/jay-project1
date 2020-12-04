@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace Aqua.WebApp.Controllers
 {
@@ -15,8 +16,10 @@ namespace Aqua.WebApp.Controllers
         private readonly ILocationRepo _locationRepo;
         private readonly IOrderRepo _orderRepo;
         private readonly IAnimalRepo _animalRepo;
-        public OrderController(ICustomerRepo customerRepo, ILocationRepo locationRepo, IOrderRepo orderRepo, IAnimalRepo animalRepo)
+        private readonly ILogger<OrderController> _logger;
+        public OrderController(ILogger<OrderController> logger, ICustomerRepo customerRepo, ILocationRepo locationRepo, IOrderRepo orderRepo, IAnimalRepo animalRepo)
         {
+            _logger = logger;
             _customerRepo = customerRepo;
             _locationRepo = locationRepo;
             _orderRepo = orderRepo;
@@ -225,6 +228,7 @@ namespace Aqua.WebApp.Controllers
         }
         public ActionResult Error()
         {
+            _logger.LogError($"Error in order controller");
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

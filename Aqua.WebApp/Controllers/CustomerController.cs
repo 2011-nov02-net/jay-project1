@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using Microsoft.Extensions.Logging;
 
 namespace Aqua.WebApp.Controllers
 {
@@ -13,8 +14,10 @@ namespace Aqua.WebApp.Controllers
     {
         private readonly ICustomerRepo _customerRepo;
         private readonly IOrderRepo _orderRepo;
-        public CustomerController(ICustomerRepo customerRepo, IOrderRepo orderRepo)
+        private readonly ILogger<CustomerController> _logger;
+        public CustomerController(ILogger<CustomerController> logger, ICustomerRepo customerRepo, IOrderRepo orderRepo)
         {
+            _logger = logger;
             _customerRepo = customerRepo;
             _orderRepo = orderRepo;
         }
@@ -190,6 +193,7 @@ namespace Aqua.WebApp.Controllers
         }
         public IActionResult Error()
         {
+            _logger.LogError($"Error in customer controller");
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }

@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using Microsoft.Extensions.Logging;
 
 namespace Aqua.WebApp.Controllers
 {
@@ -15,8 +16,10 @@ namespace Aqua.WebApp.Controllers
         private readonly ILocationRepo _locationRepo;
         private readonly IAnimalRepo _animalRepo;
         private readonly IOrderRepo _orderRepo;
-        public LocationController(ILocationRepo locationRepo, IAnimalRepo animalRepo, IOrderRepo orderRepo)
+        private readonly ILogger<LocationController> _logger;
+        public LocationController(ILogger<LocationController> logger, ILocationRepo locationRepo, IAnimalRepo animalRepo, IOrderRepo orderRepo)
         {
+            _logger = logger;
             _locationRepo = locationRepo;
             _animalRepo = animalRepo;
             _orderRepo = orderRepo;
@@ -269,6 +272,7 @@ namespace Aqua.WebApp.Controllers
         }
         public IActionResult Error()
         {
+            _logger.LogError($"Error in location controller");
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
         public bool AnimalExists(string name)
