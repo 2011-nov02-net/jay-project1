@@ -55,10 +55,6 @@ namespace Aqua.WebApp.Controllers
         // GET: Location/Create
         public IActionResult Create()
         {
-            if (TempData["CityExistError"] != null)
-            {
-                ModelState.AddModelError(string.Empty, TempData["CityExistError"].ToString());
-            }
             return View();
         }
 
@@ -142,10 +138,6 @@ namespace Aqua.WebApp.Controllers
             if (!ModelState.IsValid)
             {
                 return Error();
-            }
-            if (TempData["CityExistError"] != null)
-            {
-                ModelState.AddModelError(string.Empty, TempData["CityExistError"].ToString());
             }
             var location = _locationRepo.GetLocationById(id);
             if (location == null)

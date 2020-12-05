@@ -1,0 +1,29 @@
+﻿html {
+    background-color: #2F2FA2;
+    color: white !important;
+}
+
+body {
+    font-family: 'Monsterrat', sans-serif;
+    background-color: #2F2FA2;
+    color: white !important;
+}
+
+.navbar-brand {
+    white-space: normal;
+    text-align: center;
+    word-break: break-all;
+    color: white !important;
+}
+
+.nav-link {
+    color: white !important;
+}
+
+.table thead tr, th, td {
+    color: white !important
+}
+
+a {
+    color: white !important;
+}
