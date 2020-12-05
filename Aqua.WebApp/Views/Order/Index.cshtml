@@ -9,13 +9,20 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-
-<form asp-controller="Order" asp-action="Index" method="get">
-    <p>
-        Email: <input type="email" name="SearchString">
-        <input type="submit" value="Filter" />
-    </p>
-</form>
+<div>
+    <form class="row" asp-controller="Order" asp-action="Index" method="get">
+        <div class="input-group col-md-6">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Email</span>
+            </div>
+            <input class="form-control" type="text" aria-describedby="basic-addon1" name="SearchString">
+        </div>
+        <div class="col-md-6">
+            <input class="btn btn-primary" type="submit" value="Filter" />
+        </div>
+    </form>
+</div>
+<br />
 
 <table class="table">
     <thead>
@@ -39,29 +46,30 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.LocationCity)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.CustomerEmail)
-            </td>
-            <td>
-                $ @Html.DisplayFor(modelItem => item.Total)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Date)
-            </td>
-            <td>
-                @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |*@
-                @Html.ActionLink("Details", "Details", new { id = item.Id }) |
-                @Html.ActionLink("Delete", "Delete", new { id = item.Id })
-            </td>
-        </tr>
-}
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.LocationCity)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CustomerEmail)
+                </td>
+                <td>
+                    $ @Html.DisplayFor(modelItem => item.Total)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Date)
+                </td>
+                <td>
+                    @*@Html.ActionLink("Edit", "Edit", new { id = item.Id }) |*@
+                    @Html.ActionLink("Details", "Details", new { id = item.Id }) |
+                    @Html.ActionLink("Delete", "Delete", new { id = item.Id })
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

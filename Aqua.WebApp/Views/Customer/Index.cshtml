@@ -9,13 +9,20 @@
 <p>
     <a asp-action="Create">Create New</a>
 </p>
-<form asp-controller="Customer" asp-action="Index" method="get">
-    <p>
-        Name: <input type="text" name="SearchString">
-        <input type="submit" value="Filter" />
-    </p>
-</form>
-
+<div>
+    <form class="row" asp-controller="Customer" asp-action="Index" method="get">
+        <div class="input-group col-md-6">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Name</span>
+            </div>
+            <input class="form-control" type="text" aria-describedby="basic-addon1" name="SearchString">
+        </div>
+        <div class="col-md-6">
+            <input class="btn btn-primary" type="submit" value="Filter" />
+        </div>
+    </form>
+</div>
+<br/>
 <table class="table">
     <thead>
         <tr>
