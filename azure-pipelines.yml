@@ -71,8 +71,8 @@ stages:
         WebAppName: '2011-nodeJayS-aqua'
         packageForLinux: 'publish'
 
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: $(build.artifactstagingdirectory)
-        ArtifactName: 'drop'
-        publishLocation: 'Container'
+    # - task: PublishBuildArtifacts@1
+    #   inputs:
+    #     PathtoPublish: $(build.artifactstagingdirectory)
+    #     ArtifactName: 'drop'
+    #     publishLocation: 'Container'
