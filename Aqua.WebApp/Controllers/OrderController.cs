@@ -38,7 +38,7 @@ namespace Aqua.WebApp.Controllers
             }
             if (!String.IsNullOrEmpty(searchString))
             {
-                result = result.FindAll(s => s.CustomerEmail.Contains(searchString));
+                result = result.FindAll(s => s.CustomerEmail.Contains(searchString, StringComparison.OrdinalIgnoreCase));
             }
             return View(result);
         }

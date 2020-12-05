@@ -22,6 +22,7 @@ namespace Aqua.WebApp.Models
             Customer = order.Customer.Id;
             CustomerEmail = order.Customer.Email;
             Total = order.Total;
+            Date = order.Date;
             LocationList = new List<Location>();
             CustomerList = new List<Customer>();
             Animals = new List<Animal>();
