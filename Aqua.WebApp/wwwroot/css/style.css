@@ -7,7 +7,7 @@
 
 html, body {
     background: url("../Images/jelly-background.jpg") no-repeat center center fixed !important;
-    font-family: 'Monsterrat', sans-serif;
+    font-family: 'Cairo', sans-serif !important;
     color: var(--font) !important;
 }
 
