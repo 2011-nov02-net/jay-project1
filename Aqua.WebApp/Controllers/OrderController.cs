@@ -90,11 +90,13 @@ namespace Aqua.WebApp.Controllers
             }
             var currentLocation = _locationRepo.GetLocationById(orderViewModel.Location);
             var currentCustomer = _customerRepo.GetCustomerById(orderViewModel.Customer);
-            var result = new Order();
-            result.Location = currentLocation;
-            result.Customer = currentCustomer;
-            result.Date = DateTime.Now;
-            result.Total = orderViewModel.Total;
+            var result = new Order
+            {
+                Location = currentLocation,
+                Customer = currentCustomer,
+                Date = DateTime.Now,
+                Total = orderViewModel.Total
+            };
             foreach (var orderItem in orderViewModel.OrderItems)
             {
                 var animal = _animalRepo.GetAnimalById(orderItem.AnimalId);
@@ -111,9 +113,11 @@ namespace Aqua.WebApp.Controllers
             {
                 return Error();
             }
-            var result = new OrderItemViewModel();
-            result.OrderId = id;
-            result.Quantity = 1;
+            var result = new OrderItemViewModel
+            {
+                OrderId = id,
+                Quantity = 1
+            };
             var currentOrder = _orderRepo.GetOrderById(id);
             var currentInventory = _locationRepo.GetInvByLocation(currentOrder.Location);
             var animals = _animalRepo.GetAllAnimals();

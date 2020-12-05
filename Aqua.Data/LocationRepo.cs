@@ -89,8 +89,10 @@ namespace Aqua.Data
             var result = new List<InventoryItem>();
             foreach (var item in dbInventory)
             {
-                var newItem = new InventoryItem(item.LocationId, item.Animal.Name, item.Quantity);
-                newItem.Id = item.Id;
+                var newItem = new InventoryItem(item.LocationId, item.Animal.Name, item.Quantity)
+                {
+                    Id = item.Id
+                };
                 result.Add(newItem);
             }
             return result;

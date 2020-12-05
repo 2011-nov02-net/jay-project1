@@ -143,8 +143,10 @@ namespace Aqua.Data
                     Name = orderItem.Animal.Name,
                     Price = orderItem.Animal.Price
                 };
-                var newOrderItem = new OrderItem(orderItem.OrderId, newAnimal, orderItem.Quantity, orderItem.Total);
-                newOrderItem.Id = orderItem.Id;
+                var newOrderItem = new OrderItem(orderItem.OrderId, newAnimal, orderItem.Quantity, orderItem.Total)
+                {
+                    Id = orderItem.Id
+                };
                 result.Add(newOrderItem);
             }
             return result;
@@ -166,8 +168,10 @@ namespace Aqua.Data
                 Name = dbOrderItem.Animal.Name,
                 Price = dbOrderItem.Animal.Price
             };
-            var result = new OrderItem(dbOrderItem.OrderId, newAnimal, dbOrderItem.Quantity, dbOrderItem.Total);
-            result.Id = dbOrderItem.Id;
+            var result = new OrderItem(dbOrderItem.OrderId, newAnimal, dbOrderItem.Quantity, dbOrderItem.Total)
+            {
+                Id = dbOrderItem.Id
+            };
             return result;
         }
         public void CreateOrderEntity(Order order)

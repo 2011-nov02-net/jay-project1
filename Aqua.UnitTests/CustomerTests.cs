@@ -30,7 +30,7 @@ namespace Aqua.UnitTests
             mockRepo.Setup(r => r.GetAllCustomers())
                 .Returns
                     (custList);
-            var controller = new CustomerController(new NullLogger<CustomerController>(),  mockRepo.Object, null);
+            var controller = new CustomerController(new NullLogger<CustomerController>(), mockRepo.Object, null);
             // Act
             IActionResult actionResult = controller.Index(null);
             // Assert

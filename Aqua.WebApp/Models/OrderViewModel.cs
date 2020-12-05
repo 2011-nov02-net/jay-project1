@@ -37,7 +37,7 @@ namespace Aqua.WebApp.Models
         public string LocationCity { get; set; }
         [Required]
         public int Customer { get; set; }
-        public string CustomerEmail {get; set; }
+        public string CustomerEmail { get; set; }
         public decimal Total { get; set; }
         [Required]
         public DateTime Date { get; set; }
