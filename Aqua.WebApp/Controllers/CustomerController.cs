@@ -68,10 +68,6 @@ namespace Aqua.WebApp.Controllers
             {
                 return Error();
             }
-            if (TempData["EmailExistsError"] != null)
-            {
-                ModelState.AddModelError(string.Empty, TempData["EmailExistsError"].ToString());
-            }
             return View();
         }
 
@@ -98,10 +94,6 @@ namespace Aqua.WebApp.Controllers
             if (id == null)
             {
                 return Error();
-            }
-            if (TempData["EmailExistsError"] != null)
-            {
-                ModelState.AddModelError(string.Empty, TempData["EmailExistsError"].ToString());
             }
             var customer = _customerRepo.GetCustomerById(id);
             if (customer == null)

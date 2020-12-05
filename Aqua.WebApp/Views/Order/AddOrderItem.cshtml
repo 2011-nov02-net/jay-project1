@@ -28,12 +28,15 @@
                 <input asp-for="Quantity" class="form-control" id="quantity" />
                 <span asp-validation-for="Quantity" class="text-danger"></span>
             </div>
-            <div class="row">
-                <div class="form-group col-md-2">
-                    <input type="submit" value="Add" class="btn btn-primary" />
-                </div>
-                <div class="col-md-10">
-                    @TempData["AddOrderItemSuccess"]
+            <div class="form-group">
+                <div class="row align-items-center">
+                    <div class="col-sm-2">
+                        <input type="submit" value="Add" class="btn btn-primary" />
+                    </div>
+                    <div class="col-sm-10">
+                        @TempData["AddOrderItemSuccess"]
+                        @TempData["QuantityError"]
+                    </div>
                 </div>
             </div>
         </form>

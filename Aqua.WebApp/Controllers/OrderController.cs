@@ -128,10 +128,6 @@ namespace Aqua.WebApp.Controllers
                     result.Animals.Add(animal);
                 }
             }
-            if (TempData["QuantityError"] != null)
-            {
-                ModelState.AddModelError(string.Empty, TempData["QuantityError"].ToString());
-            }
             return View(result);
         }
 
