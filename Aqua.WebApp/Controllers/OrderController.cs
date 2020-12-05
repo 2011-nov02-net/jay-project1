@@ -53,7 +53,14 @@ namespace Aqua.WebApp.Controllers
             else
             {
                 var result = _orderRepo.GetOrderById(id);
-                return View(result);
+                if (result == null)
+                {
+                    return Error();
+                }
+                else
+                {
+                    return View(result);
+                }
             }
         }
 

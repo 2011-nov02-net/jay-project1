@@ -1,12 +1,21 @@
-﻿html {
-    background-color: #2F2FA2;
-    color: white !important;
+﻿:root {
+    --darkGray: #282828;
+    --gray: #222222;
+    --jewel: #4717F6;
+    --font: #E7DFDD;
 }
 
-body {
+html, body {
+    background: url("../Images/jelly-background.jpg") no-repeat center center fixed !important;
     font-family: 'Monsterrat', sans-serif;
-    background-color: #2F2FA2;
-    color: white !important;
+    color: var(--font) !important;
+}
+
+#mainContainer {
+    background-color: var(--gray);
+    border-radius: 10px;
+    padding: 2%;
+    opacity: .9;
 }
 
 .navbar-brand {
