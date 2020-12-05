@@ -18,7 +18,9 @@ namespace Aqua.WebApp.Models
         {
             Id = order.Id;
             Location = order.Location.Id;
+            LocationCity = order.Location.City;
             Customer = order.Customer.Id;
+            CustomerEmail = order.Customer.Email;
             Total = order.Total;
             LocationList = new List<Location>();
             CustomerList = new List<Customer>();
@@ -32,8 +34,10 @@ namespace Aqua.WebApp.Models
         public int Id { get; set; }
         [Required]
         public int Location { get; set; }
+        public string LocationCity { get; set; }
         [Required]
         public int Customer { get; set; }
+        public string CustomerEmail {get; set; }
         public decimal Total { get; set; }
         [Required]
         public DateTime Date { get; set; }
