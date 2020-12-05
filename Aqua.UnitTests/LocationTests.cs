@@ -1,14 +1,13 @@
-using System;
-using Xunit;
-using System.Linq;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Logging.Abstractions;
-using Aqua.WebApp.Controllers;
-using Aqua.WebApp.Models;
 using Aqua.Data;
 using Aqua.Library;
+using Aqua.WebApp.Controllers;
+using Aqua.WebApp.Models;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging.Abstractions;
 using Moq;
 using System.Collections.Generic;
+using System.Linq;
+using Xunit;
 
 namespace Aqua.UnitTests
 {
@@ -20,9 +19,11 @@ namespace Aqua.UnitTests
             // Arrange
             var mockRepo = new Mock<ILocationRepo>();
             var locationList = new List<Location>();
-            var cali = new Location();
-                cali.Id = 1;
-                cali.City = "cali";
+            var cali = new Location
+            {
+                Id = 1,
+                City = "cali"
+            };
             locationList.Add(cali);
             mockRepo.Setup(r => r.GetAllLocations())
                 .Returns
@@ -42,12 +43,16 @@ namespace Aqua.UnitTests
             // Arrange
             var mockRepo = new Mock<ILocationRepo>();
             var locationList = new List<Location>();
-            var cali = new Location();
-                cali.Id = 1;
-                cali.City = "cali";
-            var hk = new Location();
-                hk.Id = 2;
-                hk.City = "hongkong";
+            var cali = new Location
+            {
+                Id = 1,
+                City = "cali"
+            };
+            var hk = new Location
+            {
+                Id = 2,
+                City = "hongkong"
+            };
             locationList.Add(cali);
             locationList.Add(hk);
             mockRepo.Setup(r => r.GetAllLocations())
@@ -68,8 +73,10 @@ namespace Aqua.UnitTests
             // Arrange
             var mockRepo = new Mock<ILocationRepo>();
             var locationList = new List<Location>();
-            var cali = new Location();
-            cali.Id = 1;
+            var cali = new Location
+            {
+                Id = 1
+            };
             locationList.Add(cali);
             mockRepo.Setup(r => r.GetAllLocations())
                 .Returns
@@ -81,13 +88,15 @@ namespace Aqua.UnitTests
             Assert.True(controller.ModelState.IsValid);
         }
         [Fact]
-        public void Index_Create_Location()
+        public void Create_Valid_Location()
         {
             // Arrange
             var mockRepo = new Mock<ILocationRepo>();
-            var hk = new Location();
-                hk.Id = 1;
-                hk.City = "hongkong";
+            var hk = new Location
+            {
+                Id = 1,
+                City = "hongkong"
+            };
             var controller = new LocationController(new NullLogger<LocationController>(), mockRepo.Object, null, null);
             // Act
             controller.Create(hk);
