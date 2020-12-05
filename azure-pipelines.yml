@@ -61,12 +61,6 @@ stages:
 
     - script: dotnet publish --configuration $(buildConfiguration) --output publish
       displayName: dotnet publish
-      
-    - task: PublishBuildArtifacts@1
-      inputs:
-        PathtoPublish: $(build.artifactstagingdirectory)
-        ArtifactName: 'drop'
-        publishLocation: 'Container'
 
     - task: AzureRmWebAppDeployment@4
       condition: and(succeeded(), eq(variables['Build.SourceBranch'], 'refs/heads/master'))
@@ -76,3 +70,9 @@ stages:
         appType: 'webApp'
         WebAppName: '2011-nodeJayS-aqua'
         packageForLinux: 'publish'
+
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: $(build.artifactstagingdirectory)
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
