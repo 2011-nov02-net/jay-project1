@@ -150,7 +150,7 @@ namespace Aqua.WebApp.Controllers
                 var invItem = locationInventory.Find(i => i.AnimalName == animal.Name);
                 if (invItem.Quantity - orderItem.Quantity < 0) // Check to see if order quantity is less than the quantity of animals in stock
                 {
-                    TempData["QuantityError"] = $"Quantity is too high, not enough {animal.Name}(s) in inventory. Currently have {invItem.Quantity} {animal.Name}(s) in stock.";
+                    TempData["QuantityError"] = $"Error. Quantity is too high, not enough {animal.Name}(s) in inventory. Currently have {invItem.Quantity} {animal.Name}(s) in stock.";
                     return RedirectToAction("AddOrderItem", new { OrderId = orderItem.OrderId });
                 }
                 else
@@ -181,7 +181,7 @@ namespace Aqua.WebApp.Controllers
                     }
                     invItem.Quantity -= orderItem.Quantity; // Subtract quantity of order from inventory
                     _locationRepo.UpdateInventoryEntity(invItem.LocationId, invItem.AnimalName, invItem.Quantity);
-                    TempData["AddOrderItemSuccess"] = $"Added {orderItem.Quantity} {animal.Name}(s) to your order.";
+                    TempData["AddOrderItemSuccess"] = $"Success! Added {orderItem.Quantity} {animal.Name}(s) to your order.";
                     return RedirectToAction("AddOrderItem", new { OrderId = order.Id });
                 }
             }

@@ -78,7 +78,7 @@ namespace Aqua.WebApp.Controllers
         {
             if (CustomerEmailExists(customer.Email))
             {
-                TempData["EmailExistsError"] = $"Email address '{customer.Email}' already exists in our database.";
+                TempData["EmailExistsError"] = $"Error. Email address '{customer.Email}' already exists in our database.";
                 return RedirectToAction("Create");
             }
             else
@@ -116,7 +116,7 @@ namespace Aqua.WebApp.Controllers
             }
             if (CustomerEmailExists(customer.Email) && !EmailSameDuringEditing(id, customer.Email))
             {
-                TempData["EmailExistsError"] = $"Email address '{customer.Email}' already exists in our database.";
+                TempData["EmailExistsError"] = $"Error. Email address '{customer.Email}' already exists in our database.";
                 return RedirectToAction("Edit", new { Id = customer.Id });
             }
             else if (ModelState.IsValid)
