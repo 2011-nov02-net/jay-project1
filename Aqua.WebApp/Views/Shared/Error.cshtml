@@ -3,9 +3,11 @@
     ViewData["Title"] = "Error";
 }
 
-<h1 class="text-danger">Oops!</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
-<img src="~/Images/QuestionFish.png" />
+<div class="error-page">
+    <h1 class="text-danger">Oops!</h1>
+    <h2 class="text-danger">An error occurred while processing your request.</h2>
+    <img id="error-image" src="~/Images/QuestionFish.png" />
+</div>
 
 @if (Model.ShowRequestId)
 {

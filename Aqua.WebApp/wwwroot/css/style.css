@@ -1,18 +1,16 @@
 ﻿:root {
-    --darkGray: #282828;
-    --gray: #222222;
+    --customGray: #222222;
     --jewel: #4717F6;
-    --font: #E7DFDD;
 }
 
 html, body {
     background: url("../Images/jelly-background.jpg") no-repeat center center fixed !important;
     font-family: 'Cairo', sans-serif !important;
-    color: var(--font) !important;
+    color: white !important;
 }
 
 #mainContainer {
-    background-color: var(--gray);
+    background-color: var(--customGray);
     border-radius: 10px;
     padding: 2%;
     opacity: .9;
@@ -35,4 +33,15 @@ html, body {
 
 a {
     color: white !important;
+}
+
+.form-control {
+    height: auto !important;
+}
+
+#error-image {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 50%;
 }
