@@ -17,11 +17,11 @@ namespace Aqua.WebApp.Controllers
         // GET: Animal
         public IActionResult Index()
         {
-            var animals = _animalRepo.GetAllAnimals();
-            var result = new List<AnimalViewModel>();
-            foreach (var animal in animals)
+            List<Animal> animals = _animalRepo.GetAllAnimals();
+            List<AnimalViewModel> result = new List<AnimalViewModel>();
+            foreach (Animal animal in animals)
             {
-                var newAnimal = new AnimalViewModel()
+                AnimalViewModel newAnimal = new AnimalViewModel()
                 {
                     Id = animal.Id,
                     Name = animal.Name,

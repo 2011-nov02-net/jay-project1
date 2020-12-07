@@ -17,9 +17,9 @@ namespace Aqua.UnitTests
         public void Index_Get_Locations()
         {
             // Arrange
-            var mockRepo = new Mock<ILocationRepo>();
-            var locationList = new List<Location>();
-            var cali = new Location
+            Mock<ILocationRepo> mockRepo = new Mock<ILocationRepo>();
+            List<Location> locationList = new List<Location>();
+            Location cali = new Location
             {
                 Id = 1,
                 City = "cali"
@@ -28,12 +28,12 @@ namespace Aqua.UnitTests
             mockRepo.Setup(r => r.GetAllLocations())
                 .Returns
                     (locationList);
-            var controller = new LocationController(new NullLogger<LocationController>(), mockRepo.Object, null, null);
+            LocationController controller = new LocationController(new NullLogger<LocationController>(), mockRepo.Object, null, null);
             // Act
             IActionResult actionResult = controller.Index();
             // Assert
-            var viewResult = Assert.IsAssignableFrom<ViewResult>(actionResult);
-            var locations = Assert.IsAssignableFrom<IEnumerable<LocationViewModel>>(viewResult.Model).ToList();
+            ViewResult viewResult = Assert.IsAssignableFrom<ViewResult>(actionResult);
+            List<LocationViewModel> locations = Assert.IsAssignableFrom<IEnumerable<LocationViewModel>>(viewResult.Model).ToList();
             Assert.Equal("cali", locations[0].City);
             Assert.Equal(1, locations[0].Id);
         }
@@ -41,14 +41,14 @@ namespace Aqua.UnitTests
         public void Index_Get_Multiple_Locations()
         {
             // Arrange
-            var mockRepo = new Mock<ILocationRepo>();
-            var locationList = new List<Location>();
-            var cali = new Location
+            Mock<ILocationRepo> mockRepo = new Mock<ILocationRepo>();
+            List<Location> locationList = new List<Location>();
+            Location cali = new Location
             {
                 Id = 1,
                 City = "cali"
             };
-            var hk = new Location
+            Location hk = new Location
             {
                 Id = 2,
                 City = "hongkong"
@@ -58,12 +58,12 @@ namespace Aqua.UnitTests
             mockRepo.Setup(r => r.GetAllLocations())
                 .Returns
                     (locationList);
-            var controller = new LocationController(new NullLogger<LocationController>(), mockRepo.Object, null, null);
+            LocationController controller = new LocationController(new NullLogger<LocationController>(), mockRepo.Object, null, null);
             // Act
             IActionResult actionResult = controller.Index();
             // Assert
-            var viewResult = Assert.IsAssignableFrom<ViewResult>(actionResult);
-            var locations = Assert.IsAssignableFrom<IEnumerable<LocationViewModel>>(viewResult.Model).ToList();
+            ViewResult viewResult = Assert.IsAssignableFrom<ViewResult>(actionResult);
+            List<LocationViewModel> locations = Assert.IsAssignableFrom<IEnumerable<LocationViewModel>>(viewResult.Model).ToList();
             Assert.Equal(2, locations.Count()); // Number of objects in location list
             Assert.Equal(2, locations[1].Id); // Return Id of the second location (hk)
         }
@@ -71,9 +71,9 @@ namespace Aqua.UnitTests
         public void Index_Get_Valid_Location()
         {
             // Arrange
-            var mockRepo = new Mock<ILocationRepo>();
-            var locationList = new List<Location>();
-            var cali = new Location
+            Mock<ILocationRepo> mockRepo = new Mock<ILocationRepo>();
+            List<Location> locationList = new List<Location>();
+            Location cali = new Location
             {
                 Id = 1
             };
@@ -81,7 +81,7 @@ namespace Aqua.UnitTests
             mockRepo.Setup(r => r.GetAllLocations())
                 .Returns
                     (locationList);
-            var controller = new LocationController(new NullLogger<LocationController>(), mockRepo.Object, null, null);
+            LocationController controller = new LocationController(new NullLogger<LocationController>(), mockRepo.Object, null, null);
             // Act
             IActionResult actionResult = controller.Index();
             // Assert
@@ -91,13 +91,13 @@ namespace Aqua.UnitTests
         public void Create_Valid_Location()
         {
             // Arrange
-            var mockRepo = new Mock<ILocationRepo>();
-            var hk = new Location
+            Mock<ILocationRepo> mockRepo = new Mock<ILocationRepo>();
+            Location hk = new Location
             {
                 Id = 1,
                 City = "hongkong"
             };
-            var controller = new LocationController(new NullLogger<LocationController>(), mockRepo.Object, null, null);
+            LocationController controller = new LocationController(new NullLogger<LocationController>(), mockRepo.Object, null, null);
             // Act
             controller.Create(hk);
             // Assert
