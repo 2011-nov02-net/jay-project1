@@ -66,11 +66,13 @@ namespace Aqua.WebApp.Controllers
             if (LocationCityExists(location.City))
             {
                 TempData["CityExistError"] = $"Location '{location.City}' already exists.";
+                _logger.LogInformation(TempData["CityExistError"].ToString());
                 return RedirectToAction(nameof(Create));
             }
             else
             {
                 _locationRepo.CreateLocationEntity(location);
+                _logger.LogInformation($"Created new location.");
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -116,11 +118,13 @@ namespace Aqua.WebApp.Controllers
                         var invItem = location.Inventory.Find(i => i.AnimalName == inventoryItem.AnimalName);
                         invItem.Quantity += inventoryItem.Quantity;
                         _locationRepo.UpdateInventoryEntity(location.Id, animal.Name, invItem.Quantity);
+                        _logger.LogInformation($"Imported existing Animal {inventoryItem.AnimalName} | Quantity + {inventoryItem.Quantity}.");
                         return RedirectToAction("Details", new { id = location.Id });
                     }
                     else
                     {
                         _locationRepo.CreateInventoryEntity(location, animal, inventoryItem.Quantity);
+                        _logger.LogInformation($"Imported new Animal {inventoryItem.AnimalName} | Quantity + {inventoryItem.Quantity}.");
                         return RedirectToAction("Details", new { id = location.Id });
                     }
                 }
@@ -160,6 +164,7 @@ namespace Aqua.WebApp.Controllers
             if (LocationCityExists(location.City))
             {
                 TempData["CityExistError"] = $"Location '{location.City}' already exists.";
+                _logger.LogInformation(TempData["CityExistError"].ToString());
                 return RedirectToAction("Edit", new { id = location.Id });
             }
             else if (ModelState.IsValid)
@@ -208,6 +213,7 @@ namespace Aqua.WebApp.Controllers
                 var invItem = location.Inventory.Find(i => i.AnimalName == inventoryItem.AnimalName);
                 invItem.Quantity += inventoryItem.Quantity;
                 _locationRepo.UpdateInventoryEntity(inventoryItem.LocationId, inventoryItem.AnimalName, invItem.Quantity);
+                _logger.LogInformation($"Imported existing Animal {inventoryItem.AnimalName} | Quantity + {inventoryItem.Quantity}.");
                 return RedirectToAction("Details", new { id = inventoryItem.LocationId });
             }
             return View();
@@ -270,7 +276,7 @@ namespace Aqua.WebApp.Controllers
         }
         public IActionResult Error()
         {
-            _logger.LogError($"Error in location controller");
+            _logger.LogInformation($"Error in location controller");
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
         public bool AnimalExists(string name)
