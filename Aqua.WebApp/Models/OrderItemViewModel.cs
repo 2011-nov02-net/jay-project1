@@ -23,8 +23,8 @@ namespace Aqua.WebApp.Models
         public int OrderId { get; set; }
         [Required]
         public int AnimalId { get; set; }
+        public string AnimalName { get; set; }
         [Required]
-
         public int Quantity { get; set; }
         [Required]
         [DataType(DataType.Currency)]

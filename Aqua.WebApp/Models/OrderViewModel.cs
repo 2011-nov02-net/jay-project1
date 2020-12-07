@@ -30,6 +30,7 @@ namespace Aqua.WebApp.Models
             foreach (var orderItem in order.OrderItems)
             {
                 var newOrderItem = new OrderItemViewModel(orderItem);
+                newOrderItem.AnimalName = orderItem.Animal.Name;
                 OrderItems.Add(newOrderItem);
             };
         }

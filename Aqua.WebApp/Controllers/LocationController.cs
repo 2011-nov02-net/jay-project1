@@ -216,7 +216,13 @@ namespace Aqua.WebApp.Controllers
         public IActionResult LocationOrders(int id)
         {
             var location = _locationRepo.GetLocationById(id);
-            List<Order> result = _orderRepo.GetOrdersByLocation(location);
+            var locationOrders = _orderRepo.GetOrdersByLocation(location);
+            var result = new List<OrderViewModel>();
+            foreach (var order in locationOrders)
+            {
+                var orderModel = new OrderViewModel(order);
+                result.Add(orderModel);
+            }
             return View(result);
         }
         // // // GET: Location/Delete/1
