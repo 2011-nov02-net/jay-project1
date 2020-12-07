@@ -33,7 +33,7 @@ namespace Aqua.WebApp.Controllers
             }
             if (!String.IsNullOrEmpty(searchString))
             {
-                result = result.FindAll(s => (s.FirstName.Contains(searchString, StringComparison.OrdinalIgnoreCase)) || (s.LastName.Contains(searchString)));
+                result = result.FindAll(s => (s.FirstName.Contains(searchString, StringComparison.OrdinalIgnoreCase)) || (s.LastName.Contains(searchString, StringComparison.OrdinalIgnoreCase)));
             }
             return View(result);
         }
