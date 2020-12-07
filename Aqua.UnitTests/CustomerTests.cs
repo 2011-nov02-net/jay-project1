@@ -17,9 +17,9 @@ namespace Aqua.UnitTests
         public void Index_Get_Customers()
         {
             // Arrange
-            Mock<ICustomerRepo> mockRepo = new Mock<ICustomerRepo>();
-            List<Customer> custList = new List<Customer>();
-            Customer firstCust = new Customer()
+            var mockRepo = new Mock<ICustomerRepo>();
+            var custList = new List<Customer>();
+            var firstCust = new Customer()
             {
                 Id = 5,
                 LastName = "lastName",
@@ -30,12 +30,12 @@ namespace Aqua.UnitTests
             mockRepo.Setup(r => r.GetAllCustomers())
                 .Returns
                     (custList);
-            CustomerController controller = new CustomerController(new NullLogger<CustomerController>(), mockRepo.Object, null);
+            var controller = new CustomerController(new NullLogger<CustomerController>(), mockRepo.Object, null);
             // Act
             IActionResult actionResult = controller.Index(null);
             // Assert
-            ViewResult viewResult = Assert.IsAssignableFrom<ViewResult>(actionResult);
-            List<CustomerViewModel> customers = Assert.IsAssignableFrom<IEnumerable<CustomerViewModel>>(viewResult.Model).ToList();
+            var viewResult = Assert.IsAssignableFrom<ViewResult>(actionResult);
+            var customers = Assert.IsAssignableFrom<IEnumerable<CustomerViewModel>>(viewResult.Model).ToList();
             Assert.Equal("test@email.com", customers[0].Email);
             Assert.Equal(5, customers[0].Id);
         }
@@ -43,16 +43,16 @@ namespace Aqua.UnitTests
         public void Index_Search_Customers()
         {
             // Arrange
-            Mock<ICustomerRepo> mockRepo = new Mock<ICustomerRepo>();
-            List<Customer> custList = new List<Customer>();
-            Customer firstCust = new Customer()
+            var mockRepo = new Mock<ICustomerRepo>();
+            var custList = new List<Customer>();
+            var firstCust = new Customer()
             {
                 Id = 5,
                 LastName = "lastName",
                 FirstName = "firstName",
                 Email = "test@email.com"
             };
-            Customer secondCust = new Customer()
+            var secondCust = new Customer()
             {
                 Id = 8,
                 LastName = "lastName2",
@@ -64,13 +64,13 @@ namespace Aqua.UnitTests
             mockRepo.Setup(r => r.GetAllCustomers())
                 .Returns
                     (custList);
-            CustomerController controller = new CustomerController(new NullLogger<CustomerController>(), mockRepo.Object, null);
+            var controller = new CustomerController(new NullLogger<CustomerController>(), mockRepo.Object, null);
             // Act
-            string searchString = "lastName2";
+            var searchString = "lastName2";
             IActionResult actionResult = controller.Index(searchString);
             // Assert
-            ViewResult viewResult = Assert.IsAssignableFrom<ViewResult>(actionResult);
-            List<CustomerViewModel> customers = Assert.IsAssignableFrom<IEnumerable<CustomerViewModel>>(viewResult.Model).ToList();
+            var viewResult = Assert.IsAssignableFrom<ViewResult>(actionResult);
+            var customers = Assert.IsAssignableFrom<IEnumerable<CustomerViewModel>>(viewResult.Model).ToList();
             Assert.Equal("lastName2", customers[0].LastName);
             Assert.Equal(8, customers[0].Id);
         }
@@ -78,15 +78,15 @@ namespace Aqua.UnitTests
         public void Create_Valid_Customer()
         {
             // Arrange
-            Mock<ICustomerRepo> mockRepo = new Mock<ICustomerRepo>();
-            Customer firstCust = new Customer()
+            var mockRepo = new Mock<ICustomerRepo>();
+            var firstCust = new Customer()
             {
                 Id = 5,
                 LastName = "lastName",
                 FirstName = "firstName",
                 Email = "test@email.com"
             };
-            CustomerController controller = new CustomerController(new NullLogger<CustomerController>(), mockRepo.Object, null);
+            var controller = new CustomerController(new NullLogger<CustomerController>(), mockRepo.Object, null);
             // Act
             IActionResult actionResult = controller.Create(firstCust);
             // Assert

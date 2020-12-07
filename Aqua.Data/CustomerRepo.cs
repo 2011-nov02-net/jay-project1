@@ -17,12 +17,12 @@ namespace Aqua.Data
         }
         public List<Customer> GetAllCustomers()
         {
-            using AquaContext context = new AquaContext(_contextOptions);
-            List<CustomerEntity> dbCust = context.Customers.Distinct().ToList();
-            List<Customer> result = new List<Customer>();
-            foreach (CustomerEntity customer in dbCust)
+            using var context = new AquaContext(_contextOptions);
+            var dbCust = context.Customers.Distinct().ToList();
+            var result = new List<Customer>();
+            foreach (var customer in dbCust)
             {
-                Customer newCustomer = new Customer()
+                var newCustomer = new Customer()
                 {
                     Id = customer.Id,
                     FirstName = customer.FirstName,
@@ -35,13 +35,13 @@ namespace Aqua.Data
         }
         public Customer GetCustomerByEmail(string email)
         {
-            using AquaContext context = new AquaContext(_contextOptions);
-            CustomerEntity dbCust = context.Customers
+            using var context = new AquaContext(_contextOptions);
+            var dbCust = context.Customers
                 .Where(a => a.Email == email)
                 .FirstOrDefault();
             if (dbCust != null)
             {
-                Customer newCust = new Customer()
+                var newCust = new Customer()
                 {
                     Id = dbCust.Id,
                     FirstName = dbCust.FirstName,
@@ -57,13 +57,13 @@ namespace Aqua.Data
         }
         public List<Customer> GetCustomerByName(string first, string last)
         {
-            using AquaContext context = new AquaContext(_contextOptions);
-            List<CustomerEntity> dbCust = context.Customers
+            using var context = new AquaContext(_contextOptions);
+            var dbCust = context.Customers
                 .Where(c => c.FirstName == first)
                 .Where(c => c.LastName == last)
                 .ToList();
-            List<Customer> allCust = new List<Customer>();
-            foreach (CustomerEntity cust in dbCust)
+            var allCust = new List<Customer>();
+            foreach (var cust in dbCust)
             {
                 allCust.Add(GetCustomerById(cust.Id));
             }
@@ -71,15 +71,15 @@ namespace Aqua.Data
         }
         public Customer GetCustomerById(int? id)
         {
-            using AquaContext context = new AquaContext(_contextOptions);
-            CustomerEntity dbCust = context.Customers
+            using var context = new AquaContext(_contextOptions);
+            var dbCust = context.Customers
                 .Where(c => c.Id == id)
                 .FirstOrDefault();
             if (dbCust == null)
             {
                 return null;
             }
-            Customer newCust = new Customer()
+            var newCust = new Customer()
             {
                 Id = dbCust.Id,
                 LastName = dbCust.LastName,
@@ -90,8 +90,8 @@ namespace Aqua.Data
         }
         public void CreateCustomerEntity(Customer customer)
         {
-            using AquaContext context = new AquaContext(_contextOptions);
-            CustomerEntity newEntry = new CustomerEntity()
+            using var context = new AquaContext(_contextOptions);
+            var newEntry = new CustomerEntity()
             {
                 FirstName = customer.FirstName,
                 LastName = customer.LastName,
@@ -102,8 +102,8 @@ namespace Aqua.Data
         }
         public void UpdateCustomerEntity(Customer customer)
         {
-            using AquaContext context = new AquaContext(_contextOptions);
-            CustomerEntity dbCust = context.Customers
+            using var context = new AquaContext(_contextOptions);
+            var dbCust = context.Customers
                 .Where(a => a.Id == customer.Id)
                 .FirstOrDefault();
             dbCust.FirstName = customer.FirstName;
@@ -120,8 +120,8 @@ namespace Aqua.Data
         }
         public void DeleteCustomerEntity(Customer customer)
         {
-            using AquaContext context = new AquaContext(_contextOptions);
-            CustomerEntity dbCustomer = context.Customers
+            using var context = new AquaContext(_contextOptions);
+            var dbCustomer = context.Customers
                 .Where(i => i.Id == customer.Id)
                 .FirstOrDefault();
             context.Remove(dbCustomer);

@@ -30,10 +30,10 @@ namespace Aqua.WebApp.Controllers
         public IActionResult Index(string searchString)
         {
             List<Order> orderList = _orderRepo.GetAllOrders();
-            List<OrderViewModel> result = new List<OrderViewModel>();
-            foreach (Order ord in orderList)
+            var result = new List<OrderViewModel>();
+            foreach (var ord in orderList)
             {
-                OrderViewModel newOrd = new OrderViewModel(ord);
+                var newOrd = new OrderViewModel(ord);
                 result.Add(newOrd);
             }
             if (!String.IsNullOrEmpty(searchString))
@@ -52,7 +52,7 @@ namespace Aqua.WebApp.Controllers
             }
             else
             {
-                Order result = _orderRepo.GetOrderById(id);
+                var result = _orderRepo.GetOrderById(id);
                 if (result == null)
                 {
                     return Error();
@@ -71,14 +71,14 @@ namespace Aqua.WebApp.Controllers
             {
                 return Error();
             }
-            OrderViewModel result = new OrderViewModel();
-            List<Location> locationList = _locationRepo.GetAllLocations();
-            List<Customer> customerList = _customerRepo.GetAllCustomers();
-            foreach (Location location in locationList)
+            var result = new OrderViewModel();
+            var locationList = _locationRepo.GetAllLocations();
+            var customerList = _customerRepo.GetAllCustomers();
+            foreach (var location in locationList)
             {
                 result.LocationList.Add(location);
             }
-            foreach (Customer customer in customerList)
+            foreach (var customer in customerList)
             {
                 result.CustomerList.Add(customer);
             }
@@ -95,22 +95,22 @@ namespace Aqua.WebApp.Controllers
             {
                 return Error();
             }
-            Location currentLocation = _locationRepo.GetLocationById(orderViewModel.Location);
-            Customer currentCustomer = _customerRepo.GetCustomerById(orderViewModel.Customer);
-            Order result = new Order
+            var currentLocation = _locationRepo.GetLocationById(orderViewModel.Location);
+            var currentCustomer = _customerRepo.GetCustomerById(orderViewModel.Customer);
+            var result = new Order
             {
                 Location = currentLocation,
                 Customer = currentCustomer,
                 Date = DateTime.Now,
                 Total = orderViewModel.Total
             };
-            foreach (OrderItemViewModel orderItem in orderViewModel.OrderItems)
+            foreach (var orderItem in orderViewModel.OrderItems)
             {
-                Animal animal = _animalRepo.GetAnimalById(orderItem.AnimalId);
-                OrderItem newItem = new OrderItem(0, animal, orderItem.Quantity, orderItem.Total);
+                var animal = _animalRepo.GetAnimalById(orderItem.AnimalId);
+                var newItem = new OrderItem(0, animal, orderItem.Quantity, orderItem.Total);
                 result.OrderItems.Add(newItem);
             }
-            Order resultOrder = _orderRepo.CreateOrderEntityReturnIt(result);
+            var resultOrder = _orderRepo.CreateOrderEntityReturnIt(result);
             return RedirectToAction("AddOrderItem", new { Id = resultOrder.Id });
         }
 
@@ -120,15 +120,15 @@ namespace Aqua.WebApp.Controllers
             {
                 return Error();
             }
-            OrderItemViewModel result = new OrderItemViewModel
+            var result = new OrderItemViewModel
             {
                 OrderId = id,
                 Quantity = 1
             };
-            Order currentOrder = _orderRepo.GetOrderById(id);
-            List<InventoryItem> currentInventory = _locationRepo.GetInvByLocation(currentOrder.Location);
-            List<Animal> animals = _animalRepo.GetAllAnimals();
-            foreach (Animal animal in animals)
+            var currentOrder = _orderRepo.GetOrderById(id);
+            var currentInventory = _locationRepo.GetInvByLocation(currentOrder.Location);
+            var animals = _animalRepo.GetAllAnimals();
+            foreach (var animal in animals)
             {
                 if (currentInventory.Any(a => (a.AnimalName == animal.Name && a.Quantity > 0))) // If this animal exists in the location's inventory it is added as an option to buy
                 {
@@ -144,10 +144,10 @@ namespace Aqua.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                Order order = _orderRepo.GetOrderById(orderItem.OrderId); // Get order ID of the first item and route to it afterwards since all items are in the same order
-                Animal animal = _animalRepo.GetAnimalById(orderItem.AnimalId);
-                List<InventoryItem> locationInventory = _locationRepo.GetInvByLocation(order.Location);
-                InventoryItem invItem = locationInventory.Find(i => i.AnimalName == animal.Name);
+                var order = _orderRepo.GetOrderById(orderItem.OrderId); // Get order ID of the first item and route to it afterwards since all items are in the same order
+                var animal = _animalRepo.GetAnimalById(orderItem.AnimalId);
+                var locationInventory = _locationRepo.GetInvByLocation(order.Location);
+                var invItem = locationInventory.Find(i => i.AnimalName == animal.Name);
                 if (invItem.Quantity - orderItem.Quantity < 0) // Check to see if order quantity is less than the quantity of animals in stock
                 {
                     TempData["QuantityError"] = $"Error. Quantity is too high, not enough {animal.Name}(s) in inventory. Currently have {invItem.Quantity} {animal.Name}(s) in stock.";
@@ -156,14 +156,14 @@ namespace Aqua.WebApp.Controllers
                 else
                 {
                     bool existInOrder = order.OrderItems.Any(o => o.Animal.Id == animal.Id);
-                    double total = animal.Price * orderItem.Quantity;
+                    var total = animal.Price * orderItem.Quantity;
                     if (existInOrder) // Animal already exists in order
                     {
-                        foreach (OrderItem thing in order.OrderItems)
+                        foreach (var thing in order.OrderItems)
                         {
                             if (thing.Animal.Id == orderItem.AnimalId) // Loop through all order items in the current order until an animal id matches the one that is in the current order
                             {
-                                OrderItem existingOrder = _orderRepo.GetOrderItemById(thing.Id);
+                                var existingOrder = _orderRepo.GetOrderItemById(thing.Id);
                                 existingOrder.Quantity += orderItem.Quantity;
                                 existingOrder.Total += (decimal)total;
                                 order.Total += (decimal)total;
@@ -174,7 +174,7 @@ namespace Aqua.WebApp.Controllers
                     }
                     else
                     {
-                        OrderItem newItem = new OrderItem(orderItem.OrderId, animal, orderItem.Quantity, (decimal)total);
+                        var newItem = new OrderItem(orderItem.OrderId, animal, orderItem.Quantity, (decimal)total);
                         order.Total += (decimal)total;
                         _orderRepo.CreateOrderItemEntity(newItem);
                         _orderRepo.UpdateOrderEntity(order);
@@ -222,7 +222,7 @@ namespace Aqua.WebApp.Controllers
             {
                 return Error();
             }
-            Order order = _orderRepo.GetOrderById(id);
+            var order = _orderRepo.GetOrderById(id);
             if (order == null)
             {
                 return Error();
@@ -235,7 +235,7 @@ namespace Aqua.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Order order = _orderRepo.GetOrderById(id);
+            var order = _orderRepo.GetOrderById(id);
             _orderRepo.DeleteOrderEntity(order);
             return RedirectToAction(nameof(Index));
         }

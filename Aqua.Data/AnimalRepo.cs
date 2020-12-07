@@ -16,12 +16,12 @@ namespace Aqua.Data
         }
         public List<Animal> GetAllAnimals()
         {
-            using AquaContext context = new AquaContext(_contextOptions);
-            List<AnimalEntity> dbAnimals = context.Animals.Distinct().ToList();
-            List<Animal> result = new List<Animal>();
-            foreach (AnimalEntity animal in dbAnimals)
+            using var context = new AquaContext(_contextOptions);
+            var dbAnimals = context.Animals.Distinct().ToList();
+            var result = new List<Animal>();
+            foreach (var animal in dbAnimals)
             {
-                Animal newAnimal = new Animal()
+                var newAnimal = new Animal()
                 {
                     Id = animal.Id,
                     Name = animal.Name,
@@ -33,8 +33,8 @@ namespace Aqua.Data
         }
         public Animal GetAnimalByName(string name)
         {
-            using AquaContext context = new AquaContext(_contextOptions);
-            AnimalEntity dbAnimal = context.Animals
+            using var context = new AquaContext(_contextOptions);
+            var dbAnimal = context.Animals
                 .Where(a => a.Name == name)
                 .FirstOrDefault();
             if (dbAnimal == null)
@@ -43,7 +43,7 @@ namespace Aqua.Data
             }
             else
             {
-                Animal newAnimal = new Animal()
+                var newAnimal = new Animal()
                 {
                     Id = dbAnimal.Id,
                     Name = dbAnimal.Name,
@@ -54,8 +54,8 @@ namespace Aqua.Data
         }
         public Animal GetAnimalById(int id)
         {
-            using AquaContext context = new AquaContext(_contextOptions);
-            AnimalEntity dbAnimal = context.Animals
+            using var context = new AquaContext(_contextOptions);
+            var dbAnimal = context.Animals
                 .Where(a => a.Id == id)
                 .FirstOrDefault();
             if (dbAnimal == null)
@@ -64,7 +64,7 @@ namespace Aqua.Data
             }
             else
             {
-                Animal newAnimal = new Animal()
+                var newAnimal = new Animal()
                 {
                     Id = dbAnimal.Id,
                     Name = dbAnimal.Name,
@@ -75,8 +75,8 @@ namespace Aqua.Data
         }
         public void CreateAnimalEntity(Animal animal)
         {
-            using AquaContext context = new AquaContext(_contextOptions);
-            AnimalEntity newEntry = new AnimalEntity()
+            using var context = new AquaContext(_contextOptions);
+            var newEntry = new AnimalEntity()
             {
                 Name = animal.Name,
                 Price = animal.Price
@@ -86,8 +86,8 @@ namespace Aqua.Data
         }
         public void UpdateAnimalEntity(Animal animal)
         {
-            using AquaContext context = new AquaContext(_contextOptions);
-            AnimalEntity dbAnimal = context.Animals
+            using var context = new AquaContext(_contextOptions);
+            var dbAnimal = context.Animals
                 .Where(a => a.Id == animal.Id)
                 .FirstOrDefault();
             dbAnimal.Name = animal.Name;

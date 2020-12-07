@@ -28,7 +28,7 @@ namespace Aqua.WebApp.Controllers
         // GET: Location
         public IActionResult Index()
         {
-            IEnumerable<LocationViewModel> result = _locationRepo.GetAllLocations().Select(x => new LocationViewModel
+            var result = _locationRepo.GetAllLocations().Select(x => new LocationViewModel
             {
                 Id = x.Id,
                 City = x.City
@@ -43,7 +43,7 @@ namespace Aqua.WebApp.Controllers
             {
                 return Error();
             }
-            Location location = _locationRepo.GetLocationById(id);
+            var location = _locationRepo.GetLocationById(id);
             if (location == null)
             {
                 return Error();
@@ -82,13 +82,13 @@ namespace Aqua.WebApp.Controllers
             {
                 return Error();
             }
-            InventoryItemModel result = new InventoryItemModel();
-            List<Animal> animalList = _animalRepo.GetAllAnimals();
+            var result = new InventoryItemModel();
+            var animalList = _animalRepo.GetAllAnimals();
             result.LocationId = id;
             result.Quantity = 1;
-            foreach (Animal animal in animalList)
+            foreach (var animal in animalList)
             {
-                Animal newAnimal = new Animal()
+                var newAnimal = new Animal()
                 {
                     Id = animal.Id,
                     Name = animal.Name,
@@ -105,15 +105,15 @@ namespace Aqua.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                Location location = _locationRepo.GetLocationById(inventoryItem.LocationId);
-                bool animalCheck = AnimalExists(inventoryItem.AnimalName);
+                var location = _locationRepo.GetLocationById(inventoryItem.LocationId);
+                var animalCheck = AnimalExists(inventoryItem.AnimalName);
                 if (animalCheck != false) // Check to see if animal exists in database already
                 {
-                    Animal animal = _animalRepo.GetAnimalByName(inventoryItem.AnimalName);
-                    bool existInventory = location.Inventory.Any(i => i.AnimalName == inventoryItem.AnimalName);
+                    var animal = _animalRepo.GetAnimalByName(inventoryItem.AnimalName);
+                    var existInventory = location.Inventory.Any(i => i.AnimalName == inventoryItem.AnimalName);
                     if (existInventory) // Check to see if animal exists in location inventory already
                     {
-                        InventoryItem invItem = location.Inventory.Find(i => i.AnimalName == inventoryItem.AnimalName);
+                        var invItem = location.Inventory.Find(i => i.AnimalName == inventoryItem.AnimalName);
                         invItem.Quantity += inventoryItem.Quantity;
                         _locationRepo.UpdateInventoryEntity(location.Id, animal.Name, invItem.Quantity);
                         return RedirectToAction("Details", new { id = location.Id });
@@ -139,12 +139,12 @@ namespace Aqua.WebApp.Controllers
             {
                 return Error();
             }
-            Location location = _locationRepo.GetLocationById(id);
+            var location = _locationRepo.GetLocationById(id);
             if (location == null)
             {
                 return Error();
             }
-            LocationViewModel result = new LocationViewModel(location);
+            var result = new LocationViewModel(location);
             return View(result);
         }
 
@@ -190,12 +190,12 @@ namespace Aqua.WebApp.Controllers
                 return NotFound();
             }
 
-            InventoryItem inventoryItem = _locationRepo.GetInventoryById(id);
+            var inventoryItem = _locationRepo.GetInventoryById(id);
             if (inventoryItem == null)
             {
                 return NotFound();
             }
-            InventoryItemModel result = new InventoryItemModel(inventoryItem);
+            var result = new InventoryItemModel(inventoryItem);
             return View(result);
         }
         [HttpPost]
@@ -204,8 +204,8 @@ namespace Aqua.WebApp.Controllers
         {
             if (ModelState.IsValid)
             {
-                Location location = _locationRepo.GetLocationById(inventoryItem.LocationId);
-                InventoryItem invItem = location.Inventory.Find(i => i.AnimalName == inventoryItem.AnimalName);
+                var location = _locationRepo.GetLocationById(inventoryItem.LocationId);
+                var invItem = location.Inventory.Find(i => i.AnimalName == inventoryItem.AnimalName);
                 invItem.Quantity += inventoryItem.Quantity;
                 _locationRepo.UpdateInventoryEntity(inventoryItem.LocationId, inventoryItem.AnimalName, invItem.Quantity);
                 return RedirectToAction("Details", new { id = inventoryItem.LocationId });
@@ -215,7 +215,7 @@ namespace Aqua.WebApp.Controllers
 
         public IActionResult LocationOrders(int id)
         {
-            Location location = _locationRepo.GetLocationById(id);
+            var location = _locationRepo.GetLocationById(id);
             List<Order> result = _orderRepo.GetOrdersByLocation(location);
             return View(result);
         }
@@ -226,7 +226,7 @@ namespace Aqua.WebApp.Controllers
             {
                 return Error();
             }
-            Location location = _locationRepo.GetLocationById(id);
+            var location = _locationRepo.GetLocationById(id);
             if (location == null)
             {
                 return Error();
@@ -240,7 +240,7 @@ namespace Aqua.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public IActionResult DeleteConfirmed(int id)
         {
-            Location location = _locationRepo.GetLocationById(id);
+            var location = _locationRepo.GetLocationById(id);
             _locationRepo.DeleteLocationEntity(location);
             return RedirectToAction(nameof(Index));
         }
@@ -269,7 +269,7 @@ namespace Aqua.WebApp.Controllers
         }
         public bool AnimalExists(string name)
         {
-            Animal animal = _animalRepo.GetAnimalByName(name);
+            var animal = _animalRepo.GetAnimalByName(name);
             if (animal != null)
             {
                 return true;

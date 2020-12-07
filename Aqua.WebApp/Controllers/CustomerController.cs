@@ -25,10 +25,10 @@ namespace Aqua.WebApp.Controllers
         public IActionResult Index(string searchString)
         {
             List<Customer> customerList = _customerRepo.GetAllCustomers();
-            List<CustomerViewModel> result = new List<CustomerViewModel>();
-            foreach (Customer cust in customerList)
+            var result = new List<CustomerViewModel>();
+            foreach (var cust in customerList)
             {
-                CustomerViewModel newCust = new CustomerViewModel(cust);
+                var newCust = new CustomerViewModel(cust);
                 result.Add(newCust);
             }
             if (!String.IsNullOrEmpty(searchString))
@@ -45,18 +45,18 @@ namespace Aqua.WebApp.Controllers
             {
                 return Error();
             }
-            Customer customer = _customerRepo.GetCustomerById(id);
+            var customer = _customerRepo.GetCustomerById(id);
             if (customer == null)
             {
                 return Error();
             }
-            CustomerViewModel result = new CustomerViewModel(customer);
+            var result = new CustomerViewModel(customer);
             return View(result);
         }
 
         public IActionResult CustomerOrders(int id)
         {
-            Customer customer = _customerRepo.GetCustomerById(id);
+            var customer = _customerRepo.GetCustomerById(id);
             List<Order> result = _orderRepo.GetOrdersByCustomer(customer);
             return View(result);
         }
@@ -95,12 +95,12 @@ namespace Aqua.WebApp.Controllers
             {
                 return Error();
             }
-            Customer customer = _customerRepo.GetCustomerById(id);
+            var customer = _customerRepo.GetCustomerById(id);
             if (customer == null)
             {
                 return Error();
             }
-            CustomerViewModel result = new CustomerViewModel(customer);
+            var result = new CustomerViewModel(customer);
             return View(result);
 
         }
@@ -148,12 +148,12 @@ namespace Aqua.WebApp.Controllers
             {
                 return Error();
             }
-            Customer customer = _customerRepo.GetCustomerById(id);
+            var customer = _customerRepo.GetCustomerById(id);
             if (customer == null)
             {
                 return Error();
             }
-            CustomerViewModel result = new CustomerViewModel(customer);
+            var result = new CustomerViewModel(customer);
             return View(result);
         }
 
@@ -162,7 +162,7 @@ namespace Aqua.WebApp.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult Delete(int id)
         {
-            Customer customer = _customerRepo.GetCustomerById(id);
+            var customer = _customerRepo.GetCustomerById(id);
             _customerRepo.DeleteCustomerEntity(customer);
             return RedirectToAction(nameof(Index));
         }
@@ -178,8 +178,8 @@ namespace Aqua.WebApp.Controllers
         }
         private bool EmailSameDuringEditing(int id, string email)
         {
-            Customer currentCustomer = _customerRepo.GetCustomerById(id);
-            Customer changingEmail = _customerRepo.GetCustomerByEmail(email);
+            var currentCustomer = _customerRepo.GetCustomerById(id);
+            var changingEmail = _customerRepo.GetCustomerByEmail(email);
             bool samePersonCheck = (currentCustomer.Id == changingEmail.Id);
             return samePersonCheck;
         }

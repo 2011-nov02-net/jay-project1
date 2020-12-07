@@ -26,9 +26,9 @@ namespace Aqua.WebApp.Models
             LocationList = new List<Location>();
             CustomerList = new List<Customer>();
             Animals = new List<Animal>();
-            foreach (OrderItem orderItem in order.OrderItems)
+            foreach (var orderItem in order.OrderItems)
             {
-                OrderItemViewModel newOrderItem = new OrderItemViewModel(orderItem);
+                var newOrderItem = new OrderItemViewModel(orderItem);
                 OrderItems.Add(newOrderItem);
             };
         }
