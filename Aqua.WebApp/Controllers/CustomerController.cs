@@ -85,11 +85,13 @@ namespace Aqua.WebApp.Controllers
             if (CustomerEmailExists(customer.Email))
             {
                 TempData["EmailExistsError"] = $"Error. Email address '{customer.Email}' already exists in our database.";
+                _logger.LogInformation(TempData["EmailExistsError"].ToString());
                 return RedirectToAction("Create");
             }
             else
             {
                 _customerRepo.CreateCustomerEntity(customer);
+                _logger.LogInformation($"Created new customer.");
                 return RedirectToAction(nameof(Index));
             }
         }
@@ -123,6 +125,7 @@ namespace Aqua.WebApp.Controllers
             if (CustomerEmailExists(customer.Email) && !EmailSameDuringEditing(id, customer.Email))
             {
                 TempData["EmailExistsError"] = $"Error. Email address '{customer.Email}' already exists in our database.";
+                _logger.LogInformation(TempData["EmailExistsError"].ToString());
                 return RedirectToAction("Edit", new { Id = customer.Id });
             }
             else if (ModelState.IsValid)
@@ -142,6 +145,7 @@ namespace Aqua.WebApp.Controllers
                         throw;
                     }
                 }
+                _logger.LogInformation($"Successfully edited customer with Email = {customer.Email}.");
                 return RedirectToAction(nameof(Index));
             }
             return View(customer);
@@ -170,6 +174,7 @@ namespace Aqua.WebApp.Controllers
         {
             var customer = _customerRepo.GetCustomerById(id);
             _customerRepo.DeleteCustomerEntity(customer);
+            _logger.LogInformation($"Successfully deleted customer with ID = {id}.");
             return RedirectToAction(nameof(Index));
         }
         private bool CustomerIdExists(int id)
@@ -191,7 +196,7 @@ namespace Aqua.WebApp.Controllers
         }
         public IActionResult Error()
         {
-            _logger.LogError($"Error in customer controller");
+            _logger.LogInformation("Error in customer controller");
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
