@@ -40,6 +40,7 @@ namespace Aqua.WebApp.Controllers
             {
                 result = result.FindAll(s => s.CustomerEmail.Contains(searchString, StringComparison.OrdinalIgnoreCase));
             }
+            _logger.LogInformation($"Getting index of orders.");
             return View(result);
         }
 
@@ -112,6 +113,7 @@ namespace Aqua.WebApp.Controllers
                 result.OrderItems.Add(newItem);
             }
             var resultOrder = _orderRepo.CreateOrderEntityReturnIt(result);
+            _logger.LogInformation($"Creating new order.");
             return RedirectToAction("AddOrderItem", new { Id = resultOrder.Id });
         }
 
@@ -152,6 +154,7 @@ namespace Aqua.WebApp.Controllers
                 if (invItem.Quantity - orderItem.Quantity < 0) // Check to see if order quantity is less than the quantity of animals in stock
                 {
                     TempData["QuantityError"] = $"Error. Quantity is too high, not enough {animal.Name}(s) in inventory. Currently have {invItem.Quantity} {animal.Name}(s) in stock.";
+                    _logger.LogInformation(TempData["QuantityError"].ToString());
                     return RedirectToAction("AddOrderItem", new { OrderId = orderItem.OrderId });
                 }
                 else
@@ -183,6 +186,7 @@ namespace Aqua.WebApp.Controllers
                     invItem.Quantity -= orderItem.Quantity; // Subtract quantity of order from inventory
                     _locationRepo.UpdateInventoryEntity(invItem.LocationId, invItem.AnimalName, invItem.Quantity);
                     TempData["AddOrderItemSuccess"] = $"Success! Added {orderItem.Quantity} {animal.Name}(s) to your order.";
+                    _logger.LogInformation(TempData["AddOrderItemSuccess"].ToString());
                     return RedirectToAction("AddOrderItem", new { OrderId = order.Id });
                 }
             }
@@ -242,7 +246,7 @@ namespace Aqua.WebApp.Controllers
         }
         public ActionResult Error()
         {
-            _logger.LogError($"Error in order controller");
+            _logger.LogInformation($"Error in order controller");
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
         }
     }
