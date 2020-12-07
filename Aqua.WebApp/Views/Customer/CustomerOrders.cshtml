@@ -1,4 +1,4 @@
-﻿@model IEnumerable<Aqua.Library.Order>
+﻿@model IEnumerable<Aqua.WebApp.Models.OrderViewModel>
 
 @{
     ViewData["Title"] = "Index";
@@ -38,10 +38,10 @@
                     @Html.DisplayFor(modelItem => item.Id)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Location.City)
+                    @Html.DisplayFor(modelItem => item.LocationCity)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => item.Customer.Email)
+                    @Html.DisplayFor(modelItem => item.CustomerEmail)
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => item.Total)

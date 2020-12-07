@@ -57,7 +57,13 @@ namespace Aqua.WebApp.Controllers
         public IActionResult CustomerOrders(int id)
         {
             var customer = _customerRepo.GetCustomerById(id);
-            List<Order> result = _orderRepo.GetOrdersByCustomer(customer);
+            var customerOrders = _orderRepo.GetOrdersByCustomer(customer);
+            var result = new List<OrderViewModel>();
+            foreach(var order in customerOrders)
+            {
+                var orderModel = new OrderViewModel(order);
+                result.Add(orderModel);
+            }
             return View(result);
         }
 

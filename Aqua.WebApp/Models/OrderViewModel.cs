@@ -26,6 +26,7 @@ namespace Aqua.WebApp.Models
             LocationList = new List<Location>();
             CustomerList = new List<Customer>();
             Animals = new List<Animal>();
+            OrderItems = new List<OrderItemViewModel>();
             foreach (var orderItem in order.OrderItems)
             {
                 var newOrderItem = new OrderItemViewModel(orderItem);
@@ -39,6 +40,7 @@ namespace Aqua.WebApp.Models
         [Required]
         public int Customer { get; set; }
         public string CustomerEmail { get; set; }
+        [DataType(DataType.Currency)]
         public decimal Total { get; set; }
         [Required]
         public DateTime Date { get; set; }

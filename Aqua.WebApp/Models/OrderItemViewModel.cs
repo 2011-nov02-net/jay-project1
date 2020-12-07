@@ -24,8 +24,10 @@ namespace Aqua.WebApp.Models
         [Required]
         public int AnimalId { get; set; }
         [Required]
+
         public int Quantity { get; set; }
         [Required]
+        [DataType(DataType.Currency)]
         public decimal Total { get; set; }
         public List<Animal> Animals { get; set; }
     }
