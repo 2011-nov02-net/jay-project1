@@ -151,7 +151,13 @@ namespace Aqua.WebApp.Controllers
                 var animal = _animalRepo.GetAnimalById(orderItem.AnimalId);
                 var locationInventory = _locationRepo.GetInvByLocation(order.Location);
                 var invItem = locationInventory.Find(i => i.AnimalName == animal.Name);
-                if (invItem.Quantity - orderItem.Quantity < 0) // Check to see if order quantity is less than the quantity of animals in stock
+                if(orderItem.Quantity < 1)
+                {
+                    TempData["ZeroError"] = $"Error. Quantity must be a positive integer.";
+                    _logger.LogInformation(TempData["ZeroError"].ToString());
+                    return RedirectToAction("AddOrderItem", new { OrderId = orderItem.OrderId });
+                }
+                else if (invItem.Quantity - orderItem.Quantity < 0) // Check to see if order quantity is less than the quantity of animals in stock
                 {
                     TempData["QuantityError"] = $"Error. Quantity is too high, not enough {animal.Name}(s) in inventory. Currently have {invItem.Quantity} {animal.Name}(s) in stock.";
                     _logger.LogInformation(TempData["QuantityError"].ToString());
