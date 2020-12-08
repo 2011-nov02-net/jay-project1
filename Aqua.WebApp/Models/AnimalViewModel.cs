@@ -10,6 +10,7 @@ namespace Aqua.WebApp.Models
         [DataType(DataType.Text)]
         public string Name { get; set; }
         [Required]
+        [DataType(DataType.Currency)]
         [Range(0, 100000)]
         public double Price { get; set; }
     }
