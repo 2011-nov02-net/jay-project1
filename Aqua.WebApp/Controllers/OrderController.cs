@@ -151,7 +151,7 @@ namespace Aqua.WebApp.Controllers
                 var animal = _animalRepo.GetAnimalById(orderItem.AnimalId);
                 var locationInventory = _locationRepo.GetInvByLocation(order.Location);
                 var invItem = locationInventory.Find(i => i.AnimalName == animal.Name);
-                if(orderItem.Quantity < 1)
+                if(orderItem.Quantity < 1) // Check for positive int quantity
                 {
                     TempData["ZeroError"] = $"Error. Quantity must be a positive integer.";
                     _logger.LogInformation(TempData["ZeroError"].ToString());
@@ -247,9 +247,18 @@ namespace Aqua.WebApp.Controllers
         public ActionResult DeleteConfirmed(int id)
         {
             var order = _orderRepo.GetOrderById(id);
+            var locationInventory = _locationRepo.GetInvByLocation(order.Location);
+            foreach (var orderItem in order.OrderItems)
+            {
+                _logger.LogInformation($"{orderItem.Animal.Name}");
+                var inventoryAnimal = locationInventory.Find(i => i.AnimalName == orderItem.Animal.Name);
+                inventoryAnimal.Quantity += orderItem.Quantity;
+                _locationRepo.UpdateInventoryEntity(inventoryAnimal.LocationId, inventoryAnimal.AnimalName, inventoryAnimal.Quantity);
+            }
             _orderRepo.DeleteOrderEntity(order);
             return RedirectToAction(nameof(Index));
         }
+
         public ActionResult Error()
         {
             _logger.LogInformation($"Error in order controller");

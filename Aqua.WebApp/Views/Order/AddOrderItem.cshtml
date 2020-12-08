@@ -51,5 +51,6 @@
 </div>
 
 <div>
-    <a asp-action="Details" asp-route-id="@Model.OrderId">Complete order</a>
+    <a asp-action="Details" asp-route-id="@Model.OrderId">Complete order</a> |
+    @Html.ActionLink("Cancel Order", "Delete", new { id = Model.OrderId })
 </div>
