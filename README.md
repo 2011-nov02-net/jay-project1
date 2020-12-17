@@ -41,11 +41,11 @@ Initial webpage will lead you to the welcome screen. From there, navigate to any
 
 ![Welcome page](/Aqua.WebApp/wwwroot/Images/WelcomeScreen.png)
 
-User is able to see the details of a store location and import animals to that location  
+User is able to see the details of a store location and import animals to that location.  
 
 ![Location page](/Aqua.WebApp/wwwroot/Images/Location.PNG)
 
-User can also see the details of a customer and create new customers  
+User can also see the details of a customer and create new customers.  
 
 ![Customer page](/Aqua.WebApp/wwwroot/Images/Customer.PNG)
 
