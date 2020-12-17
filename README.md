@@ -2,6 +2,8 @@
 
 A web application which allows the customer to make orders for animals to purchase at store locations.  
 
+![Aquarium welcome page](/Aqua.WebApp/wwwroot/Images/WelcomeScreen.png)
+
 ## Technologies  
 
 Front-End: HTML, CSS, Bootstrap, JQuery  
