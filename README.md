@@ -41,13 +41,13 @@ Initial webpage will lead you to the welcome screen. From there, navigate to any
 ![Welcome page](/Aqua.WebApp/wwwroot/Images/WelcomeScreen.png)
 
 User is able to see the details of a store location and import animals to that location  
-![Location page](/Aqua.WebApp/wwwroot/Images/Location.png)
+![Location page](/Aqua.WebApp/wwwroot/Images/Location.PNG)
 
 User can also see the details of a customer and create new customers  
-![Customer page](/Aqua.WebApp/wwwroot/Images/Customer.png)
+![Customer page](/Aqua.WebApp/wwwroot/Images/Customer.PNG)
 
 User can create new orders from a location with multiple animals in it.  
-![Order page](/Aqua.WebApp/wwwroot/Images/Order.png)
+![Order page](/Aqua.WebApp/wwwroot/Images/Order.PNG)
 
 ## License  
 This project uses the following license: [MIT License](https://github.com/git/git-scm.com/blob/master/MIT-LICENSE.txt).
