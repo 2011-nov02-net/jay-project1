@@ -38,16 +38,16 @@ git clone https://github.com/2011-nov02-net/jay-project1
 ## Usage  
 
 Initial webpage will lead you to the welcome screen. From there, navigate to any of the options in the navigation bar.  
-![Welcome page](/Aqua.WebApp/wwwroot/images/WelcomeScreen.png)
+![Welcome page](/Aqua.WebApp/wwwroot/Images/WelcomeScreen.png)
 
 User is able to see the details of a store location and import animals to that location  
-![Location page](/Aqua.WebApp/wwwroot/images/Location.png)
+![Location page](/Aqua.WebApp/wwwroot/Images/Location.png)
 
 User can also see the details of a customer and create new customers  
-![Customer page](/Aqua.WebApp/wwwroot/images/Customer.png)
+![Customer page](/Aqua.WebApp/wwwroot/Images/Customer.png)
 
 User can create new orders from a location with multiple animals in it.  
-![Order page](/Aqua.WebApp/wwwroot/images/Order.png)
+![Order page](/Aqua.WebApp/wwwroot/Images/Order.png)
 
 ## License  
 This project uses the following license: [MIT License](https://github.com/git/git-scm.com/blob/master/MIT-LICENSE.txt).
