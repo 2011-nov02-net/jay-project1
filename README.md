@@ -34,8 +34,7 @@ To-do list:
 Run this command in your terminal:  
 git clone https://github.com/2011-nov02-net/jay-project1  
 
-Alternatively, visit the deployed site [here](https://2011-nodejays-aqua.azurewebsites.net/).  
-(Initial loading may be slow)  
+Alternatively, visit the deployed site [here](https://2011-nodejays-aqua.azurewebsites.net/). (Initial loading may be slow)  
 
 ## Usage  
 
