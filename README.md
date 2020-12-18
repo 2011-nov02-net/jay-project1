@@ -1,7 +1,8 @@
 ## Jay-Project 1  
 
-A web application which allows the customer to make orders for animals to purchase at store locations.  
-
+A web application which simulates an online Aquarium.  
+The user can interact with the store and import new animals, register new customers and create orders for those customers.  
+This application meets all necessary requirements mentioned [here](https://github.com/2011-nov02-net/trainer-code/wiki/Project-1-requirements).  
 
 ## Technologies Used  
 
