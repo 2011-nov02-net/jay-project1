@@ -16,8 +16,6 @@ This application meets all necessary requirements mentioned [here](https://githu
 
 ## Features  
 
-List of features ready and TODOs for future development
-
 - Methods to create a location and import new animals to the location's inventory  
 - Methods to create a customer and update their details  
 - Methods to create an order specifying the customer, location and animals in the order  
